@@ -165,7 +165,7 @@
     .pains, .examples { grid-template-columns: 1fr; }
     .services { grid-template-columns: 1fr; }
     .steps { grid-template-columns: 1fr 1fr; }
-    .nav ul { display: none; position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; gap: 0; background: rgba(11,18,23,.97); border-bottom: 1px solid var(--line); padding: 8px 20px 16px; }
+    .nav ul { display: none; position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; gap: 0; background: #0B1217; border-bottom: 1px solid var(--line); box-shadow: 0 18px 40px rgba(0,0,0,.5); padding: 8px 20px 18px; z-index: 20; }
     .nav ul.abierto { display: flex; }
     .nav ul a { display: block; padding: 12px 0; font-size: 1.05rem; color: var(--ink); }
     .menu-btn { display: flex; }
@@ -174,7 +174,9 @@
     section { padding: 68px 0; }
     .hero { padding: 44px 0 72px; }
   }
-  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } .node .ok { display: none; } }
+  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } .node .ok { display: none; } .nav-right .btn { display: none; } .menu-cta { display: block !important; } }
+  .menu-cta { display: none !important; }
+  .menu-cta a { color: var(--teal) !important; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -190,6 +192,7 @@
       <li><a href="#ejemplos">Ejemplos</a></li>
       <li><a href="#como">Cómo trabajamos</a></li>
       <li><a href="#preguntas">Preguntas</a></li>
+      <li class="menu-cta"><a href="#contacto">Diagnóstico gratis →</a></li>
     </ul>
     <div class="nav-right">
       <a class="btn btn-primary" href="#contacto">Diagnóstico gratis</a>
