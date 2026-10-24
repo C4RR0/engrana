@@ -151,6 +151,9 @@
   .cta p { color: #B7C7CB; }
   .contact-card { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 24px; }
   .contact-card a { color: var(--ink); font-weight: 600; word-break: break-all; }
+  .copy-btn { font: 600 .85rem Inter, sans-serif; color: var(--ink); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16); border-radius: 10px; padding: .5em .9em; cursor: pointer; }
+  .copy-btn:hover { background: rgba(255,255,255,.1); }
+  .copy-btn.ok { color: #0B1217; background: var(--teal); border-color: var(--teal); }
 
   footer { padding: 40px 0 56px; color: var(--muted); font-size: .88rem; }
   .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; border-top: 1px solid var(--line); padding-top: 28px; }
@@ -428,6 +431,7 @@
           <p class="small" style="margin-bottom:.3em">Te atiende</p>
           <p style="font-family:Manrope,sans-serif;font-weight:800;font-size:1.4rem;margin-bottom:.6em">Sergio Carro</p>
           <p style="margin:0 0 .5em"><a href="mailto:sergiocarrovadillo@gmail.com">sergiocarrovadillo@gmail.com</a></p>
+          <p style="margin:0 0 .9em"><button class="copy-btn" type="button" data-email="sergiocarrovadillo@gmail.com">Copiar correo</button></p>
           <p style="margin:0"><a href="https://www.instagram.com/engrana.ia/">Instagram · @engrana.ia</a></p>
           <p class="small" style="margin:.8em 0 0">Te contestamos en uno o dos días laborables.</p>
         </div>
@@ -456,6 +460,18 @@
   addEventListener('scroll', revelar, { passive: true });
   addEventListener('resize', revelar);
   revelar();
+
+  // Copiar el correo (por si el visitante no tiene programa de correo configurado)
+  document.querySelectorAll('.copy-btn').forEach(btn => btn.addEventListener('click', async () => {
+    const email = btn.dataset.email;
+    try { await navigator.clipboard.writeText(email); }
+    catch {
+      const t = document.createElement('textarea'); t.value = email; document.body.appendChild(t);
+      t.select(); document.execCommand('copy'); t.remove();
+    }
+    btn.textContent = '¡Copiado!'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copiar correo'; btn.classList.remove('ok'); }, 2000);
+  }));
 
   // Menú móvil
   const menuBtn = document.querySelector('.menu-btn');
