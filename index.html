@@ -64,6 +64,10 @@
   .nav ul a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: .95rem; }
   .nav ul a:hover { color: var(--ink); }
   .nav .btn { padding: .6em 1.1em; font-size: .93rem; }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .menu-btn { display: none; width: 42px; height: 42px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,.03); cursor: pointer; flex-direction: column; justify-content: center; align-items: center; gap: 4px; padding: 0; }
+  .menu-btn span { display: block; width: 18px; height: 2px; border-radius: 2px; background: var(--ink); }
+  section[id] { scroll-margin-top: 60px; }
 
   /* Hero */
   .hero { position: relative; padding: 80px 0 110px; overflow: hidden; }
@@ -161,7 +165,11 @@
     .pains, .examples { grid-template-columns: 1fr; }
     .services { grid-template-columns: 1fr; }
     .steps { grid-template-columns: 1fr 1fr; }
-    .nav ul { display: none; }
+    .nav ul { display: none; position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; gap: 0; background: rgba(11,18,23,.97); border-bottom: 1px solid var(--line); padding: 8px 20px 16px; }
+    .nav ul.abierto { display: flex; }
+    .nav ul a { display: block; padding: 12px 0; font-size: 1.05rem; color: var(--ink); }
+    .menu-btn { display: flex; }
+    .nav .btn { padding: .55em .9em; font-size: .88rem; }
     .cta { padding: 44px 24px; }
     section { padding: 68px 0; }
     .hero { padding: 44px 0 72px; }
@@ -183,7 +191,10 @@
       <li><a href="#como">Cómo trabajamos</a></li>
       <li><a href="#preguntas">Preguntas</a></li>
     </ul>
-    <a class="btn btn-primary" href="#contacto">Diagnóstico gratis</a>
+    <div class="nav-right">
+      <a class="btn btn-primary" href="#contacto">Diagnóstico gratis</a>
+      <button class="menu-btn" type="button" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
   </div>
 </header>
 
@@ -432,10 +443,28 @@
 <script>
   const header = document.querySelector('header');
   addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 8), { passive: true });
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: .12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  // Muestra cada bloque en cuanto su parte de arriba entra en pantalla (o ya quedó por encima tras un salto del menú)
+  const pendientes = new Set(document.querySelectorAll('.reveal'));
+  const revelar = () => {
+    pendientes.forEach(el => {
+      if (el.getBoundingClientRect().top < innerHeight * .92) { el.classList.add('in'); pendientes.delete(el); }
+    });
+  };
+  addEventListener('scroll', revelar, { passive: true });
+  addEventListener('resize', revelar);
+  revelar();
+
+  // Menú móvil
+  const menuBtn = document.querySelector('.menu-btn');
+  const menu = document.querySelector('.nav ul');
+  menuBtn.addEventListener('click', () => {
+    const abierto = menu.classList.toggle('abierto');
+    menuBtn.setAttribute('aria-expanded', abierto);
+  });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    menu.classList.remove('abierto');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }));
 </script>
 </body>
 </html>
