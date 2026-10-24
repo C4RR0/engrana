@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo · Asistente para estudios de tatuaje | Engrana</title>
+<meta name="description" content="Demo de Engrana: asistente 24 h y automatizaciones para un estudio de tatuajes. Datos de ejemplo.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B1217; --bg-alt: #0F1A21; --card: #131F27; --card-2: #182630; --line: #22323D;
+    --ink: #EAF1F0; --muted: #93A4AA; --teal: #5EE0C4; --orange: #F2A26B;
+    --grad: linear-gradient(120deg, #5EE0C4 0%, #A8C7A0 50%, #F2A26B 100%);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.55 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-family: Manrope, sans-serif; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; margin: 0 0 .5em; }
+  h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+  h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+  p { margin: 0 0 1em; }
+  a { color: var(--teal); }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+  .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .muted { color: var(--muted); }
+  .small { font-size: .85rem; color: var(--muted); }
+
+  .topbar { border-bottom: 1px solid var(--line); background: rgba(11,18,23,.9); position: sticky; top: 0; z-index: 5; backdrop-filter: blur(10px); }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 12px; }
+  .brand { display: flex; align-items: center; gap: .5em; font-family: Manrope, sans-serif; font-weight: 800; color: var(--ink); text-decoration: none; }
+  .brand img { width: 28px; height: 28px; }
+  .pill { font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--orange); background: rgba(242,162,107,.12); padding: .35em .8em; border-radius: 999px; white-space: nowrap; }
+
+  header.intro { padding: 48px 0 24px; }
+  .grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 28px; align-items: start; padding-bottom: 64px; }
+  .grid > * { min-width: 0; }
+
+  /* Teléfono con el chat */
+  .phone { background: #0E171D; border: 1px solid var(--line); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.4); display: flex; flex-direction: column; height: 640px; }
+  .chat-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); background: var(--card); }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; background: #2A1E22; display: grid; place-items: center; font-family: Manrope, sans-serif; font-weight: 800; color: var(--orange); }
+  .chat-head b { display: block; }
+  .chat-head span { font-size: .8rem; color: var(--teal); }
+  .msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth; }
+  .msg { max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: .95rem; white-space: pre-line; }
+  .bot { background: var(--card-2); border: 1px solid var(--line); border-bottom-left-radius: 4px; align-self: flex-start; }
+  .user { background: linear-gradient(135deg, #2BA88F, #3C8F82); color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
+  .typing { color: var(--muted); font-size: .85rem; align-self: flex-start; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 12px; }
+  .chip { font: 500 .85rem Inter, sans-serif; color: var(--ink); background: transparent; border: 1px solid #2E4654; border-radius: 999px; padding: .45em .85em; cursor: pointer; }
+  .chip:hover { border-color: var(--teal); color: var(--teal); }
+  form.send { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line); background: var(--card); }
+  form.send input { flex: 1; min-width: 0; font: 400 .95rem Inter, sans-serif; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: .7em .9em; }
+  form.send input:focus { outline: none; border-color: var(--teal); }
+  form.send button { font: 700 .9rem Inter, sans-serif; border: 0; border-radius: 12px; padding: 0 1.1em; background: var(--grad); color: #0B1217; cursor: pointer; }
+
+  /* Panel del estudio */
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+  .panel + .panel { margin-top: 18px; }
+  .panel h3 { font-size: 1.1rem; margin-bottom: .3em; }
+  .ficha { display: none; margin-top: 12px; background: var(--bg); border: 1px dashed #2E4654; border-radius: 14px; padding: 14px 16px; font-size: .92rem; }
+  .ficha.on { display: block; }
+  .ficha dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 8px 0 0; }
+  .ficha dt { color: var(--muted); }
+  .ficha dd { margin: 0; }
+  .timeline { list-style: none; padding: 0; margin: 12px 0 0; }
+  .timeline li { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: .92rem; }
+  .timeline li:last-child { border-bottom: 0; }
+  .timeline .d { flex: none; width: 74px; font-weight: 700; color: var(--teal); }
+  .counter { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+  .counter div { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 12px; text-align: center; }
+  .counter b { display: block; font-family: Manrope, sans-serif; font-size: 1.5rem; }
+  .counter span { font-size: .78rem; color: var(--muted); }
+
+  .cta { margin: 0 0 64px; background: linear-gradient(135deg, #12303A, #1B2A33 60%, #2E2622); border: 1px solid var(--line); border-radius: 24px; padding: 36px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; }
+  .cta h2 { margin: 0; }
+  .btn { display: inline-flex; padding: .85em 1.3em; border-radius: 12px; font-weight: 700; text-decoration: none; background: var(--grad); color: #0B1217; }
+  footer { padding: 0 0 40px; }
+
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .phone { height: 580px; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../../"><img src="../../logo.svg" alt="">Engrana</a>
+    <span class="pill">Demo · datos de ejemplo</span>
+  </div>
+</div>
+
+<header class="intro wrap">
+  <h1>Así atendería un asistente a los clientes de <span class="grad">un estudio de tatuajes.</span></h1>
+  <p class="muted" style="max-width:44em">Escríbele como si fueras un cliente: pregunta precios, cuidados o pide cita. A la derecha ves lo que le llegaría al estudio y las automatizaciones que se pondrían en marcha. El estudio «Tinta Norte» y todos sus datos son inventados.</p>
+</header>
+
+<main class="wrap grid">
+  <section class="phone" aria-label="Chat de demostración">
+    <div class="chat-head">
+      <div class="avatar">TN</div>
+      <div><b>Tinta Norte Tattoo</b><span>● Asistente activo 24 h</span></div>
+    </div>
+    <div class="msgs" id="msgs" aria-live="polite"></div>
+    <div class="chips" id="chips"></div>
+    <form class="send" id="send">
+      <input id="txt" autocomplete="off" placeholder="Escribe tu mensaje…" aria-label="Escribe tu mensaje">
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+
+  <aside>
+    <div class="panel">
+      <h3>📥 Lo que recibe el estudio</h3>
+      <p class="small" style="margin:0">Cuando alguien pide cita, el estudio recibe la solicitud ordenada (en su correo, WhatsApp u hoja de cálculo) y solo tiene que confirmar.</p>
+      <div class="ficha" id="ficha">
+        <b>Nueva solicitud de cita</b>
+        <dl id="fichaDatos"></dl>
+      </div>
+      <p class="small" id="fichaVacia" style="margin:12px 0 0">Aún no hay solicitudes. Pide una cita en el chat para verla aparecer aquí.</p>
+    </div>
+
+    <div class="panel">
+      <h3>⚙️ Automatizaciones después de tatuar</h3>
+      <p class="small" style="margin:0">Se programan solas cuando el estudio marca la sesión como hecha:</p>
+      <ul class="timeline">
+        <li><span class="d">Día 0</span><span>Instrucciones de cuidado por escrito, para que no se olviden al salir.</span></li>
+        <li><span class="d">Día 1</span><span>«¿Qué tal va?» y recordatorio de lavar y aplicar la crema.</span></li>
+        <li><span class="d">Día 4</span><span>Aviso: es normal que pique y se pele; no rascar.</span></li>
+        <li><span class="d">Día 21</span><span>Petición de reseña en Google con el enlace directo y foto del tatuaje curado.</span></li>
+        <li><span class="d">Día 30</span><span>Recordatorio del retoque gratuito, si el estudio lo ofrece.</span></li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>📊 Este mes, en esta demo</h3>
+      <div class="counter">
+        <div><b id="cPreg">0</b><span>preguntas respondidas</span></div>
+        <div><b id="cCitas">0</b><span>solicitudes de cita</span></div>
+        <div><b id="cMin">0</b><span>minutos ahorrados*</span></div>
+      </div>
+      <p class="small" style="margin:10px 0 0">*Calculado a 2 minutos por respuesta que el estudio no ha tenido que escribir.</p>
+    </div>
+  </aside>
+</main>
+
+<div class="wrap">
+  <div class="cta">
+    <div>
+      <h2>¿Lo quieres para tu negocio?</h2>
+      <p class="muted" style="margin:.4em 0 0">Lo adaptamos a tus servicios, precios y forma de trabajar. Primero te lo enseñamos con tus datos.</p>
+    </div>
+    <a class="btn" href="../../#contacto">Pide tu diagnóstico gratis</a>
+  </div>
+</div>
+
+<footer class="wrap small">Demo de <a href="../../">Engrana</a>. Este chat funciona con respuestas predefinidas para enseñar el flujo: no guarda ni envía nada de lo que escribas.</footer>
+
+<script>
+  // ---- Datos del estudio (de ejemplo) ----
+  const ESTUDIO = {
+    nombre: 'Tinta Norte',
+    horario: 'De martes a sábado, de 11:00 a 20:00. Domingo y lunes, cerrado.',
+    direccion: 'Calle Ejemplo 12, Valladolid (a 5 minutos de la Plaza Mayor).',
+    minimo: '60 €',
+    senal: '30 €',
+  };
+
+  // ---- Intenciones: palabras clave → respuesta ----
+  const INTENCIONES = [
+    { claves: ['precio', 'cuesta', 'cuanto', 'cuánto', 'presupuesto', 'tarifa', 'cuanto vale', 'cuánto vale', 'cobrais', 'cobráis'], respuesta: () =>
+      `El precio depende del tamaño, la zona y el detalle del diseño. Como referencia:\n• Mínimo: ${ESTUDIO.minimo} (tatuajes pequeños)\n• Mediano (palma de la mano): desde 120 €\n• Piezas grandes: por sesión\n\nSi me cuentas tu idea, el tatuador te da un presupuesto exacto. ¿Quieres pedir cita?`,
+      chips: ['Pedir cita', '¿Pedís señal?'] },
+    { claves: ['señal', 'senal', 'deposito', 'depósito', 'reserva'], respuesta: () =>
+      `Sí: para reservar pedimos una señal de ${ESTUDIO.senal}, que se descuenta del precio final. Si avisas con 48 h de antelación, puedes cambiar la cita sin perderla.`,
+      chips: ['Pedir cita', 'Horario'] },
+    { claves: ['horario', 'a que hora', 'a qué hora', 'abierto', 'abris', 'abrís', 'cuando abr', 'cerrais', 'cerráis'], respuesta: () => ESTUDIO.horario, chips: ['¿Dónde estáis?', 'Pedir cita'] },
+    { claves: ['donde', 'dónde', 'direccion', 'dirección', 'ubicacion', 'ubicación', 'llegar'], respuesta: () => ESTUDIO.direccion, chips: ['Horario', 'Pedir cita'] },
+    { claves: ['cuid', 'crema', 'curar', 'cura ', 'curacion', 'curación', 'film', 'lavar', 'pica', 'pela', 'infect', 'rojo', 'hinchad'], respuesta: () =>
+      `Cuidados básicos:\n1. Quita el film a las 2–4 h y lava con agua tibia y jabón neutro.\n2. Seca a toques con papel, sin frotar.\n3. Aplica una capa fina de crema 2–3 veces al día.\n4. Nada de sol, piscina ni mar durante 3 semanas.\n5. Si pica, no rasques.\n\nAnte cualquier duda sobre cómo cura, escríbenos con una foto y te contesta el tatuador.`,
+      chips: ['¿Hacéis retoques?', 'Pedir cita'] },
+    { claves: ['retoque', 'repaso'], respuesta: () => 'El primer retoque es gratis durante los 2 primeros meses, si se han seguido los cuidados.', chips: ['Pedir cita'] },
+    { claves: ['menor', 'edad', 'mayor de edad', 'tengo 16', 'tengo 17'], respuesta: () => 'Solo tatuamos a mayores de edad. No hacemos excepciones, ni con autorización.', chips: ['Precios'] },
+    { claves: ['duele', 'dolor', 'daño'], respuesta: () => 'Depende de la zona y de cada persona: las zonas con más hueso o piel fina (costillas, pies, interior del brazo) suelen molestar más. El tatuador te lo explica antes de empezar y se para cuando lo necesites.', chips: ['Pedir cita', 'Precios'] },
+    { claves: ['diseño', 'diseno', 'idea', 'dibujo', 'propio'], respuesta: () => 'Puedes traer tu idea o referencias y el tatuador la convierte en un diseño propio. Si ya tienes el diseño, perfecto también. Lo vemos en la cita.', chips: ['Pedir cita'] },
+    { claves: ['cover', 'tapar', 'arreglar'], respuesta: () => 'Sí hacemos cover-ups (tapar o arreglar tatuajes antiguos). Para valorarlo, el tatuador necesita una foto del tatuaje actual. ¿Pedimos cita de valoración?', chips: ['Pedir cita'] },
+    { claves: ['piercing', 'laser', 'láser', 'eliminar', 'borrar'], respuesta: () => 'Eso no lo hacemos en el estudio, lo siento. Para eliminar tatuajes, lo mejor es un centro médico con láser.', chips: ['Precios'] },
+    { claves: ['hola', 'buenas', 'hey', 'saludos'], respuesta: () => '¡Hola! 👋 ¿En qué te ayudo? Puedo darte precios orientativos, horarios, cuidados o pedirte cita.', chips: ['Precios', 'Pedir cita', 'Cuidados'] },
+    { claves: ['gracias', 'genial', 'perfecto', 'vale gracias'], respuesta: () => '¡A ti! Si necesitas algo más, aquí estoy a cualquier hora. 🖤', chips: [] },
+  ];
+  const CITA = ['cita', 'reservar', 'pedir', 'agendar', 'hueco', 'disponibilidad', 'tatuarme', 'quiero un tatu', 'quiero tatu'];
+
+  // ---- Flujo de cita (paso a paso) ----
+  const PASOS = [
+    { campo: 'Idea', pregunta: '¡Genial! Cuéntame tu idea: ¿qué te quieres tatuar?' },
+    { campo: 'Zona y tamaño', pregunta: '¿En qué zona del cuerpo y de qué tamaño, más o menos?', chips: ['Antebrazo, unos 10 cm', 'Tobillo, pequeño', 'Espalda, grande'] },
+    { campo: 'Preferencia de día', pregunta: '¿Qué días u horas te vienen mejor?', chips: ['Entre semana por la tarde', 'Sábado por la mañana', 'Me da igual'] },
+    { campo: 'Nombre', pregunta: '¿Cómo te llamas?' },
+    { campo: 'Contacto', pregunta: 'Por último, ¿un teléfono o email para confirmarte la cita? (En esta demo no se guarda nada).' },
+  ];
+
+  // ---- Estado y utilidades ----
+  const $ = id => document.getElementById(id);
+  const msgs = $('msgs'), chips = $('chips'), txt = $('txt');
+  let paso = -1; const datos = {};
+  let nPreg = 0, nCitas = 0;
+
+  const normal = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  function burbuja(texto, quien) {
+    const d = document.createElement('div');
+    d.className = 'msg ' + quien; d.textContent = texto;
+    msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+  }
+  function ponerChips(lista) {
+    chips.innerHTML = '';
+    (lista || []).forEach(t => {
+      const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.textContent = t;
+      b.addEventListener('click', () => enviar(t));
+      chips.appendChild(b);
+    });
+  }
+  function responder(texto, lista) {
+    ponerChips([]);
+    const t = document.createElement('div'); t.className = 'typing'; t.textContent = 'escribiendo…';
+    msgs.appendChild(t); msgs.scrollTop = msgs.scrollHeight;
+    setTimeout(() => { t.remove(); burbuja(texto, 'bot'); ponerChips(lista); }, 650 + Math.min(texto.length * 6, 900));
+  }
+  function contar() {
+    $('cPreg').textContent = nPreg; $('cCitas').textContent = nCitas; $('cMin').textContent = nPreg * 2;
+  }
+
+  function mostrarFicha() {
+    const dl = $('fichaDatos'); dl.innerHTML = '';
+    Object.entries(datos).forEach(([k, v]) => {
+      const dt = document.createElement('dt'); dt.textContent = k;
+      const dd = document.createElement('dd'); dd.textContent = v;
+      dl.append(dt, dd);
+    });
+    $('ficha').classList.add('on'); $('fichaVacia').style.display = 'none';
+  }
+
+  function enviar(texto) {
+    texto = texto.trim(); if (!texto) return;
+    burbuja(texto, 'user');
+    nPreg++; contar();
+
+    // Dentro del flujo de cita
+    if (paso >= 0) {
+      datos[PASOS[paso].campo] = texto;
+      paso++;
+      if (paso < PASOS.length) { responder(PASOS[paso].pregunta, PASOS[paso].chips); return; }
+      paso = -1; nCitas++; contar(); mostrarFicha();
+      responder(`¡Listo, ${datos['Nombre']}! He pasado tu solicitud al estudio. El tatuador la revisa y te escribe para darte presupuesto y hueco. Para reservar se pide una señal de ${ESTUDIO.senal}. 🖤`, ['Cuidados', '¿Pedís señal?']);
+      return;
+    }
+
+    const n = normal(texto);
+    if (CITA.some(c => n.includes(normal(c)))) {
+      paso = 0; responder(PASOS[0].pregunta, PASOS[0].chips); return;
+    }
+    const intent = INTENCIONES.find(i => i.claves.some(c => n.includes(normal(c))));
+    if (intent) { responder(intent.respuesta(), intent.chips); return; }
+
+    responder('Esa pregunta prefiero pasársela al tatuador para no decirte nada incorrecto. Te contestará en cuanto pueda. Mientras, ¿te ayudo con precios, horarios, cuidados o una cita?', ['Precios', 'Pedir cita', 'Cuidados']);
+  }
+
+  $('send').addEventListener('submit', e => { e.preventDefault(); enviar(txt.value); txt.value = ''; txt.focus(); });
+
+  // Mensaje de bienvenida
+  responder('¡Hola! 👋 Soy el asistente de Tinta Norte. Te contesto al momento, a cualquier hora. ¿Qué necesitas?', ['Precios', 'Pedir cita', 'Cuidados', 'Horario']);
+</script>
+</body>
+</html>
