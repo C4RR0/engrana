@@ -245,6 +245,7 @@
     texto = texto.trim(); if (!texto) return;
     burbuja(texto, 'user');
     nPreg++; contar();
+    if (nPreg === 1 && window.engranaEv) window.engranaEv('demo-chat');
 
     // Dentro del flujo de cita
     if (paso >= 0) {
@@ -252,6 +253,7 @@
       paso++;
       if (paso < PASOS.length) { responder(PASOS[paso].pregunta, PASOS[paso].chips); return; }
       paso = -1; nCitas++; contar(); mostrarFicha();
+      if (window.engranaEv) window.engranaEv('demo-reserva');
       responder(`¡Listo, ${datos['Nombre']}! He pasado tu solicitud al estudio. El tatuador la revisa y te escribe para darte presupuesto y hueco. Para reservar se pide una señal de ${ESTUDIO.senal}. 🖤`, ['Cuidados', '¿Pedís señal?']);
       return;
     }

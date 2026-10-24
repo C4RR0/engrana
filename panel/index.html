@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel de métricas · Engrana</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B1217">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B1217; --card: #131F27; --card-2: #182630; --line: #22323D;
+    --ink: #EAF1F0; --muted: #93A4AA; --teal: #5EE0C4; --orange: #F2A26B;
+    --ok: #5EE0C4; --bad: #F08A7E;
+    --grad: linear-gradient(120deg, #5EE0C4 0%, #A8C7A0 50%, #F2A26B 100%);
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.55 Inter, system-ui, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); }
+  header { border-bottom: 1px solid var(--line); }
+  header .wrap { display: flex; align-items: center; gap: 14px; min-height: 60px; flex-wrap: wrap; padding-block: 8px; }
+  .brand { display: flex; align-items: center; gap: .5em; font: 800 1.1rem Manrope, Inter, sans-serif; color: var(--ink); text-decoration: none; }
+  .brand img { width: 26px; height: 26px; }
+  .brand span { color: var(--muted); font-weight: 700; }
+  .controles { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  select, .btn { font: 600 .9rem Inter, sans-serif; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: .55em .8em; }
+  .btn { cursor: pointer; display: inline-flex; align-items: center; gap: .45em; }
+  .btn-primary { background: var(--grad); color: #0B1217; border: 0; }
+  .btn:disabled { opacity: .6; cursor: progress; }
+  .btn:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+  .giro { width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; display: none; }
+  .cargando .giro { display: inline-block; animation: g .8s linear infinite; }
+  @keyframes g { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .cargando .giro { animation: none; } }
+
+  main { padding-block: 26px 48px; display: grid; gap: 18px; }
+  .titulo { display: flex; align-items: baseline; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap; }
+  h1 { font: 800 clamp(1.5rem, 3.4vw, 2.1rem)/1.15 Manrope, Inter, sans-serif; letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+  .estado { color: var(--muted); font-size: .88rem; font-variant-numeric: tabular-nums; }
+  .aviso { border: 1px solid rgba(242,162,107,.45); background: rgba(242,162,107,.08); border-radius: 12px; padding: 10px 14px; font-size: .9rem; }
+  .aviso.error { border-color: rgba(240,138,126,.5); background: rgba(240,138,126,.08); }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 14px; }
+  .kpi, .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; min-width: 0; }
+  .kpi .et { color: var(--muted); font-size: .82rem; font-weight: 500; }
+  .kpi .num { font: 800 2.1rem/1.1 Manrope, Inter, sans-serif; letter-spacing: -.02em; margin: 4px 0 2px; font-variant-numeric: tabular-nums; }
+  .kpi .delta { font-size: .82rem; font-variant-numeric: tabular-nums; color: var(--muted); }
+  .delta.sube { color: var(--ok); } .delta.baja { color: var(--bad); }
+  .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 14px; }
+  .card h2 { font: 700 1rem Manrope, Inter, sans-serif; margin: 0 0 2px; }
+  .card .nota { color: var(--muted); font-size: .82rem; margin: 0 0 12px; }
+  .grafico { position: relative; min-height: 190px; }
+  .grafico svg { display: block; width: 100%; height: 190px; overflow: visible; }
+  .tip { position: absolute; pointer-events: none; background: var(--card-2); border: 1px solid var(--line); border-radius: 8px; padding: 4px 8px; font-size: .8rem; white-space: nowrap; transform: translate(-50%, -100%); }
+  .lista { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+  .lista li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; font-size: .9rem; }
+  .lista .nom { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .lista .val { font-variant-numeric: tabular-nums; color: var(--muted); }
+  .barra { grid-column: 1 / -1; height: 6px; border-radius: 4px; background: var(--card-2); overflow: hidden; }
+  .barra i { display: block; height: 100%; border-radius: 4px; background: var(--grad); }
+  .vacio { color: var(--muted); font-size: .9rem; }
+  .split { display: flex; height: 14px; border-radius: 8px; overflow: hidden; background: var(--card-2); margin: 6px 0 10px; }
+  .split i:first-child { background: var(--teal); } .split i:last-child { background: var(--orange); }
+  .leyenda { display: flex; gap: 16px; flex-wrap: wrap; font-size: .88rem; }
+  .leyenda b { font-variant-numeric: tabular-nums; }
+  .punto { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 18px; }
+  summary { cursor: pointer; font-weight: 600; }
+  .acceso { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); margin-top: 12px; }
+  .acceso label { display: grid; gap: 4px; font-size: .82rem; color: var(--muted); }
+  .acceso input { font: 500 .9rem Inter, sans-serif; padding: .55em .7em; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); min-width: 0; }
+  footer { color: var(--muted); font-size: .82rem; padding-bottom: 30px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="brand" href="../"><img src="../logo.svg" alt="">Engrana <span>· Métricas</span></a>
+    <div class="controles">
+      <select id="periodo" aria-label="Periodo">
+        <option value="7">Últimos 7 días</option>
+        <option value="30" selected>Últimos 30 días</option>
+        <option value="90">Últimos 90 días</option>
+      </select>
+      <button class="btn btn-primary" id="actualizar" type="button"><span class="giro"></span><span class="txt">Actualizar</span></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="titulo">
+    <h1 id="titulo">Tu web</h1>
+    <span class="estado" id="estado">Sin consultar todavía</span>
+  </div>
+  <div class="aviso" id="aviso" hidden></div>
+
+  <section class="kpis" aria-label="Resumen">
+    <div class="kpi"><div class="et">Visitas</div><div class="num" id="k-visitas">—</div><div class="delta" id="d-visitas"></div></div>
+    <div class="kpi"><div class="et">Páginas vistas</div><div class="num" id="k-vistas">—</div><div class="delta" id="d-vistas"></div></div>
+    <div class="kpi"><div class="et">Acciones (contacto, demo…)</div><div class="num" id="k-acciones">—</div><div class="delta" id="d-acciones"></div></div>
+    <div class="kpi"><div class="et">Acciones por cada 100 visitas</div><div class="num" id="k-conv">—</div><div class="delta" id="d-conv"></div></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-dia">
+    <h2 id="h-dia">Visitas por día</h2>
+    <p class="nota">Una visita es una entrada a la web desde fuera (Google, Instagram, un enlace…). Pasar de una página a otra no suma visitas.</p>
+    <div class="grafico" id="grafico"></div>
+  </section>
+
+  <div class="rejilla">
+    <section class="card" aria-labelledby="h-origen">
+      <h2 id="h-origen">De dónde llegan</h2>
+      <p class="nota">Visitas según la web desde la que entraron.</p>
+      <ul class="lista" id="origen"></ul>
+    </section>
+    <section class="card" aria-labelledby="h-acciones">
+      <h2 id="h-acciones">Qué hacen</h2>
+      <p class="nota">Clics en los botones que importan.</p>
+      <ul class="lista" id="acciones"></ul>
+    </section>
+    <section class="card" aria-labelledby="h-paginas">
+      <h2 id="h-paginas">Páginas más vistas</h2>
+      <p class="nota">Páginas vistas en el periodo.</p>
+      <ul class="lista" id="paginas"></ul>
+    </section>
+    <section class="card" aria-labelledby="h-disp">
+      <h2 id="h-disp">Móvil u ordenador</h2>
+      <p class="nota">Desde qué aparato entran las visitas.</p>
+      <div class="split" id="split"></div>
+      <div class="leyenda" id="leyenda"></div>
+    </section>
+  </div>
+
+  <details id="config">
+    <summary>Acceso al panel</summary>
+    <div class="acceso">
+      <label>Sitio<input id="c-site" autocomplete="off" spellcheck="false"></label>
+      <label>Clave<input id="c-key" type="password" autocomplete="off" spellcheck="false"></label>
+    </div>
+    <p class="nota" style="margin:10px 0 0">Se guardan solo en este navegador. El panel consulta los datos únicamente cuando pulsas «Actualizar».</p>
+  </details>
+</main>
+<footer class="wrap">Contador sin cookies: no guarda IPs ni datos personales, solo cuántas visitas hay, de dónde llegan y qué botones se pulsan.</footer>
+
+<script>
+// Dirección del contador (Cloudflare Worker). Se rellena al activarlo.
+const API_POR_DEFECTO = '';
+
+const $ = (id) => document.getElementById(id);
+const fmt = new Intl.NumberFormat('es-ES');
+const pct = new Intl.NumberFormat('es-ES', { style: 'percent', maximumFractionDigits: 1 });
+const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+const leer = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
+
+// Acceso: el enlace del cliente trae #s=sitio&k=clave (y &a=api para pruebas); se guarda y se borra de la barra.
+let acceso = leer('engrana-acceso') || {};
+if (location.hash.length > 1) {
+  const h = new URLSearchParams(location.hash.slice(1));
+  if (h.get('s') && h.get('k')) {
+    acceso = { site: h.get('s'), key: h.get('k'), api: h.get('a') || acceso.api || '' };
+    guardar('engrana-acceso', acceso);
+  }
+  history.replaceState(null, '', location.pathname + location.search);
+}
+const api = () => (acceso.api || API_POR_DEFECTO).replace(/\/$/, '');
+$('c-site').value = acceso.site || '';
+$('c-key').value = acceso.key || '';
+const alCambiarAcceso = () => {
+  acceso = { site: $('c-site').value.trim(), key: $('c-key').value.trim(), api: acceso.api || '' };
+  guardar('engrana-acceso', acceso);
+};
+$('c-site').addEventListener('change', alCambiarAcceso);
+$('c-key').addEventListener('change', alCambiarAcceso);
+
+const dias = () => Number($('periodo').value);
+const claveCache = () => 'engrana-ultimo-' + (acceso.site || 'ejemplo') + '-' + dias();
+
+function avisar(texto, error) {
+  $('aviso').hidden = !texto;
+  $('aviso').textContent = texto || '';
+  $('aviso').classList.toggle('error', !!error);
+}
+
+function haceCuanto(iso) {
+  const min = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (min < 1) return 'hace un momento';
+  if (min < 60) return 'hace ' + min + ' min';
+  const h = Math.round(min / 60);
+  if (h < 24) return 'hace ' + h + ' h';
+  return 'el ' + new Date(iso).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+}
+
+async function consultar() {
+  if (!acceso.site || !acceso.key || !api()) {
+    $('config').open = true;
+    pintar(ejemplo(dias()), true);
+    avisar(api() ? 'Escribe el sitio y la clave en «Acceso al panel» y pulsa «Actualizar».'
+                 : 'Datos de ejemplo: el contador de visitas aún no está activado.');
+    return;
+  }
+  const b = $('actualizar');
+  b.disabled = true; b.classList.add('cargando'); b.querySelector('.txt').textContent = 'Consultando…';
+  try {
+    const r = await fetch(api() + '/stats?site=' + encodeURIComponent(acceso.site) + '&days=' + dias(),
+      { headers: { Authorization: 'Bearer ' + acceso.key }, cache: 'no-store' });
+    const datos = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(datos.error || ('El servidor respondió ' + r.status));
+    guardar(claveCache(), datos);
+    avisar('');
+    pintar(datos, false);
+  } catch (e) {
+    const viejo = leer(claveCache());
+    if (viejo) pintar(viejo, false);
+    avisar('No se ha podido consultar: ' + (e.message === 'Failed to fetch' ? 'sin conexión con el contador.' : e.message.replace(/([^.])$/, '$1.'))
+      + (viejo ? ' Se muestran los datos de la última consulta.' : ''), true);
+  } finally {
+    b.disabled = false; b.classList.remove('cargando'); b.querySelector('.txt').textContent = 'Actualizar';
+  }
+}
+
+function pintar(d, esEjemplo) {
+  $('titulo').textContent = esEjemplo ? 'Web de ejemplo' : (d.nombre || d.site);
+  $('estado').textContent = esEjemplo ? 'Datos de ejemplo'
+    : 'Del ' + fechaCorta(d.desde) + ' al ' + fechaCorta(d.hasta) + ' · consultado ' + haceCuanto(d.generado);
+
+  const tot = (campo) => d.diario.reduce((t, f) => t + (f[campo] || 0), 0);
+  const visitas = tot('visitas'), vistas = tot('vistas'), acciones = tot('acciones');
+  const conv = visitas ? acciones / visitas : 0;
+  const a = d.anterior || {};
+  const convAnt = a.visitas ? a.acciones / a.visitas : 0;
+  $('k-visitas').textContent = fmt.format(visitas);
+  $('k-vistas').textContent = fmt.format(vistas);
+  $('k-acciones').textContent = fmt.format(acciones);
+  $('k-conv').textContent = visitas ? fmt.format(Math.round(conv * 100)) : '—';
+  delta('d-visitas', visitas, a.visitas, d.dias);
+  delta('d-vistas', vistas, a.vistas, d.dias);
+  delta('d-acciones', acciones, a.acciones, d.dias);
+  deltaPuntos('d-conv', conv, convAnt, a.visitas, d.dias);
+
+  grafico(rellenarDias(d), d.dias);
+  lista('origen', d.origen.map((f) => [nombreOrigen(f.ref), f.visitas]), 'Aún no hay visitas en este periodo.');
+  lista('acciones', d.eventos.map((f) => [nombreAccion(f.evento), f.veces]), 'Nadie ha pulsado todavía los botones medidos.');
+  lista('paginas', d.paginas.map((f) => [nombrePagina(f.path), f.vistas]), 'Aún no hay páginas vistas.');
+  dispositivos(d.dispositivo);
+}
+
+function delta(id, ahora, antes, n) {
+  const el = $(id);
+  el.className = 'delta';
+  if (!antes) { el.textContent = ahora ? 'Sin datos de los ' + n + ' días anteriores' : ''; return; }
+  const v = (ahora - antes) / antes;
+  el.classList.add(v > 0 ? 'sube' : v < 0 ? 'baja' : 'igual');
+  el.textContent = (v > 0 ? '+' : '') + pct.format(v) + ' frente a los ' + n + ' días anteriores';
+}
+function deltaPuntos(id, ahora, antes, hubo, n) {
+  const el = $(id);
+  el.className = 'delta';
+  if (!hubo) { el.textContent = ''; return; }
+  const p = (ahora - antes) * 100;
+  el.classList.add(p > 0 ? 'sube' : p < 0 ? 'baja' : 'igual');
+  el.textContent = (p > 0 ? '+' : '') + fmt.format(Math.round(p)) + ' frente a los ' + n + ' días anteriores';
+}
+
+function rellenarDias(d) {
+  const porDia = new Map(d.diario.map((f) => [f.day, f]));
+  const out = [];
+  const fin = new Date(d.hasta + 'T12:00:00Z');
+  for (let i = d.dias - 1; i >= 0; i--) {
+    const dia = new Date(fin - i * 86400000).toISOString().slice(0, 10);
+    out.push({ day: dia, visitas: (porDia.get(dia) || {}).visitas || 0 });
+  }
+  return out;
+}
+
+function grafico(filas, n) {
+  const caja = $('grafico');
+  const ancho = Math.max(280, caja.clientWidth || 600), alto = 190, abajo = 22, arriba = 10, izq = 30;
+  const max = Math.max(1, ...filas.map((f) => f.visitas));
+  const tope = max <= 5 ? max : Math.ceil(max / 5) * 5;
+  const paso = (ancho - izq) / filas.length;
+  const anchoBarra = Math.max(2, Math.min(28, paso * 0.7));
+  const y = (v) => alto - abajo - (v / tope) * (alto - abajo - arriba);
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + ancho + ' ' + alto);
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', 'Visitas por día');
+  const el = (tag, attrs, txt) => { const e = document.createElementNS(ns, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (txt != null) e.textContent = txt; svg.appendChild(e); return e; };
+  const defs = el('defs', {});
+  defs.innerHTML = '<linearGradient id="gb" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#5EE0C4"/><stop offset="1" stop-color="#F2A26B"/></linearGradient>';
+  [0, tope / 2, tope].forEach((v) => {
+    el('line', { x1: izq, x2: ancho, y1: y(v), y2: y(v), stroke: '#22323D', 'stroke-width': 1 });
+    el('text', { x: izq - 6, y: y(v) + 4, 'text-anchor': 'end', fill: '#93A4AA', 'font-size': 11 }, fmt.format(Math.round(v)));
+  });
+  const cadaCuanto = Math.ceil(filas.length / Math.max(2, Math.floor((ancho - izq) / 70)));
+  const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true;
+  filas.forEach((f, i) => {
+    const cx = izq + paso * i + paso / 2;
+    const h = Math.max(f.visitas ? 2 : 0, alto - abajo - y(f.visitas));
+    const r = el('rect', { x: cx - anchoBarra / 2, y: alto - abajo - h, width: anchoBarra, height: h, rx: Math.min(4, anchoBarra / 2), fill: 'url(#gb)' });
+    const zona = el('rect', { x: izq + paso * i, y: arriba, width: paso, height: alto - abajo - arriba, fill: 'transparent' });
+    const mostrar = () => { tip.hidden = false; tip.textContent = fechaCorta(f.day) + ': ' + fmt.format(f.visitas) + (f.visitas === 1 ? ' visita' : ' visitas');
+      tip.style.left = Math.min(Math.max(cx / ancho * caja.clientWidth, 60), caja.clientWidth - 60) + 'px'; tip.style.top = (alto - abajo - h - 6) / alto * 190 + 'px'; r.setAttribute('opacity', .75); };
+    const ocultar = () => { tip.hidden = true; r.removeAttribute('opacity'); };
+    zona.addEventListener('mouseenter', mostrar); zona.addEventListener('mouseleave', ocultar);
+    zona.addEventListener('touchstart', mostrar, { passive: true });
+    if (i % cadaCuanto === 0 || i === filas.length - 1 && (filas.length - 1) % cadaCuanto > cadaCuanto / 2)
+      el('text', { x: cx, y: alto - 5, 'text-anchor': 'middle', fill: '#93A4AA', 'font-size': 11 }, fechaCorta(f.day));
+  });
+  caja.replaceChildren(svg, tip);
+}
+
+function lista(id, filas, textoVacio) {
+  const ul = $(id);
+  if (!filas.length) { ul.innerHTML = '<li class="vacio">' + textoVacio + '</li>'; return; }
+  const max = Math.max(...filas.map((f) => f[1]));
+  ul.replaceChildren(...filas.map(([nombre, valor]) => {
+    const li = document.createElement('li');
+    const n = document.createElement('span'); n.className = 'nom'; n.textContent = nombre; n.title = nombre;
+    const v = document.createElement('span'); v.className = 'val'; v.textContent = fmt.format(valor);
+    const b = document.createElement('span'); b.className = 'barra';
+    const i = document.createElement('i'); i.style.width = (valor / max * 100) + '%'; b.appendChild(i);
+    li.append(n, v, b);
+    return li;
+  }));
+}
+
+function dispositivos(filas) {
+  const m = (filas.find((f) => f.device === 'movil') || {}).visitas || 0;
+  const o = (filas.find((f) => f.device === 'ordenador') || {}).visitas || 0;
+  const t = m + o;
+  $('split').innerHTML = t ? '<i style="width:' + (m / t * 100) + '%"></i><i style="width:' + (o / t * 100) + '%"></i>' : '';
+  $('leyenda').innerHTML = t
+    ? '<span><span class="punto" style="background:var(--teal)"></span>Móvil <b>' + pct.format(m / t) + '</b></span>'
+      + '<span><span class="punto" style="background:var(--orange)"></span>Ordenador <b>' + pct.format(o / t) + '</b></span>'
+    : '<span class="vacio">Aún no hay visitas en este periodo.</span>';
+}
+
+const ORIGENES = { directo: 'Directo (enlace guardado o escrito a mano)', 'google.com': 'Google', 'google.es': 'Google',
+  'instagram.com': 'Instagram', 'l.instagram.com': 'Instagram', 'facebook.com': 'Facebook', 'l.facebook.com': 'Facebook',
+  'm.facebook.com': 'Facebook', 'lm.facebook.com': 'Facebook', 'bing.com': 'Bing', 'duckduckgo.com': 'DuckDuckGo',
+  'linkedin.com': 'LinkedIn', 'lnkd.in': 'LinkedIn', 't.co': 'X (Twitter)', 'mail.google.com': 'Gmail', 'wa.me': 'WhatsApp',
+  'c4rr0.github.io': 'Guía de reseñas (Engrana)' };
+const nombreOrigen = (r) => ORIGENES[r] || r;
+const ACCIONES = { contacto: 'Pulsó «Quiero mi diagnóstico»', diagnostico: 'Pulsó «Pide tu diagnóstico gratis»', 'copiar-correo': 'Copió el correo', correo: 'Pulsó el correo',
+  demo: 'Abrió la demo', 'demo-chat': 'Escribió al asistente de la demo', 'demo-reserva': 'Terminó una reserva en la demo',
+  whatsapp: 'Pulsó WhatsApp', llamar: 'Pulsó llamar', reservar: 'Pulsó reservar', instagram: 'Fue a Instagram' };
+const nombreAccion = (e) => ACCIONES[e] || e;
+const PAGINAS = { '/': 'Inicio', '/demo/tatuajes/': 'Demo · estudio de tatuajes', '/aviso-legal/': 'Aviso legal' };
+const nombrePagina = (p) => PAGINAS[p] || p;
+const fechaCorta = (dia) => new Date(dia + 'T12:00:00Z').toLocaleDateString('es-ES', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+
+// Datos de ejemplo (siempre los mismos) para enseñar el panel antes de activarlo.
+function ejemplo(n) {
+  let s = 7;
+  const azar = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const hoy = new Date();
+  const dia = (i) => new Date(hoy - i * 86400000).toISOString().slice(0, 10);
+  const diario = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const v = Math.round(14 + 10 * azar() + (n - i) * 0.25 + ([0, 6].includes(new Date(dia(i)).getDay()) ? -6 : 0));
+    diario.push({ day: dia(i), visitas: v, vistas: Math.round(v * 1.9), acciones: Math.round(v * (0.05 + 0.06 * azar())) });
+  }
+  const V = diario.reduce((t, f) => t + f.visitas, 0), A = diario.reduce((t, f) => t + f.acciones, 0);
+  return {
+    site: 'ejemplo', dias: n, desde: dia(n - 1), hasta: dia(0), generado: hoy.toISOString(), diario,
+    origen: [['google.com', .46], ['l.instagram.com', .27], ['directo', .17], ['wa.me', .07], ['bing.com', .03]].map(([ref, p]) => ({ ref, visitas: Math.round(V * p) })),
+    eventos: [['contacto', .45], ['whatsapp', .3], ['demo-chat', .15], ['copiar-correo', .1]].map(([evento, p]) => ({ evento, veces: Math.round(A * p) })),
+    paginas: [['/', .55], ['/servicios/', .2], ['/precios/', .14], ['/contacto/', .11]].map(([path, p]) => ({ path, vistas: Math.round(V * 1.9 * p) })),
+    dispositivo: [{ device: 'movil', visitas: Math.round(V * .72) }, { device: 'ordenador', visitas: Math.round(V * .28) }],
+    anterior: { visitas: Math.round(V * .84), vistas: Math.round(V * 1.6), acciones: Math.round(A * .7) },
+  };
+}
+
+// Al abrir: se enseña la última consulta guardada; solo se consulta de nuevo al pulsar «Actualizar» o cambiar el periodo.
+function mostrarGuardado() {
+  const viejo = leer(claveCache());
+  if (viejo) pintar(viejo, false);
+  else consultar();
+}
+$('actualizar').addEventListener('click', consultar);
+$('periodo').addEventListener('change', mostrarGuardado);
+let ultimoAncho = 0;
+addEventListener('resize', () => { const w = $('grafico').clientWidth; if (Math.abs(w - ultimoAncho) > 40) { ultimoAncho = w; const v = leer(claveCache()); pintar(v || ejemplo(dias()), !v); } });
+mostrarGuardado();
+</script>
+</body>
+</html>

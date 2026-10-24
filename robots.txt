@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /demo/
+Disallow: /panel/
+Disallow: /metricas/
 
 Sitemap: https://engranaia.com/sitemap.xml
