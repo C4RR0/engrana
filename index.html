@@ -3,30 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Antesala · Reseñas, web y asistente para clínicas</title>
-<meta name="description" content="Antesala cuida lo que tus pacientes ven antes de entrar: respuestas a reseñas de Google que respetan el secreto profesional, webs para clínicas y un asistente que atiende 24 horas.">
-<meta property="og:title" content="Antesala · Lo que tus pacientes ven antes de entrar">
-<meta property="og:description" content="Reseñas al día, web para tu clínica y asistente 24 h. Para clínicas de fisioterapia y salud.">
+<title>Engrana · Automatización, IA y webs para pymes</title>
+<meta name="description" content="Engrana automatiza las tareas que te roban horas (citas, recordatorios, mensajes, presupuestos) y crea webs que consiguen clientes. Automatización, IA y webs para pymes y clínicas.">
+<meta property="og:title" content="Engrana · Tu negocio, funcionando solo">
+<meta property="og:description" content="Automatización, IA, WhatsApp y webs para pymes. Diagnóstico gratis.">
 <meta property="og:type" content="website">
+<meta name="theme-color" content="#0B1217">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #FBF7F2;
-    --bg-alt: #F3ECE2;
-    --card: #FFFFFF;
-    --ink: #1F2A2E;
-    --muted: #5B666A;
-    --line: #E4DACC;
-    --green: #2F5D58;
-    --green-soft: #E3ECEA;
-    --accent: #C2643F;
-    --accent-soft: #F6E3D8;
-    --star: #E2A23B;
+    --bg: #0B1217;
+    --bg-alt: #0F1A21;
+    --card: #131F27;
+    --card-2: #182630;
+    --line: #22323D;
+    --ink: #EAF1F0;
+    --muted: #93A4AA;
+    --teal: #5EE0C4;
+    --orange: #F2A26B;
+    --grad: linear-gradient(120deg, #5EE0C4 0%, #A8C7A0 50%, #F2A26B 100%);
     --radius: 18px;
-    --shadow: 0 1px 2px rgba(31,42,46,.06), 0 8px 24px rgba(31,42,46,.07);
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -35,204 +34,226 @@
     font: 400 17px/1.6 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; line-height: 1.15; margin: 0 0 .5em; letter-spacing: -.01em; }
-  h1 { font-size: clamp(2.3rem, 5.5vw, 3.7rem); }
-  h2 { font-size: clamp(1.8rem, 3.6vw, 2.5rem); }
-  h3 { font-size: 1.3rem; }
+  h1, h2, h3 { font-family: Manrope, Inter, sans-serif; font-weight: 800; line-height: 1.1; margin: 0 0 .5em; letter-spacing: -.02em; }
+  h1 { font-size: clamp(2.5rem, 6vw, 4.3rem); }
+  h2 { font-size: clamp(1.9rem, 3.8vw, 2.7rem); }
+  h3 { font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; }
   p { margin: 0 0 1em; }
-  a { color: var(--green); }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
-  .eyebrow { display: inline-block; font-size: .8rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: .8em; }
-  .lead { font-size: 1.15rem; color: var(--muted); max-width: 38em; }
-  section { padding: 88px 0; }
-  .alt { background: var(--bg-alt); }
+  a { color: var(--teal); }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+  .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .eyebrow { display: inline-flex; align-items: center; gap: .5em; font-size: .78rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); margin-bottom: 1em; }
+  .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--grad); }
+  .lead { font-size: 1.15rem; color: var(--muted); max-width: 40em; }
+  section { padding: 96px 0; }
+  .alt { background: var(--bg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 
-  /* Botones */
-  .btn { display: inline-flex; align-items: center; gap: .5em; padding: .85em 1.4em; border-radius: 999px; font-weight: 600; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+  .btn { display: inline-flex; align-items: center; gap: .5em; padding: .9em 1.45em; border-radius: 12px; font-weight: 600; text-decoration: none; transition: transform .15s ease, box-shadow .2s ease; }
   .btn:hover { transform: translateY(-1px); }
-  .btn-primary { background: var(--green); color: #fff; box-shadow: 0 6px 18px rgba(47,93,88,.25); }
-  .btn-primary:hover { background: #264d49; }
-  .btn-ghost { color: var(--ink); border: 1.5px solid var(--line); background: var(--card); }
+  .btn-primary { background: var(--grad); color: #0B1217; box-shadow: 0 8px 30px rgba(94,224,196,.18); }
+  .btn-primary:hover { box-shadow: 0 10px 36px rgba(94,224,196,.3); }
+  .btn-ghost { color: var(--ink); border: 1px solid var(--line); background: rgba(255,255,255,.02); }
 
   /* Cabecera */
-  header { position: sticky; top: 0; z-index: 10; background: rgba(251,247,242,.9); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid transparent; transition: border-color .2s; }
+  header { position: sticky; top: 0; z-index: 10; background: rgba(11,18,23,.82); backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid transparent; transition: border-color .2s; }
   header.scrolled { border-bottom-color: var(--line); }
   .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
-  .logo { display: flex; align-items: center; gap: .55em; text-decoration: none; color: var(--ink); font-family: Fraunces, Georgia, serif; font-size: 1.45rem; font-weight: 600; }
+  .logo { display: flex; align-items: center; gap: .55em; text-decoration: none; color: var(--ink); font-family: Manrope, sans-serif; font-size: 1.4rem; font-weight: 800; letter-spacing: -.02em; }
   .logo svg { width: 34px; height: 34px; }
   .nav ul { display: flex; gap: 1.8em; list-style: none; margin: 0; padding: 0; }
-  .nav ul a { color: var(--ink); text-decoration: none; font-weight: 500; font-size: .95rem; }
-  .nav ul a:hover { color: var(--green); }
-  .nav .btn { padding: .6em 1.15em; font-size: .95rem; }
+  .nav ul a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: .95rem; }
+  .nav ul a:hover { color: var(--ink); }
+  .nav .btn { padding: .6em 1.1em; font-size: .93rem; }
 
   /* Hero */
-  .hero { padding: 72px 0 96px; }
-  .hero-grid > *, .secret > *, .cta > * { min-width: 0; }
-  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
-  .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.6em; }
+  .hero { position: relative; padding: 80px 0 110px; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; inset: -40% -10% auto auto; width: 720px; height: 720px; background: radial-gradient(circle, rgba(94,224,196,.14), transparent 60%); pointer-events: none; }
+  .hero::after { content: ""; position: absolute; inset: auto auto -50% -15%; width: 640px; height: 640px; background: radial-gradient(circle, rgba(242,162,107,.10), transparent 60%); pointer-events: none; }
+  .hero-grid { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
+  .hero-grid > *, .two > *, .cta > * { min-width: 0; }
+  .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.8em; }
   .hero .note { font-size: .9rem; color: var(--muted); margin-top: 1.2em; }
-  .mock { position: relative; }
-  .review { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 22px; border: 1px solid var(--line); }
-  .review + .review { margin-top: 16px; }
-  .review-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-  .avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; color: #fff; flex: none; }
-  .who { font-weight: 600; font-size: .95rem; }
-  .when { font-size: .8rem; color: var(--muted); }
-  .stars { color: var(--star); letter-spacing: 2px; font-size: .95rem; }
-  .review p { font-size: .95rem; margin: 6px 0 0; }
-  .reply { margin-top: 14px; padding: 12px 14px; background: var(--green-soft); border-radius: 12px; font-size: .9rem; }
-  .reply b { display: block; font-size: .8rem; color: var(--green); margin-bottom: 2px; }
-  .badge { position: absolute; right: -10px; top: -14px; background: var(--accent); color: #fff; font-size: .78rem; font-weight: 600; padding: .45em .9em; border-radius: 999px; box-shadow: var(--shadow); }
-  .pending { margin-top: 14px; font-size: .82rem; color: var(--accent); font-weight: 600; }
 
-  /* Problema */
-  .points { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
-  .point { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
-  .point .num { font-family: Fraunces, Georgia, serif; font-size: 2rem; color: var(--accent); line-height: 1; margin-bottom: 10px; }
-  .point p { color: var(--muted); margin: 0; font-size: .97rem; }
+  /* Diagrama de flujo */
+  .flow { position: relative; background: linear-gradient(180deg, var(--card), #101A21); border: 1px solid var(--line); border-radius: 22px; padding: 26px; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+  .flow-title { display: flex; justify-content: space-between; align-items: center; font-size: .8rem; color: var(--muted); margin-bottom: 18px; }
+  .live { display: inline-flex; align-items: center; gap: .45em; color: var(--teal); font-weight: 600; }
+  .live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 0 rgba(94,224,196,.6); animation: pulse 2s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(94,224,196,.55); } 70% { box-shadow: 0 0 0 10px rgba(94,224,196,0); } 100% { box-shadow: 0 0 0 0 rgba(94,224,196,0); } }
+  .node { display: flex; gap: 14px; align-items: center; background: var(--card-2); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; position: relative; }
+  .node + .node { margin-top: 26px; }
+  .node + .node::before { content: ""; position: absolute; left: 33px; top: -27px; width: 2px; height: 26px; background: linear-gradient(var(--teal), var(--orange)); opacity: .7; }
+  .node .ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; flex: none; background: rgba(94,224,196,.12); }
+  .node .ic svg { width: 20px; height: 20px; }
+  .node b { display: block; font-size: .95rem; }
+  .node span { font-size: .83rem; color: var(--muted); }
+  .node .ok { margin-left: auto; font-size: .75rem; font-weight: 600; color: var(--teal); background: rgba(94,224,196,.1); padding: .3em .7em; border-radius: 999px; white-space: nowrap; }
+
+  /* Dolores */
+  .pains { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+  .pain { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
+  .pain .q { font-family: Manrope, sans-serif; font-weight: 700; font-size: 1.15rem; margin-bottom: .5em; }
+  .pain p { color: var(--muted); margin: 0; font-size: .97rem; }
 
   /* Servicios */
-  .services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 44px; }
-  .service { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 28px; display: flex; flex-direction: column; box-shadow: var(--shadow); }
-  .service .icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 18px; }
-  .service .icon svg { width: 26px; height: 26px; }
-  .service ul { padding-left: 1.1em; margin: .4em 0 1.4em; color: var(--muted); font-size: .95rem; }
+  .services { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 44px; }
+  .service { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; display: flex; flex-direction: column; transition: border-color .2s, transform .2s; }
+  .service:hover { border-color: #2E4654; transform: translateY(-2px); }
+  .service .icon { width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 18px; background: rgba(94,224,196,.1); }
+  .service .icon svg { width: 24px; height: 24px; }
+  .service p { color: var(--muted); }
+  .service ul { padding-left: 1.1em; margin: 0 0 1.4em; color: var(--muted); font-size: .95rem; }
   .service li { margin-bottom: .35em; }
-  .service .price { margin-top: auto; padding-top: 16px; border-top: 1px dashed var(--line); font-size: .95rem; }
-  .service .price b { font-size: 1.25rem; font-family: Fraunces, Georgia, serif; }
-  .tag { display: inline-block; font-size: .75rem; font-weight: 600; padding: .3em .7em; border-radius: 999px; background: var(--accent-soft); color: var(--accent); margin-bottom: 10px; align-self: flex-start; }
-
-  /* Secreto profesional */
-  .secret { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-  .compare { display: grid; gap: 14px; }
-  .bad, .good { border-radius: 14px; padding: 16px 18px; font-size: .95rem; }
-  .bad { background: #FBEDEA; border: 1px solid #F0D2CB; }
-  .good { background: var(--green-soft); border: 1px solid #CBDDD9; }
-  .bad b, .good b { display: block; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 4px; }
-  .bad b { color: #B23A2B; }
-  .good b { color: var(--green); }
+  .service li::marker { color: var(--teal); }
+  .price { margin-top: auto; padding-top: 16px; border-top: 1px dashed var(--line); font-size: .95rem; color: var(--muted); }
+  .price b { font-family: Manrope, sans-serif; font-size: 1.35rem; color: var(--ink); }
+  .tag { display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: .35em .75em; border-radius: 999px; background: rgba(242,162,107,.12); color: var(--orange); margin-bottom: 12px; align-self: flex-start; }
   .small { font-size: .85rem; color: var(--muted); }
 
+  /* Ejemplos */
+  .examples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+  .ex { display: flex; gap: 14px; align-items: flex-start; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+  .ex .dot { flex: none; width: 10px; height: 10px; margin-top: .5em; border-radius: 50%; background: var(--grad); }
+  .ex b { display: block; margin-bottom: 2px; }
+  .ex span { font-size: .9rem; color: var(--muted); }
+
+  /* Clínicas */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .compare { display: grid; gap: 14px; }
+  .bad, .good { border-radius: 14px; padding: 16px 18px; font-size: .95rem; }
+  .bad { background: rgba(229,96,80,.08); border: 1px solid rgba(229,96,80,.3); }
+  .good { background: rgba(94,224,196,.08); border: 1px solid rgba(94,224,196,.3); }
+  .bad b, .good b { display: block; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+  .bad b { color: #F08A7E; }
+  .good b { color: var(--teal); }
+
   /* Pasos */
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 44px; counter-reset: step; }
-  .step { position: relative; padding: 28px 26px 26px; background: var(--card); border-radius: var(--radius); border: 1px solid var(--line); }
-  .step::before { counter-increment: step; content: counter(step); position: absolute; top: -16px; left: 24px; width: 34px; height: 34px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; font-weight: 600; font-size: .95rem; }
-  .step p { color: var(--muted); margin: 0; font-size: .97rem; }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 44px; counter-reset: step; }
+  .step { position: relative; padding: 30px 24px 24px; background: var(--card); border-radius: var(--radius); border: 1px solid var(--line); }
+  .step::before { counter-increment: step; content: "0" counter(step); display: block; font-family: Manrope, sans-serif; font-weight: 800; font-size: 1.6rem; margin-bottom: .4em; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .step p { color: var(--muted); margin: 0; font-size: .95rem; }
 
   /* FAQ */
-  .faq { max-width: 780px; margin-top: 36px; }
+  .faq { max-width: 800px; margin-top: 36px; }
   details { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 0 22px; margin-bottom: 12px; }
   summary { cursor: pointer; list-style: none; padding: 18px 0; font-weight: 600; display: flex; justify-content: space-between; gap: 16px; }
   summary::-webkit-details-marker { display: none; }
-  summary::after { content: "+"; font-size: 1.4rem; line-height: 1; color: var(--green); transition: transform .2s; }
+  summary::after { content: "+"; font-size: 1.4rem; line-height: 1; color: var(--teal); transition: transform .2s; }
   details[open] summary::after { transform: rotate(45deg); }
   details p { color: var(--muted); padding-bottom: 18px; margin: 0; }
 
   /* Contacto */
-  .cta { background: var(--green); color: #fff; border-radius: 28px; padding: 64px 48px; display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; }
-  .cta h2 { color: #fff; }
-  .cta p { color: #D7E4E1; }
-  .cta .btn-primary { background: #fff; color: var(--green); box-shadow: none; }
-  .cta .btn-primary:hover { background: var(--bg); }
-  .cta .contact-card { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); border-radius: 18px; padding: 24px; }
-  .cta .contact-card a { color: #fff; font-weight: 600; word-break: break-all; }
+  .cta { position: relative; overflow: hidden; background: linear-gradient(135deg, #12303A, #1B2A33 60%, #2E2622); border: 1px solid var(--line); border-radius: 28px; padding: 64px 52px; display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; }
+  .cta p { color: #B7C7CB; }
+  .contact-card { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 24px; }
+  .contact-card a { color: var(--ink); font-weight: 600; word-break: break-all; }
 
   footer { padding: 40px 0 56px; color: var(--muted); font-size: .88rem; }
   .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; border-top: 1px solid var(--line); padding-top: 28px; }
+  footer a { color: var(--muted); }
 
-  /* Animación suave al entrar */
   .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
   .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } .live::before { animation: none; } }
 
-  @media (max-width: 920px) {
-    .hero-grid, .secret, .cta { grid-template-columns: 1fr; }
-    .services, .points, .steps { grid-template-columns: 1fr; }
+  @media (max-width: 960px) {
+    .hero-grid, .two, .cta { grid-template-columns: 1fr; }
+    .pains, .examples { grid-template-columns: 1fr; }
+    .services { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
     .nav ul { display: none; }
-    .cta { padding: 44px 26px; }
-    section { padding: 64px 0; }
-    .hero { padding: 40px 0 64px; }
-    .badge { right: 8px; }
+    .cta { padding: 44px 24px; }
+    section { padding: 68px 0; }
+    .hero { padding: 44px 0 72px; }
   }
+  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } .node .ok { display: none; } }
 </style>
 </head>
 <body>
 
 <header id="top">
   <div class="wrap nav">
-    <a class="logo" href="#top" aria-label="Antesala, inicio">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#2F5D58"/><path d="M20 52V16a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v36" fill="none" stroke="#FBF7F2" stroke-width="4" stroke-linecap="round"/><path d="M24 50.5V17.5l14 4v31z" fill="#E9A36F"/><circle cx="33" cy="36" r="1.8" fill="#2F5D58"/></svg>
-      Antesala
+    <a class="logo" href="#top" aria-label="Engrana, inicio">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#engrana-logo"/></svg>
+      Engrana
     </a>
     <ul>
       <li><a href="#servicios">Servicios</a></li>
-      <li><a href="#secreto">Secreto profesional</a></li>
+      <li><a href="#ejemplos">Ejemplos</a></li>
       <li><a href="#como">Cómo trabajamos</a></li>
       <li><a href="#preguntas">Preguntas</a></li>
     </ul>
-    <a class="btn btn-primary" href="#contacto">Hablemos</a>
+    <a class="btn btn-primary" href="#contacto">Diagnóstico gratis</a>
   </div>
 </header>
+
+<!-- Logo reutilizable -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="eg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5EE0C4"/><stop offset="1" stop-color="#F2A26B"/></linearGradient>
+    <symbol id="engrana-logo" viewBox="0 0 64 64">
+      <path d="M52.2 28.4 L57.8 29.2 L57.8 34.8 L52.2 35.6 L49.8 42.2 L53.6 46.5 L50.0 50.8 L45.2 47.7 L39.0 51.3 L39.3 57.0 L33.7 57.9 L32.0 52.5 L25.0 51.3 L21.5 55.8 L16.6 53.0 L18.8 47.7 L14.2 42.2 L8.7 43.5 L6.8 38.2 L11.8 35.6 L11.8 28.4 L6.8 25.8 L8.7 20.5 L14.2 21.8 L18.8 16.3 L16.6 11.0 L21.5 8.2 L25.0 12.7 L32.0 11.5 L33.7 6.1 L39.3 7.0 L39.0 12.7 L45.2 16.3 L50.0 13.2 L53.6 17.5 L49.8 21.7 Z" fill="none" stroke="url(#eg)" stroke-width="3" stroke-linejoin="round"/><path d="M22 38 L32 26 L42 36" fill="none" stroke="url(#eg)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="38" r="3.6" fill="#5EE0C4"/><circle cx="32" cy="26" r="3.6" fill="#A8C7A0"/><circle cx="42" cy="36" r="3.6" fill="#F2A26B"/>
+    </symbol>
+  </defs>
+</svg>
 
 <main>
   <!-- Hero -->
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow">Para clínicas de fisioterapia y salud</span>
-        <h1>Lo que tus pacientes ven antes de entrar.</h1>
-        <p class="lead">Antes de pedir cita, tus futuros pacientes leen tus reseñas, miran tu web y te escriben cuando ya has cerrado. En Antesala cuidamos esa primera impresión para que tú puedas centrarte en tratar.</p>
+        <span class="eyebrow">Automatización, IA y webs para pymes</span>
+        <h1>Tu negocio, <span class="grad">funcionando solo.</span></h1>
+        <p class="lead">Automatizamos las tareas que te roban horas cada semana (citas, recordatorios, mensajes, presupuestos) y te hacemos una web que consigue clientes. Tú te dedicas a lo tuyo.</p>
         <div class="actions">
-          <a class="btn btn-primary" href="#contacto">Prueba un mes gratis</a>
-          <a class="btn btn-ghost" href="#servicios">Ver servicios</a>
+          <a class="btn btn-primary" href="#contacto">Pide tu diagnóstico gratis</a>
+          <a class="btn btn-ghost" href="#ejemplos">Ver ejemplos</a>
         </div>
-        <p class="note">Sin permanencia. Sin darnos tu contraseña.</p>
+        <p class="note">Sin permanencia · Precio cerrado antes de empezar · Hablas siempre con una persona</p>
       </div>
-      <div class="mock reveal" aria-label="Ejemplo de reseñas de Google con y sin respuesta">
-        <span class="badge">Ejemplo</span>
-        <div class="review">
-          <div class="review-head">
-            <div class="avatar" style="background:#7A9E7E">L</div>
-            <div><div class="who">Laura M.</div><div class="when">hace 2 días</div></div>
-          </div>
-          <div class="stars" aria-label="5 estrellas">★★★★★</div>
-          <p>Muy buen trato desde que entras. Te explican todo con calma y se nota que les importa.</p>
-          <div class="reply"><b>Respuesta del propietario</b>¡Muchas gracias, Laura! Que el buen trato se note desde la recepción es algo que cuidamos mucho. Se lo haremos llegar a todo el equipo.</div>
+
+      <div class="flow reveal" aria-label="Ejemplo de automatización de citas">
+        <div class="flow-title"><span>Ejemplo · Flujo de citas</span><span class="live">Activo 24 h</span></div>
+        <div class="node">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#5EE0C4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></div>
+          <div><b>Llega un WhatsApp a las 23:07</b><span>«¿Tenéis hueco el jueves?»</span></div>
         </div>
-        <div class="review">
-          <div class="review-head">
-            <div class="avatar" style="background:#C2643F">J</div>
-            <div><div class="who">Javier R.</div><div class="when">hace 3 semanas</div></div>
-          </div>
-          <div class="stars" aria-label="2 estrellas">★★<span style="color:#D9D1C5">★★★</span></div>
-          <p>Tuve que esperar bastante aunque tenía cita.</p>
-          <div class="pending">Sin respuesta desde hace 3 semanas</div>
+        <div class="node">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#A8C7A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg></div>
+          <div><b>El asistente responde</b><span>Con tus horarios y precios reales</span></div>
+          <span class="ok">✓ 4 s</span>
+        </div>
+        <div class="node">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#C9B58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div>
+          <div><b>Cita en tu calendario</b><span>Jueves, 10:30</span></div>
+          <span class="ok">✓ hecho</span>
+        </div>
+        <div class="node">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#F2A26B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+          <div><b>Recordatorio 24 h antes</b><span>Y después, le pide una reseña</span></div>
+          <span class="ok">✓ programado</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Problema -->
+  <!-- Dolores -->
   <section class="alt">
     <div class="wrap">
-      <span class="eyebrow">Por qué importa</span>
-      <h2>Tu clínica ya tiene una sala de espera digital.</h2>
-      <p class="lead">La mayoría de los pacientes nuevos te conocen primero en Google. Lo que encuentran ahí decide si llaman o pasan a la siguiente.</p>
-      <div class="points">
-        <div class="point reveal">
-          <div class="num">01</div>
-          <h3>Reseñas sin respuesta</h3>
-          <p>Una crítica sin contestar parece desinterés, y un elogio sin agradecer, frialdad. Quien duda entre dos clínicas lo nota.</p>
+      <span class="eyebrow">¿Te suena?</span>
+      <h2>Las horas se te van en tareas que una máquina haría sola.</h2>
+      <div class="pains">
+        <div class="pain reveal">
+          <div class="q">«Contesto lo mismo veinte veces al día.»</div>
+          <p>Horarios, precios, si tienes hueco… Cada mensaje te interrumpe, y si tardas en contestar el cliente se va a otro sitio.</p>
         </div>
-        <div class="point reveal">
-          <div class="num">02</div>
-          <h3>Una web que no ayuda</h3>
-          <p>Lenta, desactualizada o sin un botón claro para pedir cita. El paciente busca el teléfono y no lo encuentra en el móvil.</p>
+        <div class="pain reveal">
+          <div class="q">«Se me olvidan los recordatorios.»</div>
+          <p>Citas a las que no viene nadie, presupuestos sin seguimiento y clientes que no vuelven porque nadie les escribió.</p>
         </div>
-        <div class="point reveal">
-          <div class="num">03</div>
-          <h3>Preguntas fuera de horario</h3>
-          <p>Precios, horarios, si tratáis su lesión… Si nadie contesta a las diez de la noche, mañana ya habrá pedido cita en otro sitio.</p>
+        <div class="pain reveal">
+          <div class="q">«Mi web no me trae clientes.»</div>
+          <p>Lenta, antigua o sin un botón claro para contactar. Y en Google, reseñas sin contestar que espantan a quien duda.</p>
         </div>
       </div>
     </div>
@@ -242,121 +263,138 @@
   <section id="servicios">
     <div class="wrap">
       <span class="eyebrow">Servicios</span>
-      <h2>Tres formas de cuidar tu antesala.</h2>
-      <p class="lead">Empieza por lo que más te urge. Te recomendamos empezar por las reseñas: es lo más rápido y el resultado se ve en Google desde la primera semana.</p>
+      <h2>Cuatro piezas que encajan entre sí.</h2>
+      <p class="lead">Puedes contratar solo una. Pero donde mejor funcionan es juntas: la web capta, el asistente atiende, las automatizaciones hacen el seguimiento y las reseñas te traen al siguiente cliente.</p>
       <div class="services">
         <article class="service reveal">
-          <span class="tag">Para empezar</span>
-          <div class="icon" style="background:var(--accent-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#C2643F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></div>
-          <h3>Reseñas al día</h3>
-          <p>Respondemos todas tus reseñas de Google, las buenas y las malas, con el tono de tu clínica y sin romper el secreto profesional.</p>
+          <span class="tag">El corazón</span>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5EE0C4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.5 6h9M6.2 8.2l4.6 7.6M17.8 8.2l-4.6 7.6"/></svg></div>
+          <h3>Automatización de procesos</h3>
+          <p>Conectamos las herramientas que ya usas (correo, calendario, WhatsApp, hojas de cálculo, tu programa de gestión) para que las tareas repetitivas se hagan solas.</p>
           <ul>
-            <li>Respuesta en 48 horas a cada reseña nueva</li>
-            <li>Las críticas se llevan a un canal privado</li>
-            <li>Te avisamos si una reseña necesita que intervengas</li>
-            <li>Resumen mensual de lo que dicen tus pacientes</li>
+            <li>Recordatorios de citas y seguimiento de presupuestos</li>
+            <li>Formularios y contactos que llegan ordenados</li>
+            <li>Facturas, informes y resúmenes automáticos</li>
           </ul>
-          <div class="price"><b>29 €</b> /mes · puesta al día de las atrasadas, 49 € una vez<br><span class="small">Primer mes gratis para las 3 primeras clínicas.</span></div>
+          <div class="price">desde <b>190 €</b> por automatización · mantenimiento opcional</div>
         </article>
         <article class="service reveal">
-          <div class="icon" style="background:var(--green-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#2F5D58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg></div>
-          <h3>Web para tu clínica</h3>
-          <p>Una web rápida y clara, pensada para el móvil, que lleva al paciente a lo importante: saber qué tratáis y pedir cita.</p>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#A8C7A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div>
+          <h3>Asistente con IA</h3>
+          <p>Un asistente en tu web o en WhatsApp que responde a cualquier hora con la información que tú apruebas y te pasa los contactos interesados.</p>
           <ul>
-            <li>Servicios, equipo, precios y ubicación</li>
+            <li>Responde dudas frecuentes en segundos</li>
+            <li>Recoge el contacto y te avisa</li>
+            <li>Sin consejos que no le correspondan: deriva a una persona</li>
+          </ul>
+          <div class="price">desde <b>39 €</b>/mes · te enseñamos una demo antes</div>
+        </article>
+        <article class="service reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#C9B58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg></div>
+          <h3>Webs que consiguen clientes</h3>
+          <p>Rápidas, claras y pensadas para el móvil. Con lo que de verdad hace que alguien te contacte: qué haces, precios, reseñas y un botón visible.</p>
+          <ul>
+            <li>Diseño a medida, lista en unas dos semanas</li>
             <li>Botones de llamar, WhatsApp y pedir cita</li>
-            <li>Tus mejores reseñas, a la vista</li>
-            <li>Lista en unas dos semanas</li>
+            <li>Conectada a tus automatizaciones</li>
           </ul>
-          <div class="price">desde <b>390 €</b> · mantenimiento 15&nbsp;€/mes<br><span class="small">Incluye los cambios de textos y horarios que necesites.</span></div>
+          <div class="price">desde <b>390 €</b> · mantenimiento 15&nbsp;€/mes</div>
         </article>
         <article class="service reveal">
-          <div class="icon" style="background:#EDE6F3"><svg viewBox="0 0 24 24" fill="none" stroke="#6B4E8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg></div>
-          <h3>Asistente 24 horas</h3>
-          <p>Un asistente en tu web que contesta las dudas frecuentes a cualquier hora y deja el contacto del paciente para que le llaméis.</p>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#F2A26B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></div>
+          <h3>Reseñas de Google al día</h3>
+          <p>Respondemos todas tus reseñas con el tono de tu negocio y, si es una clínica, sin romper el secreto profesional.</p>
           <ul>
-            <li>Responde con la información que tú apruebas</li>
-            <li>No da consejos médicos ni pide datos de salud</li>
-            <li>Te avisa por correo de cada paciente interesado</li>
-            <li>Lo configuramos y lo revisamos contigo</li>
+            <li>Respuesta a cada reseña nueva en 48 horas</li>
+            <li>Las críticas se llevan a un canal privado</li>
+            <li>Sin darnos tu contraseña: acceso de gestor</li>
           </ul>
-          <div class="price">desde <b>39 €</b> /mes<br><span class="small">Te enseñamos una demo con los datos de tu clínica antes de contratar.</span></div>
+          <div class="price"><b>29 €</b>/mes · primer mes gratis para 3 negocios</div>
         </article>
+      </div>
+      <p class="small" style="margin-top:18px">Precios orientativos. Tras el diagnóstico te damos un precio cerrado.</p>
+    </div>
+  </section>
+
+  <!-- Ejemplos -->
+  <section id="ejemplos" class="alt">
+    <div class="wrap">
+      <span class="eyebrow">Ejemplos de automatizaciones</span>
+      <h2>Cosas que podemos dejar funcionando esta semana.</h2>
+      <div class="examples">
+        <div class="ex reveal"><div class="dot"></div><div><b>Recordatorio de cita</b><span>WhatsApp o correo 24 h antes, con opción de cambiar la hora.</span></div></div>
+        <div class="ex reveal"><div class="dot"></div><div><b>Pedir reseña tras la visita</b><span>Un mensaje amable al día siguiente con el enlace directo a Google.</span></div></div>
+        <div class="ex reveal"><div class="dot"></div><div><b>Contactos ordenados</b><span>Cada formulario de la web llega a una hoja y te avisa por correo.</span></div></div>
+        <div class="ex reveal"><div class="dot"></div><div><b>Seguimiento de presupuestos</b><span>Si a los 3 días no han respondido, sale un recordatorio solo.</span></div></div>
+        <div class="ex reveal"><div class="dot"></div><div><b>Resumen diario</b><span>A las 8:00, en tu correo: citas del día, mensajes pendientes y reseñas nuevas.</span></div></div>
+        <div class="ex reveal"><div class="dot"></div><div><b>Facturas sin teclear</b><span>Los datos de la cita pasan a la factura y se archivan donde tú digas.</span></div></div>
       </div>
     </div>
   </section>
 
-  <!-- Secreto profesional -->
-  <section id="secreto" class="alt">
-    <div class="wrap secret">
+  <!-- Clínicas -->
+  <section id="clinicas">
+    <div class="wrap two">
       <div>
-        <span class="eyebrow">Lo que nos diferencia</span>
-        <h2>Responder bien en sanidad tiene sus reglas.</h2>
-        <p class="lead">Una clínica no puede contestar como un restaurante. Confirmar que alguien es paciente o mencionar su tratamiento en público puede vulnerar el secreto profesional y la protección de datos, aunque sea para dar las gracias.</p>
-        <p>Por eso cada respuesta de Antesala sigue cuatro reglas: no confirma que la persona es paciente, no nombra al profesional que la atendió, no repite diagnósticos ni zonas del cuerpo, y lleva las críticas a un canal privado.</p>
-        <p><a href="https://c4rr0.github.io/resenas/">Lee la guía completa: cómo responder reseñas en una clínica →</a></p>
+        <span class="eyebrow">Especialistas en clínicas</span>
+        <h2>En salud, automatizar tiene sus reglas.</h2>
+        <p class="lead">Trabajamos con todo tipo de pymes, pero conocemos bien las clínicas de fisioterapia y salud. Allí un mensaje automático o una respuesta a una reseña no pueden confirmar que alguien es paciente ni mencionar su tratamiento.</p>
+        <p>Por eso diseñamos cada mensaje y cada respuesta para no romper el secreto profesional, y usamos solo los datos imprescindibles.</p>
+        <p><a href="https://c4rr0.github.io/resenas/">Lee nuestra guía: cómo responder reseñas en una clínica →</a></p>
       </div>
       <div class="compare reveal">
         <div class="bad"><b>Así no</b>«Gracias, Marta. Nos alegra que tu lumbalgia haya mejorado con las sesiones de Pablo.»</div>
         <div class="good"><b>Así sí</b>«¡Muchas gracias, Marta! Nos alegra mucho leer tu mensaje; se lo haremos llegar a todo el equipo.»</div>
-        <div class="bad"><b>Así no</b>«Revisando tu historial, acudiste solo a dos sesiones y no seguiste las pautas.»</div>
-        <div class="good"><b>Así sí</b>«Sentimos que tu experiencia no haya sido la que esperabas. Escríbenos a nuestro correo y lo hablamos con calma en privado.»</div>
+        <div class="bad"><b>Así no</b>«Recordatorio: mañana a las 10:00, sesión de suelo pélvico con Laura.»</div>
+        <div class="good"><b>Así sí</b>«Recordatorio: tienes cita mañana a las 10:00. Si no puedes venir, responde a este mensaje.»</div>
         <p class="small">Ejemplos inventados para ilustrar las reglas.</p>
       </div>
     </div>
   </section>
 
   <!-- Cómo trabajamos -->
-  <section id="como">
+  <section id="como" class="alt">
     <div class="wrap">
       <span class="eyebrow">Cómo trabajamos</span>
-      <h2>Empezar te lleva diez minutos.</h2>
+      <h2>De la idea a funcionando, sin líos.</h2>
       <div class="steps">
-        <div class="step reveal">
-          <h3>Hablamos</h3>
-          <p>Una llamada corta para conocer tu clínica, tu tono y qué te preocupa más: las reseñas, la web o las consultas fuera de horario.</p>
-        </div>
-        <div class="step reveal">
-          <h3>Nos das acceso de gestor</h3>
-          <p>Desde tu ficha de Google nos añades como gestor. Nunca necesitamos tu contraseña, y puedes quitarnos el acceso cuando quieras.</p>
-        </div>
-        <div class="step reveal">
-          <h3>Nos encargamos</h3>
-          <p>Ponemos al día lo atrasado y respondemos lo nuevo. Cada mes te mandamos un resumen. Si algo necesita tu decisión, te avisamos.</p>
-        </div>
+        <div class="step reveal"><h3>Diagnóstico gratis</h3><p>30 minutos para entender tu negocio y detectar las 3 tareas que más tiempo te quitan.</p></div>
+        <div class="step reveal"><h3>Propuesta cerrada</h3><p>Te decimos qué haríamos, cuánto cuesta y cuánto tiempo te ahorra. Sin letra pequeña.</p></div>
+        <div class="step reveal"><h3>Lo montamos</h3><p>Lo construimos, lo probamos contigo con casos reales y te enseñamos a usarlo.</p></div>
+        <div class="step reveal"><h3>Lo cuidamos</h3><p>Si algo cambia o falla, lo arreglamos. Y cada mes te contamos qué ha hecho por ti.</p></div>
       </div>
     </div>
   </section>
 
   <!-- Preguntas -->
-  <section id="preguntas" class="alt">
+  <section id="preguntas">
     <div class="wrap">
       <span class="eyebrow">Preguntas frecuentes</span>
       <h2>Lo que suelen preguntarnos.</h2>
       <div class="faq">
         <details>
-          <summary>¿Tengo que darte la contraseña de Google?</summary>
-          <p>No. Google permite añadir gestores a la ficha de tu negocio. Nos añades con nuestro correo, trabajamos con ese acceso y puedes retirarlo en cualquier momento desde tu cuenta.</p>
+          <summary>¿Tengo que saber de tecnología?</summary>
+          <p>No. Tú nos cuentas cómo trabajas y nosotros nos encargamos de todo. Al final te enseñamos lo poco que necesitas saber, en lenguaje normal.</p>
+        </details>
+        <details>
+          <summary>¿Qué herramientas usáis?</summary>
+          <p>Siempre que se puede, las que ya usas: tu correo, Google Calendar, hojas de cálculo, WhatsApp Business o tu programa de gestión. Para conectarlas usamos herramientas de automatización estándar e IA cuando aporta.</p>
         </details>
         <details>
           <summary>¿Hay permanencia?</summary>
-          <p>No. Pagas mes a mes y lo dejas cuando quieras. El primer mes de «Reseñas al día» es gratis para las tres primeras clínicas, a cambio de tu opinión sincera sobre el servicio.</p>
+          <p>No. Las automatizaciones y la web son tuyas una vez pagadas. Los servicios mensuales (asistente, mantenimiento, reseñas) se pagan mes a mes y los dejas cuando quieras.</p>
         </details>
         <details>
-          <summary>¿Quién escribe las respuestas?</summary>
-          <p>Las redactamos nosotros, con apoyo de herramientas de IA, siguiendo el tono de tu clínica y las reglas del secreto profesional. Si una reseña es delicada, te la consultamos antes de publicar nada.</p>
+          <summary>¿Qué pasa con los datos de mis clientes?</summary>
+          <p>Usamos solo los datos imprescindibles para cada tarea y te explicamos dónde se guardan. En clínicas, ningún mensaje automático menciona tratamientos ni datos de salud.</p>
         </details>
         <details>
-          <summary>¿Qué hacéis con una reseña negativa?</summary>
-          <p>Contestamos con educación, sin discutir ni dar datos del paciente, e invitamos a hablarlo en privado. Si la reseña es falsa o incumple las normas de Google, te ayudamos a solicitar su retirada.</p>
+          <summary>¿El asistente puede equivocarse?</summary>
+          <p>Por eso solo responde con la información que tú apruebas y, ante cualquier duda que no sepa resolver, pasa la conversación a una persona. Lo revisamos contigo antes de activarlo.</p>
         </details>
         <details>
-          <summary>¿El asistente puede dar consejos de salud?</summary>
-          <p>No. Solo responde con la información que tú apruebas (servicios, horarios, precios, cómo llegar) y, ante cualquier duda clínica, invita a llamar o a pedir cita. No pide ni guarda datos de salud.</p>
-        </details>
-        <details>
-          <summary>¿Trabajáis solo con fisioterapia?</summary>
-          <p>Empezamos por clínicas de fisioterapia, pero trabajamos con cualquier consulta de salud: osteopatía, podología, psicología, nutrición, clínicas dentales…</p>
+          <summary>¿Con qué negocios trabajáis?</summary>
+          <p>Pymes y profesionales: clínicas de fisioterapia y salud, centros de estética, academias, talleres, comercios, restaurantes… Si repites tareas cada día, seguramente podamos ayudarte.</p>
         </details>
       </div>
     </div>
@@ -367,15 +405,17 @@
     <div class="wrap">
       <div class="cta reveal">
         <div>
-          <h2>¿Echamos un vistazo a tu antesala?</h2>
-          <p>Escríbenos con el nombre de tu clínica y te mandamos, gratis y sin compromiso, dos respuestas listas para pegar a tus últimas reseñas. Si te convence, hablamos.</p>
-          <a class="btn btn-primary" href="mailto:sergiocarrovadillo@gmail.com?subject=Antesala%3A%20quiero%20mis%202%20respuestas%20gratis">Quiero mis 2 respuestas gratis</a>
+          <span class="eyebrow">Diagnóstico gratis</span>
+          <h2>¿Qué haría tu negocio si funcionara solo?</h2>
+          <p>Escríbenos con a qué te dedicas y qué tarea te quita más tiempo. Te contestamos con 2 o 3 ideas concretas para automatizarla, gratis y sin compromiso.</p>
+          <a class="btn btn-primary" href="mailto:sergiocarrovadillo@gmail.com?subject=Engrana%3A%20quiero%20mi%20diagn%C3%B3stico%20gratis">Quiero mi diagnóstico</a>
         </div>
         <div class="contact-card">
-          <p style="margin-bottom:.3em">Te atiende</p>
-          <p style="font-family:Fraunces,Georgia,serif;font-size:1.4rem;color:#fff;margin-bottom:.6em">Sergio Carro</p>
-          <p style="margin:0"><a href="mailto:sergiocarrovadillo@gmail.com">sergiocarrovadillo@gmail.com</a></p>
-          <p class="small" style="color:#C9DAD6;margin:.8em 0 0">Te contestamos en uno o dos días laborables.</p>
+          <p class="small" style="margin-bottom:.3em">Te atiende</p>
+          <p style="font-family:Manrope,sans-serif;font-weight:800;font-size:1.4rem;margin-bottom:.6em">Sergio Carro</p>
+          <p style="margin:0 0 .5em"><a href="mailto:sergiocarrovadillo@gmail.com">sergiocarrovadillo@gmail.com</a></p>
+          <p style="margin:0"><a href="https://www.instagram.com/engrana.ia/">Instagram · @engrana.ia</a></p>
+          <p class="small" style="margin:.8em 0 0">Te contestamos en uno o dos días laborables.</p>
         </div>
       </div>
     </div>
@@ -384,17 +424,14 @@
 
 <footer>
   <div class="wrap foot">
-    <span>© 2026 Antesala · Sergio Carro Vadillo · <a href="mailto:sergiocarrovadillo@gmail.com">sergiocarrovadillo@gmail.com</a></span>
+    <span>© 2026 Engrana · Sergio Carro Vadillo · <a href="mailto:sergiocarrovadillo@gmail.com">sergiocarrovadillo@gmail.com</a></span>
     <span>Esta web no usa cookies ni recoge datos.</span>
   </div>
 </footer>
 
 <script>
-  // Borde de la cabecera al hacer scroll
   const header = document.querySelector('header');
   addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 8), { passive: true });
-
-  // Aparición suave de los bloques
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: .12 });
