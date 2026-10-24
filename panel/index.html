@@ -303,7 +303,7 @@ async function consultar() {
   b.disabled = true; b.classList.add('cargando'); b.querySelector('.txt').textContent = 'Consultando…';
   try {
     const r = await fetch(api() + '/stats?site=' + encodeURIComponent(acceso.site) + '&days=' + periodo,
-      { headers: { Authorization: 'Bearer ' + acceso.key }, cache: 'no-store' });
+      { headers: { Authorization: 'Bearer ' + acceso.key }, cache: 'no-store', signal: AbortSignal.timeout ? AbortSignal.timeout(12000) : undefined });
     const datos = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error(datos.error || ('El servidor respondió ' + r.status));
     guardar(claveCache(), datos);
@@ -312,7 +312,7 @@ async function consultar() {
   } catch (e) {
     const viejo = leer(claveCache());
     if (viejo) pintar(viejo, false);
-    avisar('No se ha podido consultar: ' + (e.message === 'Failed to fetch' ? 'sin conexión con el contador.' : e.message.replace(/([^.])$/, '$1.'))
+    avisar('No se ha podido consultar: ' + (e.message === 'Failed to fetch' || e.name === 'AbortError' ? 'tu conexión no llega al contador. Si es día de partido, Movistar, Orange, Vodafone y DIGI bloquean direcciones de Cloudflare por orden de LaLiga; prueba después del partido o con los datos del móvil.' : e.message.replace(/([^.])$/, '$1.'))
       + (viejo ? ' Se muestran los datos de la última consulta.' : ''), true);
   } finally {
     b.disabled = false; b.classList.remove('cargando'); b.querySelector('.txt').textContent = 'Actualizar';
