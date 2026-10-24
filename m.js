@@ -6,11 +6,15 @@
   var site = s && s.getAttribute('data-site');
   var api = s && s.getAttribute('data-api');
   if (!site || !api || navigator.webdriver || location.protocol === 'file:') return;
+  if (/bot|crawl|spider|slurp|headless|lighthouse|preview/i.test(navigator.userAgent)) return;
+  // Google Apps Script recibe en la propia URL (/exec); el Worker de Cloudflare, en /h.
+  var destino = /\/exec$/.test(api) ? api : api + '/h';
+  var movil = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 1 : 0;
 
   function enviar(evento) {
-    var datos = JSON.stringify({ s: site, p: location.pathname, r: evento ? '' : document.referrer, e: evento || '' });
-    if (navigator.sendBeacon) navigator.sendBeacon(api + '/h', datos);
-    else fetch(api + '/h', { method: 'POST', body: datos, keepalive: true });
+    var datos = JSON.stringify({ s: site, p: location.pathname, r: evento ? '' : document.referrer, e: evento || '', m: movil });
+    if (navigator.sendBeacon) navigator.sendBeacon(destino, datos);
+    else fetch(destino, { method: 'POST', body: datos, keepalive: true, mode: 'no-cors' });
   }
 
   enviar();

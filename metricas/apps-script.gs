@@ -84,7 +84,8 @@ function doPost(e) {
       lock.releaseLock();
     }
   } catch (err) {
-    // Una visita mal formada no debe romper nada: se ignora.
+    // Una visita mal formada no debe romper nada: se ignora (queda en el registro de ejecuciones).
+    console.error(err);
   }
   return salida_({});
 }
@@ -101,7 +102,7 @@ function doGet(e) {
 
   const filas = ss.getSheetByName('hits').getDataRange().getValues().slice(1)
     .filter((r) => String(r[2]) === sitio.site)
-    .map((r) => ({ day: String(r[1]), kind: String(r[3]), path: String(r[4]).replace(/^'/, ''), ref: String(r[5]).replace(/^'/, ''), device: String(r[6]), n: Number(r[7]) || 0 }));
+    .map((r) => ({ day: r[1] instanceof Date ? Utilities.formatDate(r[1], TZ, 'yyyy-MM-dd') : String(r[1]), kind: String(r[3]), path: String(r[4]).replace(/^'/, ''), ref: String(r[5]).replace(/^'/, ''), device: String(r[6]), n: Number(r[7]) || 0 }));
 
   const enPeriodo = (a, b) => filas.filter((r) => r.day >= a && r.day <= b);
   const actual = enPeriodo(desde, hasta);
@@ -133,4 +134,11 @@ function doGet(e) {
     eventos: top(sumaPor(actual, 'kind', (r) => r.kind !== 'pv'), 'evento', 'veces'),
     anterior: totales(previo),
   });
+}
+
+// Borra las visitas de prueba (rutas que empiezan por /prueba).
+function limpiar() {
+  const hits = libro_().getSheetByName('hits');
+  const filas = hits.getDataRange().getValues();
+  for (let i = filas.length - 1; i >= 1; i--) if (String(filas[i][4]).indexOf('/prueba') === 0) hits.deleteRow(i + 1);
 }
