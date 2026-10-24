@@ -595,7 +595,11 @@ addEventListener('resize', () => {
   const w = $('g-barras').clientWidth;
   if (actual && Math.abs(w - anchoPrevio) > 30) { anchoPrevio = w; pintar(actual, esEjemploActual); }
 });
-mostrarGuardado();
+// Al abrir el panel se consulta una vez (enseñando antes lo guardado); después, solo con «Actualizar» o el periodo.
+marcarPeriodo();
+const alAbrir = leer(claveCache());
+if (alAbrir) pintar(alAbrir, false);
+consultar();
 </script>
 </body>
 </html>
