@@ -5,165 +5,262 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Panel de métricas · Engrana</title>
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#0B1217">
+<meta name="theme-color" content="#22253D">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  /* Neumorfismo oscuro: superficie única en relieve, acentos cian y magenta con brillo. */
   :root {
-    --bg: #0B1217; --card: #131F27; --card-2: #182630; --line: #22323D;
-    --ink: #EAF1F0; --muted: #93A4AA; --teal: #5EE0C4; --orange: #F2A26B;
-    --ok: #5EE0C4; --bad: #F08A7E;
-    --grad: linear-gradient(120deg, #5EE0C4 0%, #A8C7A0 50%, #F2A26B 100%);
-    --radius: 16px;
+    --bg: #22253D;
+    --hi: #2C3050;           /* luz de las sombras */
+    --lo: #171930;           /* sombra */
+    --ink: #E7E9F7;
+    --muted: #8B90B5;
+    --cian: #26E0FF;
+    --magenta: #FF3F86;
+    --violeta: #7C6BFF;
+    --ok: #3FE0B0;
+    --bad: #FF6B8E;
+    --relieve: 7px 7px 16px var(--lo), -6px -6px 14px var(--hi);
+    --hundido: inset 4px 4px 9px var(--lo), inset -4px -4px 9px var(--hi);
+    --r: 20px;
+    --display: Sora, "DM Sans", system-ui, sans-serif;
+    --texto: "DM Sans", system-ui, "Segoe UI", sans-serif;
+    color-scheme: dark;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.55 Inter, system-ui, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); }
-  header { border-bottom: 1px solid var(--line); }
-  header .wrap { display: flex; align-items: center; gap: 14px; min-height: 60px; flex-wrap: wrap; padding-block: 8px; }
-  .brand { display: flex; align-items: center; gap: .5em; font: 800 1.1rem Manrope, Inter, sans-serif; color: var(--ink); text-decoration: none; }
-  .brand img { width: 26px; height: 26px; }
-  .brand span { color: var(--muted); font-weight: 700; }
-  .controles { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  select, .btn { font: 600 .9rem Inter, sans-serif; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: .55em .8em; }
-  .btn { cursor: pointer; display: inline-flex; align-items: center; gap: .45em; }
-  .btn-primary { background: var(--grad); color: #0B1217; border: 0; }
-  .btn:disabled { opacity: .6; cursor: progress; }
-  .btn:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
-  .giro { width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; display: none; }
-  .cargando .giro { display: inline-block; animation: g .8s linear infinite; }
-  @keyframes g { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { .cargando .giro { animation: none; } }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--texto); -webkit-font-smoothing: antialiased; }
+  button, select, input { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--cian); outline-offset: 3px; }
 
-  main { padding-block: 26px 48px; display: grid; gap: 18px; }
-  .titulo { display: flex; align-items: baseline; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap; }
-  h1 { font: 800 clamp(1.5rem, 3.4vw, 2.1rem)/1.15 Manrope, Inter, sans-serif; letter-spacing: -.02em; margin: 0; text-wrap: balance; }
-  .estado { color: var(--muted); font-size: .88rem; font-variant-numeric: tabular-nums; }
-  .aviso { border: 1px solid rgba(242,162,107,.45); background: rgba(242,162,107,.08); border-radius: 12px; padding: 10px 14px; font-size: .9rem; }
-  .aviso.error { border-color: rgba(240,138,126,.5); background: rgba(240,138,126,.08); }
-  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 14px; }
-  .kpi, .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; min-width: 0; }
-  .kpi .et { color: var(--muted); font-size: .82rem; font-weight: 500; }
-  .kpi .num { font: 800 2.1rem/1.1 Manrope, Inter, sans-serif; letter-spacing: -.02em; margin: 4px 0 2px; font-variant-numeric: tabular-nums; }
-  .kpi .delta { font-size: .82rem; font-variant-numeric: tabular-nums; color: var(--muted); }
+  .app { display: grid; grid-template-columns: 230px minmax(0, 1fr); min-height: 100vh; }
+  /* Menú lateral */
+  .lateral { padding: 26px 18px; display: flex; flex-direction: column; gap: 26px; position: sticky; top: 0; height: 100vh; }
+  .marca { display: flex; align-items: center; gap: 12px; font: 700 1.15rem var(--display); color: var(--ink); text-decoration: none; }
+  .marca .logo { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; box-shadow: var(--relieve); }
+  .marca .logo img { width: 26px; height: 26px; }
+  .menu { display: grid; gap: 12px; }
+  .menu a { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 12px; color: var(--muted); text-decoration: none; font-weight: 500; box-shadow: var(--relieve); transition: color .2s, background .2s; }
+  .menu a svg { width: 18px; height: 18px; flex: none; }
+  .menu a:hover { color: var(--ink); }
+  .menu a.activo { background: linear-gradient(120deg, #1FC8F0, var(--cian)); color: #10213A; box-shadow: 0 6px 20px rgba(38,224,255,.35); }
+  .acceso { margin-top: auto; display: grid; gap: 10px; }
+  .acceso .et { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .acceso input { width: 100%; border: 0; border-radius: 10px; padding: 9px 12px; background: var(--bg); box-shadow: var(--hundido); }
+  .acceso input::placeholder { color: #61668D; }
+  .acceso p { margin: 0; font-size: .76rem; color: var(--muted); }
+
+  /* Barra superior */
+  .contenido { padding: 22px 26px 40px; min-width: 0; display: grid; gap: 24px; align-content: start; }
+  .barra { display: flex; align-items: center; gap: 14px 18px; flex-wrap: wrap; }
+  .barra h1 { font: 700 clamp(1.35rem, 2.6vw, 1.75rem)/1.2 var(--display); margin: 0; letter-spacing: -.01em; }
+  .barra .estado { color: var(--muted); font-size: .86rem; font-variant-numeric: tabular-nums; }
+  .barra .acciones { margin-left: auto; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .periodo { display: flex; padding: 5px; border-radius: 14px; box-shadow: var(--hundido); }
+  .periodo button { border: 0; background: none; padding: 7px 13px; border-radius: 10px; color: var(--muted); cursor: pointer; font-weight: 600; font-size: .86rem; }
+  .periodo button[aria-pressed="true"] { color: var(--ink); background: var(--bg); box-shadow: 3px 3px 8px var(--lo), -3px -3px 8px var(--hi); }
+  .actualizar { border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 9px; padding: 11px 20px; border-radius: 14px; font-weight: 700; color: #10213A; background: linear-gradient(120deg, #1FC8F0, var(--cian)); box-shadow: 0 8px 24px rgba(38,224,255,.35), var(--relieve); }
+  .actualizar svg { width: 17px; height: 17px; }
+  .actualizar:disabled { opacity: .7; cursor: progress; }
+  .cargando svg { animation: giro .9s linear infinite; }
+  @keyframes giro { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .cargando svg { animation: none; } }
+  .aviso { border-radius: 14px; padding: 12px 16px; font-size: .9rem; box-shadow: var(--hundido); border-left: 3px solid var(--cian); }
+  .aviso.error { border-left-color: var(--magenta); }
+
+  /* Tarjetas */
+  .rejilla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .tarjeta { background: var(--bg); border-radius: var(--r); box-shadow: var(--relieve); padding: 20px 22px; min-width: 0; }
+  .doble { grid-column: span 2; }
+  .tarjeta h2 { font: 600 1rem var(--display); margin: 0; }
+  .tarjeta .nota { color: var(--muted); font-size: .8rem; margin: 3px 0 14px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .kpi { display: flex; gap: 14px; align-items: center; }
+  .kpi .ic { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; box-shadow: var(--hundido); flex: none; }
+  .kpi .ic svg { width: 22px; height: 22px; }
+  .kpi .et { color: var(--muted); font-size: .8rem; }
+  .kpi .num { font: 700 1.75rem/1.1 var(--display); font-variant-numeric: tabular-nums; }
+  .kpi .delta { font-size: .76rem; color: var(--muted); font-variant-numeric: tabular-nums; }
   .delta.sube { color: var(--ok); } .delta.baja { color: var(--bad); }
-  .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 14px; }
-  .card h2 { font: 700 1rem Manrope, Inter, sans-serif; margin: 0 0 2px; }
-  .card .nota { color: var(--muted); font-size: .82rem; margin: 0 0 12px; }
-  .grafico { position: relative; min-height: 190px; }
-  .grafico svg { display: block; width: 100%; height: 190px; overflow: visible; }
-  .tip { position: absolute; pointer-events: none; background: var(--card-2); border: 1px solid var(--line); border-radius: 8px; padding: 4px 8px; font-size: .8rem; white-space: nowrap; transform: translate(-50%, -100%); }
-  .lista { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
-  .lista li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; font-size: .9rem; }
-  .lista .nom { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .lista .val { font-variant-numeric: tabular-nums; color: var(--muted); }
-  .barra { grid-column: 1 / -1; height: 6px; border-radius: 4px; background: var(--card-2); overflow: hidden; }
-  .barra i { display: block; height: 100%; border-radius: 4px; background: var(--grad); }
-  .vacio { color: var(--muted); font-size: .9rem; }
-  .split { display: flex; height: 14px; border-radius: 8px; overflow: hidden; background: var(--card-2); margin: 6px 0 10px; }
-  .split i:first-child { background: var(--teal); } .split i:last-child { background: var(--orange); }
-  .leyenda { display: flex; gap: 16px; flex-wrap: wrap; font-size: .88rem; }
-  .leyenda b { font-variant-numeric: tabular-nums; }
-  .punto { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; }
-  details { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 18px; }
-  summary { cursor: pointer; font-weight: 600; }
-  .acceso { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); margin-top: 12px; }
-  .acceso label { display: grid; gap: 4px; font-size: .82rem; color: var(--muted); }
-  .acceso input { font: 500 .9rem Inter, sans-serif; padding: .55em .7em; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); min-width: 0; }
-  footer { color: var(--muted); font-size: .82rem; padding-bottom: 30px; }
+
+  .grafico { position: relative; min-height: 220px; }
+  .grafico svg { display: block; width: 100%; overflow: visible; }
+  .tip { position: absolute; pointer-events: none; background: #2B2F4F; border-radius: 10px; padding: 6px 10px; font-size: .78rem; white-space: nowrap; transform: translate(-50%, calc(-100% - 10px)); box-shadow: 4px 4px 12px var(--lo); }
+  .tip b { font: 600 .95rem var(--display); display: block; }
+
+  .anillos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: center; }
+  .anillo { display: grid; justify-items: center; gap: 8px; }
+  .anillo .disco { width: 120px; height: 120px; border-radius: 50%; box-shadow: var(--relieve); display: grid; place-items: center; position: relative; }
+  .anillo svg { width: 120px; height: 120px; position: absolute; inset: 0; overflow: visible; }
+  .anillo .valor { font: 700 1.45rem var(--display); font-variant-numeric: tabular-nums; position: relative; }
+  .anillo .pie { font-size: .8rem; color: var(--muted); max-width: 12em; }
+
+  .deslizadores { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
+  .deslizadores li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 7px 10px; font-size: .88rem; }
+  .deslizadores .nom { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .deslizadores .val { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .pista { grid-column: 1 / -1; height: 8px; border-radius: 6px; box-shadow: var(--hundido); position: relative; }
+  .pista i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; }
+  .pista i::after { content: ""; position: absolute; right: -7px; top: 50%; width: 15px; height: 15px; border-radius: 50%; transform: translateY(-50%); background: inherit; box-shadow: 0 0 0 3px var(--bg), 0 0 12px currentColor; }
+
+  .acciones-lista { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+  .acciones-lista li { display: flex; align-items: center; gap: 12px; font-size: .88rem; }
+  .acciones-lista .ic { width: 38px; height: 38px; border-radius: 12px; box-shadow: var(--relieve); display: grid; place-items: center; flex: none; }
+  .acciones-lista .ic svg { width: 17px; height: 17px; }
+  .acciones-lista .nom { flex: 1; min-width: 0; }
+  .acciones-lista .val { font: 600 1rem var(--display); font-variant-numeric: tabular-nums; }
+
+  .donut { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
+  .donut .disco { width: 130px; height: 130px; border-radius: 50%; box-shadow: var(--relieve); position: relative; display: grid; place-items: center; }
+  .donut svg { position: absolute; inset: 0; width: 130px; height: 130px; }
+  .donut .centro { width: 70px; height: 70px; border-radius: 50%; box-shadow: var(--hundido); display: grid; place-items: center; font-size: .72rem; color: var(--muted); text-align: center; line-height: 1.2; position: relative; }
+  .leyenda { display: grid; gap: 10px; font-size: .88rem; }
+  .leyenda b { font: 700 1.1rem var(--display); font-variant-numeric: tabular-nums; margin-right: 6px; }
+  .punto { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+  .vacio { color: var(--muted); font-size: .88rem; }
+  .pie-pagina { color: var(--muted); font-size: .78rem; }
+
+  @media (max-width: 1100px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 980px) {
+    .rejilla { grid-template-columns: minmax(0, 1fr); }
+    .doble { grid-column: auto; }
+  }
+  @media (max-width: 760px) {
+    .app { grid-template-columns: minmax(0, 1fr); row-gap: 16px; }
+    .lateral { display: contents; }
+    .marca { order: 1; margin: 18px max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); }
+    .menu { order: 2; margin: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .contenido { order: 3; }
+    .menu a { justify-content: center; padding: 10px 6px; font-size: .78rem; flex-direction: column; gap: 4px; }
+    .acceso { order: 4; margin: -12px max(16px, env(safe-area-inset-right, 0px)) 32px max(16px, env(safe-area-inset-left, 0px)); }
+    .contenido { padding: 18px max(16px, env(safe-area-inset-right, 0px)) 32px max(16px, env(safe-area-inset-left, 0px)); gap: 20px; }
+    .kpis { gap: 16px; }
+    .kpi { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .kpi .num { font-size: 1.45rem; }
+    .barra .acciones { margin-left: 0; width: 100%; justify-content: space-between; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <a class="brand" href="../"><img src="../logo.svg" alt="">Engrana <span>· Métricas</span></a>
-    <div class="controles">
-      <select id="periodo" aria-label="Periodo">
-        <option value="7">Últimos 7 días</option>
-        <option value="30" selected>Últimos 30 días</option>
-        <option value="90">Últimos 90 días</option>
-      </select>
-      <button class="btn btn-primary" id="actualizar" type="button"><span class="giro"></span><span class="txt">Actualizar</span></button>
+<div class="app">
+  <aside class="lateral">
+    <a class="marca" href="../"><span class="logo"><img src="../logo.svg" alt=""></span>Engrana</a>
+    <nav class="menu" aria-label="Secciones">
+      <a href="#resumen" class="activo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12l9-8 9 8M5 10v10h14V10"/></svg>Resumen</a>
+      <a href="#trafico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Tráfico</a>
+      <a href="#origen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>Origen</a>
+      <a href="#acciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l-4 9 4-2 4 2-1-6M14 3l7 7-6 2-3-3z"/></svg>Acciones</a>
+    </nav>
+    <div class="acceso" id="config">
+      <span class="et">Acceso</span>
+      <input id="c-site" placeholder="Sitio" autocomplete="off" spellcheck="false" aria-label="Sitio">
+      <input id="c-key" type="password" placeholder="Clave" autocomplete="off" spellcheck="false" aria-label="Clave">
+      <p>Se guarda solo en este navegador.</p>
     </div>
-  </div>
-</header>
+  </aside>
 
-<main class="wrap">
-  <div class="titulo">
-    <h1 id="titulo">Tu web</h1>
-    <span class="estado" id="estado">Sin consultar todavía</span>
-  </div>
-  <div class="aviso" id="aviso" hidden></div>
-
-  <section class="kpis" aria-label="Resumen">
-    <div class="kpi"><div class="et">Visitas</div><div class="num" id="k-visitas">—</div><div class="delta" id="d-visitas"></div></div>
-    <div class="kpi"><div class="et">Páginas vistas</div><div class="num" id="k-vistas">—</div><div class="delta" id="d-vistas"></div></div>
-    <div class="kpi"><div class="et">Acciones (contacto, demo…)</div><div class="num" id="k-acciones">—</div><div class="delta" id="d-acciones"></div></div>
-    <div class="kpi"><div class="et">Acciones por cada 100 visitas</div><div class="num" id="k-conv">—</div><div class="delta" id="d-conv"></div></div>
-  </section>
-
-  <section class="card" aria-labelledby="h-dia">
-    <h2 id="h-dia">Visitas por día</h2>
-    <p class="nota">Una visita es una entrada a la web desde fuera (Google, Instagram, un enlace…). Pasar de una página a otra no suma visitas.</p>
-    <div class="grafico" id="grafico"></div>
-  </section>
-
-  <div class="rejilla">
-    <section class="card" aria-labelledby="h-origen">
-      <h2 id="h-origen">De dónde llegan</h2>
-      <p class="nota">Visitas según la web desde la que entraron.</p>
-      <ul class="lista" id="origen"></ul>
-    </section>
-    <section class="card" aria-labelledby="h-acciones">
-      <h2 id="h-acciones">Qué hacen</h2>
-      <p class="nota">Clics en los botones que importan.</p>
-      <ul class="lista" id="acciones"></ul>
-    </section>
-    <section class="card" aria-labelledby="h-paginas">
-      <h2 id="h-paginas">Páginas más vistas</h2>
-      <p class="nota">Páginas vistas en el periodo.</p>
-      <ul class="lista" id="paginas"></ul>
-    </section>
-    <section class="card" aria-labelledby="h-disp">
-      <h2 id="h-disp">Móvil u ordenador</h2>
-      <p class="nota">Desde qué aparato entran las visitas.</p>
-      <div class="split" id="split"></div>
-      <div class="leyenda" id="leyenda"></div>
-    </section>
-  </div>
-
-  <details id="config">
-    <summary>Acceso al panel</summary>
-    <div class="acceso">
-      <label>Sitio<input id="c-site" autocomplete="off" spellcheck="false"></label>
-      <label>Clave<input id="c-key" type="password" autocomplete="off" spellcheck="false"></label>
+  <main class="contenido">
+    <div class="barra" id="resumen">
+      <div>
+        <h1 id="titulo">Tu web</h1>
+        <div class="estado" id="estado">Sin consultar todavía</div>
+      </div>
+      <div class="acciones">
+        <div class="periodo" role="group" aria-label="Periodo">
+          <button type="button" data-dias="7" aria-pressed="false">7 días</button>
+          <button type="button" data-dias="30" aria-pressed="true">30 días</button>
+          <button type="button" data-dias="90" aria-pressed="false">90 días</button>
+        </div>
+        <button class="actualizar" id="actualizar" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 11a8 8 0 10-2.3 5.7M20 4v7h-7"/></svg><span class="txt">Actualizar</span></button>
+      </div>
     </div>
-    <p class="nota" style="margin:10px 0 0">Se guardan solo en este navegador. El panel consulta los datos únicamente cuando pulsas «Actualizar».</p>
-  </details>
-</main>
-<footer class="wrap">Contador sin cookies: no guarda IPs ni datos personales, solo cuántas visitas hay, de dónde llegan y qué botones se pulsan.</footer>
+    <div class="aviso" id="aviso" hidden></div>
+
+    <section class="kpis" aria-label="Resumen">
+      <div class="tarjeta kpi"><span class="ic" style="color:var(--cian)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <div><div class="et">Visitas</div><div class="num" id="k-visitas">—</div><div class="delta" id="d-visitas"></div></div></div>
+      <div class="tarjeta kpi"><span class="ic" style="color:var(--violeta)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+        <div><div class="et">Páginas vistas</div><div class="num" id="k-vistas">—</div><div class="delta" id="d-vistas"></div></div></div>
+      <div class="tarjeta kpi"><span class="ic" style="color:var(--magenta)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l-4 9 4-2 4 2-1-6M14 3l7 7-6 2-3-3z"/></svg></span>
+        <div><div class="et">Acciones</div><div class="num" id="k-acciones">—</div><div class="delta" id="d-acciones"></div></div></div>
+      <div class="tarjeta kpi"><span class="ic" style="color:var(--ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg></span>
+        <div><div class="et">Páginas por visita</div><div class="num" id="k-ppv">—</div><div class="delta" id="d-ppv"></div></div></div>
+    </section>
+
+    <div class="rejilla">
+      <section class="tarjeta doble" id="trafico" aria-labelledby="h-dia">
+        <h2 id="h-dia">Visitas por día</h2>
+        <p class="nota">Entradas a la web desde fuera (Google, Instagram, un enlace…). Pasar de una página a otra no suma.</p>
+        <div class="grafico" id="g-barras"></div>
+      </section>
+      <section class="tarjeta" aria-labelledby="h-anillos">
+        <h2 id="h-anillos">De un vistazo</h2>
+        <p class="nota">Sobre las visitas del periodo.</p>
+        <div class="anillos">
+          <div class="anillo"><div class="disco" id="a-movil"><span class="valor">—</span></div><span class="pie">entran desde el móvil</span></div>
+          <div class="anillo"><div class="disco" id="a-conv"><span class="valor">—</span></div><span class="pie">acciones por cada 100 visitas</span></div>
+        </div>
+      </section>
+
+      <section class="tarjeta doble" aria-labelledby="h-vistas">
+        <h2 id="h-vistas">Páginas vistas por día</h2>
+        <p class="nota">Todas las páginas abiertas, también al moverse dentro de la web.</p>
+        <div class="grafico" id="g-area"></div>
+      </section>
+      <section class="tarjeta" id="origen" aria-labelledby="h-origen">
+        <h2 id="h-origen">De dónde llegan</h2>
+        <p class="nota">Visitas según la web de procedencia.</p>
+        <ul class="deslizadores" id="l-origen"></ul>
+      </section>
+
+      <section class="tarjeta" id="acciones" aria-labelledby="h-acc">
+        <h2 id="h-acc">Qué hacen</h2>
+        <p class="nota">Clics en los botones que importan.</p>
+        <ul class="acciones-lista" id="l-acciones"></ul>
+      </section>
+      <section class="tarjeta" aria-labelledby="h-pag">
+        <h2 id="h-pag">Páginas más vistas</h2>
+        <p class="nota">Páginas vistas en el periodo.</p>
+        <ul class="deslizadores" id="l-paginas"></ul>
+      </section>
+      <section class="tarjeta" aria-labelledby="h-disp">
+        <h2 id="h-disp">Móvil u ordenador</h2>
+        <p class="nota">Aparato desde el que entran.</p>
+        <div class="donut">
+          <div class="disco" id="d-donut"><span class="centro">visitas</span></div>
+          <div class="leyenda" id="leyenda"></div>
+        </div>
+      </section>
+    </div>
+    <p class="pie-pagina">Contador sin cookies: no guarda IPs ni datos personales, solo cuántas visitas hay, de dónde llegan y qué botones se pulsan. El panel consulta los datos únicamente cuando pulsas «Actualizar» o cambias el periodo.</p>
+  </main>
+</div>
 
 <script>
-// Dirección del contador (Cloudflare Worker). Se rellena al activarlo.
 const API_POR_DEFECTO = 'https://engrana-metricas.engrana.workers.dev';
+const C = { cian: '#26E0FF', magenta: '#FF3F86', violeta: '#7C6BFF', ok: '#3FE0B0', muted: '#8B90B5', rejilla: '#2C3050' };
+const SERIE = [C.cian, C.magenta, C.violeta, C.ok, '#FFB547', '#5AA9FF'];
 
 const $ = (id) => document.getElementById(id);
 const fmt = new Intl.NumberFormat('es-ES');
 const pct = new Intl.NumberFormat('es-ES', { style: 'percent', maximumFractionDigits: 1 });
+const dec = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 });
 const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 const leer = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
+const NS = 'http://www.w3.org/2000/svg';
+const svgEl = (padre, tag, attrs, txt) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (txt != null) e.textContent = txt; padre.appendChild(e); return e; };
 
-// Acceso: el enlace del cliente trae #s=sitio&k=clave (y &a=api para pruebas); se guarda y se borra de la barra.
+// Acceso: el enlace de cada cliente trae #s=sitio&k=clave (y &a=api para pruebas); se guarda y se borra de la barra.
 let acceso = leer('engrana-acceso') || {};
 if (location.hash.length > 1) {
   const h = new URLSearchParams(location.hash.slice(1));
   if (h.get('s') && h.get('k')) {
-    acceso = { site: h.get('s'), key: h.get('k'), api: h.get('a') || acceso.api || '' };
+    acceso = { site: h.get('s'), key: h.get('k'), api: h.get('a') || '' };
     guardar('engrana-acceso', acceso);
+    history.replaceState(null, '', location.pathname + location.search);
   }
-  history.replaceState(null, '', location.pathname + location.search);
 }
 const api = () => (acceso.api || API_POR_DEFECTO).replace(/\/$/, '');
 $('c-site').value = acceso.site || '';
@@ -175,8 +272,9 @@ const alCambiarAcceso = () => {
 $('c-site').addEventListener('change', alCambiarAcceso);
 $('c-key').addEventListener('change', alCambiarAcceso);
 
-const dias = () => Number($('periodo').value);
-const claveCache = () => 'engrana-ultimo-' + (acceso.site || 'ejemplo') + '-' + dias();
+let periodo = Number(leer('engrana-periodo')) || 30;
+const claveCache = () => 'engrana-ultimo-' + (acceso.site || 'ejemplo') + '-' + periodo;
+const marcarPeriodo = () => document.querySelectorAll('.periodo button').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.dias) === periodo)));
 
 function avisar(texto, error) {
   $('aviso').hidden = !texto;
@@ -193,18 +291,18 @@ function haceCuanto(iso) {
   return 'el ' + new Date(iso).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
 }
 
+let actual = null, esEjemploActual = false;
+
 async function consultar() {
-  if (!acceso.site || !acceso.key || !api()) {
-    $('config').open = true;
-    pintar(ejemplo(dias()), true);
-    avisar(api() ? 'Escribe el sitio y la clave en «Acceso al panel» y pulsa «Actualizar».'
-                 : 'Datos de ejemplo: el contador de visitas aún no está activado.');
+  if (!acceso.site || !acceso.key) {
+    pintar(ejemplo(periodo), true);
+    avisar('Estás viendo datos de ejemplo. Para ver tu web, escribe el sitio y la clave en «Acceso» y pulsa «Actualizar».');
     return;
   }
   const b = $('actualizar');
   b.disabled = true; b.classList.add('cargando'); b.querySelector('.txt').textContent = 'Consultando…';
   try {
-    const r = await fetch(api() + '/stats?site=' + encodeURIComponent(acceso.site) + '&days=' + dias(),
+    const r = await fetch(api() + '/stats?site=' + encodeURIComponent(acceso.site) + '&days=' + periodo,
       { headers: { Authorization: 'Bearer ' + acceso.key }, cache: 'no-store' });
     const datos = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error(datos.error || ('El servidor respondió ' + r.status));
@@ -222,46 +320,45 @@ async function consultar() {
 }
 
 function pintar(d, esEjemplo) {
+  actual = d; esEjemploActual = esEjemplo;
   $('titulo').textContent = esEjemplo ? 'Web de ejemplo' : (d.nombre || d.site);
-  $('estado').textContent = esEjemplo ? 'Datos de ejemplo'
-    : 'Del ' + fechaCorta(d.desde) + ' al ' + fechaCorta(d.hasta) + ' · consultado ' + haceCuanto(d.generado);
+  $('estado').textContent = (esEjemplo ? 'Datos de ejemplo · ' : '') + 'Del ' + fechaCorta(d.desde) + ' al ' + fechaCorta(d.hasta)
+    + (esEjemplo ? '' : ' · consultado ' + haceCuanto(d.generado));
 
   const tot = (campo) => d.diario.reduce((t, f) => t + (f[campo] || 0), 0);
   const visitas = tot('visitas'), vistas = tot('vistas'), acciones = tot('acciones');
-  const conv = visitas ? acciones / visitas : 0;
   const a = d.anterior || {};
-  const convAnt = a.visitas ? a.acciones / a.visitas : 0;
   $('k-visitas').textContent = fmt.format(visitas);
   $('k-vistas').textContent = fmt.format(vistas);
   $('k-acciones').textContent = fmt.format(acciones);
-  $('k-conv').textContent = visitas ? fmt.format(Math.round(conv * 100)) : '—';
+  $('k-ppv').textContent = visitas ? dec.format(vistas / visitas) : '—';
   delta('d-visitas', visitas, a.visitas, d.dias);
   delta('d-vistas', vistas, a.vistas, d.dias);
   delta('d-acciones', acciones, a.acciones, d.dias);
-  deltaPuntos('d-conv', conv, convAnt, a.visitas, d.dias);
+  delta('d-ppv', visitas ? vistas / visitas : 0, a.visitas ? a.vistas / a.visitas : 0, d.dias);
 
-  grafico(rellenarDias(d), d.dias);
-  lista('origen', d.origen.map((f) => [nombreOrigen(f.ref), f.visitas]), 'Aún no hay visitas en este periodo.');
-  lista('acciones', d.eventos.map((f) => [nombreAccion(f.evento), f.veces]), 'Nadie ha pulsado todavía los botones medidos.');
-  lista('paginas', d.paginas.map((f) => [nombrePagina(f.path), f.vistas]), 'Aún no hay páginas vistas.');
-  dispositivos(d.dispositivo);
+  const dias = rellenarDias(d);
+  barras($('g-barras'), dias);
+  area($('g-area'), dias);
+
+  const m = (d.dispositivo.find((f) => f.device === 'movil') || {}).visitas || 0;
+  const o = (d.dispositivo.find((f) => f.device === 'ordenador') || {}).visitas || 0;
+  anillo($('a-movil'), m + o ? m / (m + o) : null, C.cian, m + o ? pct.format(m / (m + o)) : '—');
+  anillo($('a-conv'), visitas ? Math.min(1, acciones / visitas) : null, C.magenta, visitas ? fmt.format(Math.round(acciones / visitas * 100)) : '—');
+  donut(m, o);
+
+  deslizadores('l-origen', d.origen.map((f) => [nombreOrigen(f.ref), f.visitas]), 'Aún no hay visitas en este periodo.');
+  deslizadores('l-paginas', d.paginas.map((f) => [nombrePagina(f.path), f.vistas]), 'Aún no hay páginas vistas.');
+  listaAcciones(d.eventos);
 }
 
 function delta(id, ahora, antes, n) {
   const el = $(id);
   el.className = 'delta';
-  if (!antes) { el.textContent = ahora ? 'Sin datos de los ' + n + ' días anteriores' : ''; return; }
+  if (!antes) { el.textContent = ahora ? 'sin datos de los ' + n + ' días previos' : ''; return; }
   const v = (ahora - antes) / antes;
   el.classList.add(v > 0 ? 'sube' : v < 0 ? 'baja' : 'igual');
-  el.textContent = (v > 0 ? '+' : '') + pct.format(v) + ' frente a los ' + n + ' días anteriores';
-}
-function deltaPuntos(id, ahora, antes, hubo, n) {
-  const el = $(id);
-  el.className = 'delta';
-  if (!hubo) { el.textContent = ''; return; }
-  const p = (ahora - antes) * 100;
-  el.classList.add(p > 0 ? 'sube' : p < 0 ? 'baja' : 'igual');
-  el.textContent = (p > 0 ? '+' : '') + fmt.format(Math.round(p)) + ' frente a los ' + n + ' días anteriores';
+  el.textContent = (v > 0 ? '▲ +' : v < 0 ? '▼ ' : '') + pct.format(v) + ' vs. ' + n + ' días previos';
 }
 
 function rellenarDias(d) {
@@ -270,90 +367,194 @@ function rellenarDias(d) {
   const fin = new Date(d.hasta + 'T12:00:00Z');
   for (let i = d.dias - 1; i >= 0; i--) {
     const dia = new Date(fin - i * 86400000).toISOString().slice(0, 10);
-    out.push({ day: dia, visitas: (porDia.get(dia) || {}).visitas || 0 });
+    const f = porDia.get(dia) || {};
+    out.push({ day: dia, visitas: f.visitas || 0, vistas: f.vistas || 0 });
   }
   return out;
 }
 
-function grafico(filas, n) {
-  const caja = $('grafico');
-  const ancho = Math.max(280, caja.clientWidth || 600), alto = 190, abajo = 22, arriba = 10, izq = 30;
-  const max = Math.max(1, ...filas.map((f) => f.visitas));
-  const tope = max <= 5 ? max : Math.ceil(max / 5) * 5;
-  const paso = (ancho - izq) / filas.length;
-  const anchoBarra = Math.max(2, Math.min(28, paso * 0.7));
-  const y = (v) => alto - abajo - (v / tope) * (alto - abajo - arriba);
-  const ns = 'http://www.w3.org/2000/svg';
-  const svg = document.createElementNS(ns, 'svg');
+// Escala común de los dos gráficos de días.
+function marco(caja, filas, campo) {
+  const ancho = Math.max(280, caja.clientWidth || 600), alto = 220, abajo = 26, arriba = 14;
+  const max = Math.max(1, ...filas.map((f) => f[campo]));
+  const paso = max <= 4 ? 1 : max <= 10 ? 2 : Math.ceil(max / 4 / 5) * 5;
+  const tope = Math.ceil(max / paso) * paso;
+  const svg = document.createElementNS(NS, 'svg');
   svg.setAttribute('viewBox', '0 0 ' + ancho + ' ' + alto);
-  svg.setAttribute('role', 'img');
-  svg.setAttribute('aria-label', 'Visitas por día');
-  const el = (tag, attrs, txt) => { const e = document.createElementNS(ns, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (txt != null) e.textContent = txt; svg.appendChild(e); return e; };
-  const defs = el('defs', {});
-  defs.innerHTML = '<linearGradient id="gb" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#5EE0C4"/><stop offset="1" stop-color="#F2A26B"/></linearGradient>';
-  [0, tope / 2, tope].forEach((v) => {
-    el('line', { x1: izq, x2: ancho, y1: y(v), y2: y(v), stroke: '#22323D', 'stroke-width': 1 });
-    el('text', { x: izq - 6, y: y(v) + 4, 'text-anchor': 'end', fill: '#93A4AA', 'font-size': 11 }, fmt.format(Math.round(v)));
+  svg.setAttribute('height', alto);
+  const marcas = [];
+  for (let v = 0; v <= tope; v += paso) marcas.push(v);
+  // margen izquierdo según la etiqueta más ancha
+  const izq = 12 + String(fmt.format(tope)).length * 7;
+  const y = (v) => alto - abajo - (v / tope) * (alto - abajo - arriba);
+  marcas.forEach((v) => {
+    svgEl(svg, 'line', { x1: izq, x2: ancho, y1: y(v), y2: y(v), stroke: C.rejilla, 'stroke-width': 1 });
+    svgEl(svg, 'text', { x: izq - 8, y: y(v) + 4, 'text-anchor': 'end', fill: C.muted, 'font-size': 11 }, fmt.format(v));
   });
-  const cadaCuanto = Math.ceil(filas.length / Math.max(2, Math.floor((ancho - izq) / 70)));
-  const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true;
+  const anchoUtil = ancho - izq;
+  const xc = (i) => izq + anchoUtil * (i + .5) / filas.length;
+  const cada = Math.ceil(filas.length / Math.max(2, Math.floor(anchoUtil / 64)));
   filas.forEach((f, i) => {
-    const cx = izq + paso * i + paso / 2;
-    const h = Math.max(f.visitas ? 2 : 0, alto - abajo - y(f.visitas));
-    const r = el('rect', { x: cx - anchoBarra / 2, y: alto - abajo - h, width: anchoBarra, height: h, rx: Math.min(4, anchoBarra / 2), fill: 'url(#gb)' });
-    const zona = el('rect', { x: izq + paso * i, y: arriba, width: paso, height: alto - abajo - arriba, fill: 'transparent' });
-    const mostrar = () => { tip.hidden = false; tip.textContent = fechaCorta(f.day) + ': ' + fmt.format(f.visitas) + (f.visitas === 1 ? ' visita' : ' visitas');
-      tip.style.left = Math.min(Math.max(cx / ancho * caja.clientWidth, 60), caja.clientWidth - 60) + 'px'; tip.style.top = (alto - abajo - h - 6) / alto * 190 + 'px'; r.setAttribute('opacity', .75); };
-    const ocultar = () => { tip.hidden = true; r.removeAttribute('opacity'); };
-    zona.addEventListener('mouseenter', mostrar); zona.addEventListener('mouseleave', ocultar);
-    zona.addEventListener('touchstart', mostrar, { passive: true });
-    if (i % cadaCuanto === 0 || i === filas.length - 1 && (filas.length - 1) % cadaCuanto > cadaCuanto / 2)
-      el('text', { x: cx, y: alto - 5, 'text-anchor': 'middle', fill: '#93A4AA', 'font-size': 11 }, fechaCorta(f.day));
+    if (i % cada === 0) svgEl(svg, 'text', { x: xc(i), y: alto - 6, 'text-anchor': 'middle', fill: C.muted, 'font-size': 11 }, fechaCorta(f.day));
   });
+  const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true;
   caja.replaceChildren(svg, tip);
+  return { svg, tip, ancho, alto, abajo, izq, y, xc, anchoUtil };
 }
 
-function lista(id, filas, textoVacio) {
+function ponerTip(m, caja, x, yv, f, campo, nombre) {
+  m.tip.hidden = false;
+  m.tip.innerHTML = '';
+  const b = document.createElement('b'); b.textContent = fmt.format(f[campo]) + ' ' + nombre;
+  m.tip.append(b, document.createTextNode(fechaLarga(f.day)));
+  const esc = caja.clientWidth / m.ancho;
+  m.tip.style.left = Math.min(Math.max(x * esc, 70), caja.clientWidth - 70) + 'px';
+  m.tip.style.top = yv * esc + 'px';
+}
+
+function barras(caja, filas) {
+  const m = marco(caja, filas, 'visitas');
+  const defs = svgEl(m.svg, 'defs', {});
+  defs.innerHTML = '<linearGradient id="gBar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + C.magenta + '"/><stop offset="1" stop-color="' + C.magenta + '" stop-opacity=".15"/></linearGradient>';
+  const anchoBarra = Math.max(3, Math.min(18, m.anchoUtil / filas.length * .5));
+  filas.forEach((f, i) => {
+    const x = m.xc(i), y0 = m.y(0), y1 = m.y(f.visitas);
+    if (f.visitas) {
+      svgEl(m.svg, 'rect', { x: x - anchoBarra / 2, y: y1, width: anchoBarra, height: Math.max(2, y0 - y1), rx: anchoBarra / 2, fill: 'url(#gBar)' });
+      if (anchoBarra >= 7) svgEl(m.svg, 'circle', { cx: x, cy: y1 + anchoBarra / 2, r: anchoBarra / 2 - 1.5, fill: '#FFFFFF', stroke: C.magenta, 'stroke-width': 2 });
+    }
+    const zona = svgEl(m.svg, 'rect', { x: m.izq + m.anchoUtil * i / filas.length, y: 0, width: m.anchoUtil / filas.length, height: y0, fill: 'transparent' });
+    const ver = () => ponerTip(m, caja, x, y1, f, 'visitas', f.visitas === 1 ? 'visita' : 'visitas');
+    zona.addEventListener('mouseenter', ver); zona.addEventListener('touchstart', ver, { passive: true });
+    zona.addEventListener('mouseleave', () => { m.tip.hidden = true; });
+  });
+}
+
+function area(caja, filas) {
+  const m = marco(caja, filas, 'vistas');
+  const defs = svgEl(m.svg, 'defs', {});
+  defs.innerHTML = '<linearGradient id="gArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + C.violeta + '" stop-opacity=".55"/><stop offset="1" stop-color="' + C.violeta + '" stop-opacity="0"/></linearGradient>'
+    + '<linearGradient id="gLinea" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="' + C.violeta + '"/><stop offset="1" stop-color="' + C.cian + '"/></linearGradient>';
+  const pts = filas.map((f, i) => [m.xc(i), m.y(f.vistas)]);
+  const linea = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+  svgEl(m.svg, 'path', { d: linea + ' L' + pts[pts.length - 1][0] + ' ' + m.y(0) + ' L' + pts[0][0] + ' ' + m.y(0) + ' Z', fill: 'url(#gArea)' });
+  svgEl(m.svg, 'path', { d: linea, fill: 'none', stroke: 'url(#gLinea)', 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
+  const guia = svgEl(m.svg, 'line', { y1: 10, y2: m.y(0), stroke: C.muted, 'stroke-dasharray': '3 4', opacity: 0 });
+  const punto = svgEl(m.svg, 'circle', { r: 5, fill: '#FFFFFF', stroke: C.cian, 'stroke-width': 2.5, opacity: 0 });
+  const ultimo = pts[pts.length - 1];
+  svgEl(m.svg, 'circle', { cx: ultimo[0], cy: ultimo[1], r: 4.5, fill: C.cian });
+  filas.forEach((f, i) => {
+    const zona = svgEl(m.svg, 'rect', { x: m.izq + m.anchoUtil * i / filas.length, y: 0, width: m.anchoUtil / filas.length, height: m.y(0), fill: 'transparent' });
+    const ver = () => {
+      guia.setAttribute('x1', pts[i][0]); guia.setAttribute('x2', pts[i][0]); guia.setAttribute('opacity', 1);
+      punto.setAttribute('cx', pts[i][0]); punto.setAttribute('cy', pts[i][1]); punto.setAttribute('opacity', 1);
+      ponerTip(m, caja, pts[i][0], pts[i][1], f, 'vistas', f.vistas === 1 ? 'página vista' : 'páginas vistas');
+    };
+    zona.addEventListener('mouseenter', ver); zona.addEventListener('touchstart', ver, { passive: true });
+    zona.addEventListener('mouseleave', () => { m.tip.hidden = true; guia.setAttribute('opacity', 0); punto.setAttribute('opacity', 0); });
+  });
+}
+
+function anillo(disco, frac, color, texto) {
+  disco.querySelectorAll('svg').forEach((s) => s.remove());
+  disco.querySelector('.valor').textContent = texto;
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 120 120');
+  const r = 46, L = 2 * Math.PI * r;
+  svgEl(svg, 'circle', { cx: 60, cy: 60, r, fill: 'none', stroke: '#1B1D34', 'stroke-width': 9 });
+  if (frac != null && frac > 0) {
+    svgEl(svg, 'circle', { cx: 60, cy: 60, r, fill: 'none', stroke: color, 'stroke-width': 9, 'stroke-linecap': 'round',
+      'stroke-dasharray': (L * frac).toFixed(1) + ' ' + L.toFixed(1), transform: 'rotate(-90 60 60)', style: 'filter: drop-shadow(0 0 6px ' + color + ')' });
+    const ang = -Math.PI / 2 + 2 * Math.PI * frac;
+    svgEl(svg, 'circle', { cx: 60 + r * Math.cos(ang), cy: 60 + r * Math.sin(ang), r: 6.5, fill: '#FFFFFF', stroke: color, 'stroke-width': 3 });
+  }
+  disco.prepend(svg);
+}
+
+function donut(m, o) {
+  const disco = $('d-donut');
+  disco.querySelectorAll('svg').forEach((s) => s.remove());
+  const t = m + o;
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 130 130');
+  const r = 49, L = 2 * Math.PI * r;
+  svgEl(svg, 'circle', { cx: 65, cy: 65, r, fill: 'none', stroke: '#1B1D34', 'stroke-width': 16 });
+  if (t) {
+    const fm = m / t;
+    svgEl(svg, 'circle', { cx: 65, cy: 65, r, fill: 'none', stroke: C.cian, 'stroke-width': 16, 'stroke-dasharray': (L * fm) + ' ' + L, transform: 'rotate(-90 65 65)' });
+    svgEl(svg, 'circle', { cx: 65, cy: 65, r, fill: 'none', stroke: C.magenta, 'stroke-width': 16, 'stroke-dasharray': (L * (1 - fm)) + ' ' + L, 'stroke-dashoffset': -L * fm, transform: 'rotate(-90 65 65)' });
+  }
+  disco.prepend(svg);
+  disco.querySelector('.centro').textContent = t ? fmt.format(t) + ' visitas' : 'sin visitas';
+  $('leyenda').innerHTML = '';
+  if (!t) { $('leyenda').innerHTML = '<span class="vacio">Aún no hay visitas en este periodo.</span>'; return; }
+  [['Móvil', m, C.cian], ['Ordenador', o, C.magenta]].forEach(([n, v, c]) => {
+    const s = document.createElement('div');
+    s.innerHTML = '<span class="punto"></span><b></b>';
+    s.querySelector('.punto').style.background = c;
+    s.querySelector('b').textContent = pct.format(v / t);
+    s.append(n);
+    $('leyenda').appendChild(s);
+  });
+}
+
+function deslizadores(id, filas, textoVacio) {
   const ul = $(id);
   if (!filas.length) { ul.innerHTML = '<li class="vacio">' + textoVacio + '</li>'; return; }
   const max = Math.max(...filas.map((f) => f[1]));
-  ul.replaceChildren(...filas.map(([nombre, valor]) => {
+  ul.replaceChildren(...filas.map(([nombre, valor], i) => {
     const li = document.createElement('li');
     const n = document.createElement('span'); n.className = 'nom'; n.textContent = nombre; n.title = nombre;
     const v = document.createElement('span'); v.className = 'val'; v.textContent = fmt.format(valor);
-    const b = document.createElement('span'); b.className = 'barra';
-    const i = document.createElement('i'); i.style.width = (valor / max * 100) + '%'; b.appendChild(i);
-    li.append(n, v, b);
+    const p = document.createElement('span'); p.className = 'pista';
+    const b = document.createElement('i'); const c = SERIE[i % SERIE.length];
+    b.style.width = Math.max(4, valor / max * 100) + '%'; b.style.background = c; b.style.color = c;
+    p.appendChild(b); li.append(n, v, p);
     return li;
   }));
 }
 
-function dispositivos(filas) {
-  const m = (filas.find((f) => f.device === 'movil') || {}).visitas || 0;
-  const o = (filas.find((f) => f.device === 'ordenador') || {}).visitas || 0;
-  const t = m + o;
-  $('split').innerHTML = t ? '<i style="width:' + (m / t * 100) + '%"></i><i style="width:' + (o / t * 100) + '%"></i>' : '';
-  $('leyenda').innerHTML = t
-    ? '<span><span class="punto" style="background:var(--teal)"></span>Móvil <b>' + pct.format(m / t) + '</b></span>'
-      + '<span><span class="punto" style="background:var(--orange)"></span>Ordenador <b>' + pct.format(o / t) + '</b></span>'
-    : '<span class="vacio">Aún no hay visitas en este periodo.</span>';
+const ICONOS = {
+  correo: '<path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/>',
+  copiar: '<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/>',
+  demo: '<path d="M4 5h16v11H8l-4 4z"/>',
+  reserva: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  tel: '<path d="M5 4h4l2 5-3 2a11 11 0 005 5l2-3 5 2v4a2 2 0 01-2 2A17 17 0 013 6a2 2 0 012-2z"/>',
+  clic: '<path d="M9 11l-4 9 4-2 4 2-1-6M14 3l7 7-6 2-3-3z"/>',
+};
+const ACCIONES = {
+  contacto: ['Pulsó «Quiero mi diagnóstico»', 'correo'], diagnostico: ['Pulsó «Pide tu diagnóstico gratis»', 'clic'],
+  'copiar-correo': ['Copió el correo', 'copiar'], correo: ['Pulsó el correo', 'correo'],
+  demo: ['Abrió la demo', 'demo'], 'demo-chat': ['Escribió al asistente de la demo', 'demo'], 'demo-reserva': ['Terminó una reserva en la demo', 'reserva'],
+  whatsapp: ['Pulsó WhatsApp', 'demo'], llamar: ['Pulsó llamar', 'tel'], reservar: ['Pulsó reservar', 'reserva'], instagram: ['Fue a Instagram', 'clic'],
+};
+function listaAcciones(eventos) {
+  const ul = $('l-acciones');
+  if (!eventos.length) { ul.innerHTML = '<li class="vacio">Nadie ha pulsado todavía los botones medidos.</li>'; return; }
+  ul.replaceChildren(...eventos.slice(0, 7).map((f, i) => {
+    const [nombre, icono] = ACCIONES[f.evento] || [f.evento, 'clic'];
+    const li = document.createElement('li');
+    const ic = document.createElement('span'); ic.className = 'ic'; ic.style.color = SERIE[i % SERIE.length];
+    ic.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICONOS[icono] + '</svg>';
+    const n = document.createElement('span'); n.className = 'nom'; n.textContent = nombre;
+    const v = document.createElement('span'); v.className = 'val'; v.textContent = fmt.format(f.veces);
+    li.append(ic, n, v);
+    return li;
+  }));
 }
 
-const ORIGENES = { directo: 'Directo (enlace guardado o escrito a mano)', 'google.com': 'Google', 'google.es': 'Google',
+const ORIGENES = { directo: 'Directo (enlace guardado o escrito)', 'google.com': 'Google', 'google.es': 'Google',
   'instagram.com': 'Instagram', 'l.instagram.com': 'Instagram', 'facebook.com': 'Facebook', 'l.facebook.com': 'Facebook',
   'm.facebook.com': 'Facebook', 'lm.facebook.com': 'Facebook', 'bing.com': 'Bing', 'duckduckgo.com': 'DuckDuckGo',
   'linkedin.com': 'LinkedIn', 'lnkd.in': 'LinkedIn', 't.co': 'X (Twitter)', 'mail.google.com': 'Gmail', 'wa.me': 'WhatsApp',
   'c4rr0.github.io': 'Guía de reseñas (Engrana)' };
 const nombreOrigen = (r) => ORIGENES[r] || r;
-const ACCIONES = { contacto: 'Pulsó «Quiero mi diagnóstico»', diagnostico: 'Pulsó «Pide tu diagnóstico gratis»', 'copiar-correo': 'Copió el correo', correo: 'Pulsó el correo',
-  demo: 'Abrió la demo', 'demo-chat': 'Escribió al asistente de la demo', 'demo-reserva': 'Terminó una reserva en la demo',
-  whatsapp: 'Pulsó WhatsApp', llamar: 'Pulsó llamar', reservar: 'Pulsó reservar', instagram: 'Fue a Instagram' };
-const nombreAccion = (e) => ACCIONES[e] || e;
 const PAGINAS = { '/': 'Inicio', '/demo/tatuajes/': 'Demo · estudio de tatuajes', '/aviso-legal/': 'Aviso legal' };
 const nombrePagina = (p) => PAGINAS[p] || p;
 const fechaCorta = (dia) => new Date(dia + 'T12:00:00Z').toLocaleDateString('es-ES', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+const fechaLarga = (dia) => new Date(dia + 'T12:00:00Z').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
 
-// Datos de ejemplo (siempre los mismos) para enseñar el panel antes de activarlo.
+// Datos de ejemplo (siempre los mismos) para enseñar el panel sin acceso.
 function ejemplo(n) {
   let s = 7;
   const azar = () => (s = (s * 16807) % 2147483647) / 2147483647;
@@ -362,7 +563,7 @@ function ejemplo(n) {
   const diario = [];
   for (let i = n - 1; i >= 0; i--) {
     const v = Math.round(14 + 10 * azar() + (n - i) * 0.25 + ([0, 6].includes(new Date(dia(i)).getDay()) ? -6 : 0));
-    diario.push({ day: dia(i), visitas: v, vistas: Math.round(v * 1.9), acciones: Math.round(v * (0.05 + 0.06 * azar())) });
+    diario.push({ day: dia(i), visitas: v, vistas: Math.round(v * (1.6 + .6 * azar())), acciones: Math.round(v * (0.05 + 0.06 * azar())) });
   }
   const V = diario.reduce((t, f) => t + f.visitas, 0), A = diario.reduce((t, f) => t + f.acciones, 0);
   return {
@@ -375,16 +576,25 @@ function ejemplo(n) {
   };
 }
 
-// Al abrir: se enseña la última consulta guardada; solo se consulta de nuevo al pulsar «Actualizar» o cambiar el periodo.
+// Al abrir se enseña la última consulta guardada; solo se pide de nuevo con «Actualizar» o al cambiar el periodo.
 function mostrarGuardado() {
+  marcarPeriodo();
   const viejo = leer(claveCache());
   if (viejo) pintar(viejo, false);
   else consultar();
 }
 $('actualizar').addEventListener('click', consultar);
-$('periodo').addEventListener('change', mostrarGuardado);
-let ultimoAncho = 0;
-addEventListener('resize', () => { const w = $('grafico').clientWidth; if (Math.abs(w - ultimoAncho) > 40) { ultimoAncho = w; const v = leer(claveCache()); pintar(v || ejemplo(dias()), !v); } });
+document.querySelectorAll('.periodo button').forEach((b) => b.addEventListener('click', () => {
+  periodo = Number(b.dataset.dias); guardar('engrana-periodo', periodo); mostrarGuardado();
+}));
+document.querySelectorAll('.menu a').forEach((a) => a.addEventListener('click', () => {
+  document.querySelectorAll('.menu a').forEach((x) => x.classList.toggle('activo', x === a));
+}));
+let anchoPrevio = 0;
+addEventListener('resize', () => {
+  const w = $('g-barras').clientWidth;
+  if (actual && Math.abs(w - anchoPrevio) > 30) { anchoPrevio = w; pintar(actual, esEjemploActual); }
+});
 mostrarGuardado();
 </script>
 </body>
