@@ -312,7 +312,7 @@ async function consultar() {
   } catch (e) {
     const viejo = leer(claveCache());
     if (viejo) pintar(viejo, false);
-    avisar('No se ha podido consultar: ' + (e.message === 'Failed to fetch' || e.name === 'AbortError' ? 'tu conexión no llega al contador. Si es día de partido, Movistar, Orange, Vodafone y DIGI bloquean direcciones de Cloudflare por orden de LaLiga; prueba después del partido o con los datos del móvil.' : e.message.replace(/([^.])$/, '$1.'))
+    avisar('No se ha podido consultar: ' + (e.message === 'Failed to fetch' || e.name === 'AbortError' || e.name === 'TimeoutError' ? 'tu conexión no llega al contador. Si es día de partido, Movistar, Orange, Vodafone y DIGI bloquean direcciones de Cloudflare por orden de LaLiga; prueba después del partido o con los datos del móvil.' : e.message.replace(/([^.])$/, '$1.'))
       + (viejo ? ' Se muestran los datos de la última consulta.' : ''), true);
   } finally {
     b.disabled = false; b.classList.remove('cargando'); b.querySelector('.txt').textContent = 'Actualizar';
