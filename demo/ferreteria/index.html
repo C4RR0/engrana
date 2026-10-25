@@ -17,7 +17,7 @@
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.5 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; background: #fff url(acuarela.svg) center top / 100% auto repeat-y; color: var(--ink); font: 400 16px/1.5 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
   h1, h2, h3 { font-family: Archivo, sans-serif; letter-spacing: -.01em; line-height: 1.1; margin: 0 0 .4em; }
   h1 { font-size: clamp(2rem, 6vw, 3.4rem); font-weight: 800; }
   h2 { font-size: clamp(1.4rem, 3.5vw, 2rem); font-weight: 800; }
@@ -38,7 +38,7 @@
   .demo-bar { background: var(--dark); color: #fff; font-size: .82rem; text-align: center; padding: 7px 12px; }
   .demo-bar a { color: #FFB98E; }
 
-  header.top { position: sticky; top: 0; z-index: 20; background: rgba(246,243,238,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  header.top { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
   .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 64px; }
   .logo { display: flex; align-items: center; gap: 10px; font: 800 1.25rem Archivo, sans-serif; color: var(--ink); text-decoration: none; }
   .logo img { width: 40px; height: 52px; object-fit: contain; }
@@ -47,7 +47,7 @@
   .cart-count { position: absolute; top: -6px; right: -6px; min-width: 22px; height: 22px; border-radius: 11px; background: var(--dark); color: #fff; font: 700 .75rem Inter; display: grid; place-items: center; padding: 0 5px; }
   .cart-count[hidden] { display: none; }
 
-  .hero { padding: 40px 0 28px; background: #fff url(acuarela.svg) center / cover no-repeat; border-bottom: 1px solid var(--line); }
+  .hero { padding: 40px 0 28px; }
   .hero-grid > div:first-child { background: rgba(255,255,255,.88); border-radius: 18px; padding: 18px 20px; box-shadow: 0 0 40px 20px rgba(255,255,255,.85); }
   .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; align-items: center; }
   .photo { border-radius: 18px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(21,22,58,.12); }
@@ -76,7 +76,7 @@
   .status.open .dot { background: var(--ok); box-shadow: 0 0 0 4px rgba(30,142,78,.15); }
 
   .catalog { padding: 18px 0 40px; }
-  .tools { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 64px; z-index: 10; background: var(--bg); padding: 12px 0; }
+  .tools { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 64px; z-index: 10; background: rgba(255,255,255,.92); backdrop-filter: blur(8px); padding: 12px; margin: 0 -12px; border-radius: 0 0 14px 14px; }
   .search { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0 14px; }
   .search svg { width: 20px; height: 20px; color: var(--muted); flex: none; }
   .search input { border: 0; outline: 0; font: 400 1rem Inter; padding: 13px 0; width: 100%; background: transparent; color: var(--ink); }
@@ -102,9 +102,9 @@
   .notfound { margin-top: 26px; background: var(--dark); color: #fff; border-radius: 18px; padding: 24px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; }
   .notfound p { color: #C9CDD2; margin: 0; }
 
-  .info { padding: 40px 0; background: #fff; border-top: 1px solid var(--line); }
+  .info { padding: 40px 0; }
   .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  .box { border: 1px solid var(--line); border-radius: 16px; padding: 20px; background: var(--bg); }
+  .box { border: 1px solid var(--line); border-radius: 16px; padding: 20px; background: #fff; }
   .hours { width: 100%; border-collapse: collapse; font-size: .95rem; }
   .hours td { padding: 6px 0; border-bottom: 1px dashed var(--line); }
   .hours td:last-child { text-align: right; font-weight: 600; }
@@ -140,7 +140,8 @@
     .hero-grid, .info-grid, .steps-row { grid-template-columns: 1fr; }
     .steps-row .step + .step { border-left: 0; border-top: 1px dashed var(--line); }
     .svc-grid { grid-template-columns: 1fr 1fr; }
-    .hero { background-size: 1250px auto; background-position: -40px -20px; padding-top: 120px; }
+    body { background-size: 1250px auto; background-position: -40px -20px; }
+    .hero { padding-top: 110px; }
     .notfound { grid-template-columns: 1fr; }
     .top .call-txt { display: none; }
   }
