@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo · Asistente para centros de estética | Engrana</title>
+<meta name="description" content="Demo de Engrana: asistente 24 h, citas y recordatorios para un centro de estética. Datos de ejemplo.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B1217; --bg-alt: #0F1A21; --card: #131F27; --card-2: #182630; --line: #22323D;
+    --ink: #EAF1F0; --muted: #93A4AA; --teal: #5EE0C4; --orange: #F2A26B;
+    --grad: linear-gradient(120deg, #5EE0C4 0%, #A8C7A0 50%, #F2A26B 100%);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.55 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-family: Manrope, sans-serif; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; margin: 0 0 .5em; }
+  h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+  h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+  p { margin: 0 0 1em; }
+  a { color: var(--teal); }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+  .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .muted { color: var(--muted); }
+  .small { font-size: .85rem; color: var(--muted); }
+
+  .topbar { border-bottom: 1px solid var(--line); background: rgba(11,18,23,.9); position: sticky; top: 0; z-index: 5; backdrop-filter: blur(10px); }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 12px; }
+  .brand { display: flex; align-items: center; gap: .5em; font-family: Manrope, sans-serif; font-weight: 800; color: var(--ink); text-decoration: none; }
+  .brand img { width: 28px; height: 28px; }
+  .pill { font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--orange); background: rgba(242,162,107,.12); padding: .35em .8em; border-radius: 999px; white-space: nowrap; }
+
+  header.intro { padding: 48px 0 24px; }
+  .grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 28px; align-items: start; padding-bottom: 64px; }
+  .grid > * { min-width: 0; }
+
+  /* Teléfono con el chat */
+  .phone { background: #0E171D; border: 1px solid var(--line); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.4); display: flex; flex-direction: column; height: 640px; }
+  .chat-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); background: var(--card); }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; background: #2A1E22; display: grid; place-items: center; font-family: Manrope, sans-serif; font-weight: 800; color: var(--orange); }
+  .chat-head b { display: block; }
+  .chat-head span { font-size: .8rem; color: var(--teal); }
+  .msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth; }
+  .msg { max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: .95rem; white-space: pre-line; }
+  .bot { background: var(--card-2); border: 1px solid var(--line); border-bottom-left-radius: 4px; align-self: flex-start; }
+  .user { background: linear-gradient(135deg, #2BA88F, #3C8F82); color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
+  .typing { color: var(--muted); font-size: .85rem; align-self: flex-start; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 12px; }
+  .chip { font: 500 .85rem Inter, sans-serif; color: var(--ink); background: transparent; border: 1px solid #2E4654; border-radius: 999px; padding: .45em .85em; cursor: pointer; }
+  .chip:hover { border-color: var(--teal); color: var(--teal); }
+  form.send { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line); background: var(--card); }
+  form.send input { flex: 1; min-width: 0; font: 400 .95rem Inter, sans-serif; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: .7em .9em; }
+  form.send input:focus { outline: none; border-color: var(--teal); }
+  form.send button { font: 700 .9rem Inter, sans-serif; border: 0; border-radius: 12px; padding: 0 1.1em; background: var(--grad); color: #0B1217; cursor: pointer; }
+
+  /* Panel del centro */
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+  .panel + .panel { margin-top: 18px; }
+  .panel h3 { font-size: 1.1rem; margin-bottom: .3em; }
+  .ficha { display: none; margin-top: 12px; background: var(--bg); border: 1px dashed #2E4654; border-radius: 14px; padding: 14px 16px; font-size: .92rem; }
+  .ficha.on { display: block; }
+  .ficha dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 8px 0 0; }
+  .ficha dt { color: var(--muted); }
+  .ficha dd { margin: 0; }
+  .timeline { list-style: none; padding: 0; margin: 12px 0 0; }
+  .timeline li { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: .92rem; }
+  .timeline li:last-child { border-bottom: 0; }
+  .timeline .d { flex: none; width: 74px; font-weight: 700; color: var(--teal); }
+  .counter { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+  .counter div { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 12px; text-align: center; }
+  .counter b { display: block; font-family: Manrope, sans-serif; font-size: 1.5rem; }
+  .counter span { font-size: .78rem; color: var(--muted); }
+
+  .cta { margin: 0 0 64px; background: linear-gradient(135deg, #12303A, #1B2A33 60%, #2E2622); border: 1px solid var(--line); border-radius: 24px; padding: 36px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; }
+  .cta h2 { margin: 0; }
+  .btn { display: inline-flex; padding: .85em 1.3em; border-radius: 12px; font-weight: 700; text-decoration: none; background: var(--grad); color: #0B1217; }
+  footer { padding: 0 0 40px; }
+
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .phone { height: 580px; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../../"><img src="../../logo.svg" alt="">Engrana</a>
+    <span class="pill">Demo · datos de ejemplo</span>
+  </div>
+</div>
+
+<header class="intro wrap">
+  <h1>Así atendería un asistente a las clientas de <span class="grad">un centro de estética.</span></h1>
+  <p class="muted" style="max-width:44em">Escríbele como si fueras una clienta: pregunta precios, bonos o cuidados, o pide cita. A la derecha ves lo que le llegaría al centro y los avisos que se mandarían solos. El centro «Nácar Estética» y todos sus datos son inventados.</p>
+</header>
+
+<main class="wrap grid">
+  <section class="phone" aria-label="Chat de demostración">
+    <div class="chat-head">
+      <div class="avatar">NE</div>
+      <div><b>Nácar Estética</b><span>● Asistente activo 24 h</span></div>
+    </div>
+    <div class="msgs" id="msgs" aria-live="polite"></div>
+    <div class="chips" id="chips"></div>
+    <form class="send" id="send">
+      <input id="txt" autocomplete="off" placeholder="Escribe tu mensaje…" aria-label="Escribe tu mensaje">
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+
+  <aside>
+    <div class="panel">
+      <h3>📥 Lo que recibe el centro</h3>
+      <p class="small" style="margin:0">Cuando alguien pide cita, el centro recibe la solicitud ordenada (en su correo, WhatsApp u hoja de cálculo) y solo tiene que confirmar el hueco. Mientras estás en cabina, nadie se queda sin respuesta.</p>
+      <div class="ficha" id="ficha">
+        <b>Nueva solicitud de cita</b>
+        <dl id="fichaDatos"></dl>
+      </div>
+      <p class="small" id="fichaVacia" style="margin:12px 0 0">Aún no hay solicitudes. Pide una cita en el chat para verla aparecer aquí.</p>
+    </div>
+
+    <div class="panel">
+      <h3>⚙️ Avisos que se mandan solos</h3>
+      <p class="small" style="margin:0">Se programan con cada cita y cada sesión del bono:</p>
+      <ul class="timeline">
+        <li><span class="d">−24 h</span><span>Recordatorio de la cita con botón para confirmar o cambiarla. Menos huecos vacíos por olvidos.</span></li>
+        <li><span class="d">Día 0</span><span>Cuidados por escrito tras el tratamiento (por ejemplo, nada de sol ni calor 48 h después del láser).</span></li>
+        <li><span class="d">Día 2</span><span>«¿Qué tal la piel?» Si algo no va bien, la respuesta le llega al centro.</span></li>
+        <li><span class="d">Día 30</span><span>Aviso de la siguiente sesión del bono, con enlace para reservarla.</span></li>
+        <li><span class="d">Fin bono</span><span>Petición de reseña en Google y oferta para renovar el bono.</span></li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>📊 Este mes, en esta demo</h3>
+      <div class="counter">
+        <div><b id="cPreg">0</b><span>preguntas respondidas</span></div>
+        <div><b id="cCitas">0</b><span>solicitudes de cita</span></div>
+        <div><b id="cMin">0</b><span>minutos ahorrados*</span></div>
+      </div>
+      <p class="small" style="margin:10px 0 0">*Calculado a 2 minutos por respuesta que el centro no ha tenido que escribir.</p>
+    </div>
+  </aside>
+</main>
+
+<div class="wrap">
+  <div class="cta">
+    <div>
+      <h2>¿Lo quieres para tu negocio?</h2>
+      <p class="muted" style="margin:.4em 0 0">Lo adaptamos a tus servicios, precios y forma de trabajar. Primero te lo enseñamos con tus datos.</p>
+    </div>
+    <a class="btn" href="../../#contacto">Pide tu diagnóstico gratis</a>
+  </div>
+</div>
+
+<footer class="wrap small">Demo de <a href="../../">Engrana</a>. Este chat funciona con respuestas predefinidas para enseñar el flujo: no guarda ni envía nada de lo que escribas.</footer>
+
+<script>
+  // ---- Datos del centro (de ejemplo) ----
+  const CENTRO = {
+    nombre: 'Nácar Estética',
+    horario: 'De lunes a viernes, de 10:00 a 14:00 y de 16:00 a 20:30. Sábados, de 10:00 a 14:00.',
+    direccion: 'Calle Ejemplo 8, Valladolid (junto a la Plaza de España). Hay parking público a 2 minutos.',
+  };
+
+  // ---- Intenciones: palabras clave → respuesta ----
+  const INTENCIONES = [
+    { claves: ['laser', 'láser', 'depila', 'vello'], respuesta: () =>
+      `Depilación láser de diodo, precios por sesión:\n• Axilas o ingles: 35 €\n• Medias piernas: 59 €\n• Piernas enteras: 89 €\n• Bono 6 sesiones: paga 5\n\nLas sesiones van cada 4–6 semanas y conviene no tomar el sol antes ni después. La primera visita incluye una valoración gratis de piel y vello. ¿Te reservo?`,
+      chips: ['Pedir cita', '¿Duele?', 'Bonos'] },
+    { claves: ['facial', 'limpieza', 'cara', 'acne', 'acné', 'manchas', 'arrugas', 'rejuven', 'hidrata'], respuesta: () =>
+      `Tratamientos faciales:\n• Limpieza facial profunda: 45 €\n• Hidratación con ácido hialurónico (cosmético): 55 €\n• Radiofrecuencia facial: 60 € (bono de 5: 250 €)\n\nSi no sabes cuál te conviene, en la primera visita la esteticista te mira la piel y te recomienda uno, sin compromiso.`,
+      chips: ['Pedir cita', 'Bonos', 'Valoración gratis'] },
+    { claves: ['corporal', 'celulitis', 'grasa', 'reductor', 'reduccion', 'reducción', 'presoterapia', 'maderoterapia', 'piernas cansadas', 'crio'], respuesta: () =>
+      `Tratamientos corporales:\n• Presoterapia: 30 € (bono de 10: 250 €)\n• Maderoterapia: 45 €\n• Radiofrecuencia corporal: 55 €\n\nLos resultados dependen de cada persona, por eso empezamos con una valoración gratis y te proponemos un plan con las sesiones justas.`,
+      chips: ['Valoración gratis', 'Bonos', 'Pedir cita'] },
+    { claves: ['ceja', 'pestaña', 'pestana', 'lifting', 'micropig', 'laminado'], respuesta: () =>
+      `Cejas y pestañas:\n• Diseño de cejas: 15 €\n• Laminado de cejas: 35 €\n• Lifting de pestañas con tinte: 40 €\n\nDura unas 6–8 semanas. ¿Te busco hueco?`,
+      chips: ['Pedir cita', 'Horario'] },
+    { claves: ['bono', 'pack', 'oferta', 'descuento', 'promo'], respuesta: () =>
+      `Bonos activos:\n• Láser: 6 sesiones al precio de 5\n• Presoterapia: 10 sesiones por 250 €\n• Radiofrecuencia facial: 5 sesiones por 250 €\n\nLos bonos duran 12 meses y te avisamos antes de cada sesión para que no se te pase.`,
+      chips: ['Pedir cita', 'Valoración gratis'] },
+    { claves: ['valoracion', 'valoración', 'primera vez', 'primera visita', 'gratis', 'asesor', 'cual me conviene', 'cuál me conviene'], respuesta: () =>
+      'La primera visita incluye una valoración gratis (unos 20 minutos): la esteticista mira tu piel, te explica qué tratamiento te conviene y cuántas sesiones harían falta. No te comprometes a nada.', chips: ['Pedir cita'] },
+    { claves: ['duele', 'dolor', 'molest'], respuesta: () =>
+      'El láser de diodo se nota como un pequeño pellizco de calor; lleva frío en el cabezal y la mayoría lo tolera muy bien. Ajustamos la potencia en cada sesión.', chips: ['Pedir cita', 'Depilación láser'] },
+    { claves: ['embaraz', 'lactancia', 'medicac', 'enfermedad', 'marcapasos', 'piel morena', 'bronceada'], respuesta: () =>
+      'Hay casos en los que algunos tratamientos no se recomiendan o hay que esperar. Prefiero que te lo valore la esteticista para no decirte nada incorrecto: le paso tu duda y te contesta ella. Si quieres, te reservo la valoración gratis.', chips: ['Valoración gratis'] },
+    { claves: ['cancel', 'cambiar', 'anular', 'no puedo ir', 'mover'], respuesta: () =>
+      'Sin problema: si avisas con 24 h de antelación, cambias la cita sin coste. El día antes te llega un recordatorio con un botón para confirmarla o cambiarla.', chips: ['Pedir cita', 'Horario'] },
+    { claves: ['regalo', 'regalar', 'cumple'], respuesta: () =>
+      'Sí, tenemos tarjetas regalo del importe que quieras o de un tratamiento concreto. Se compran en el centro o te la preparamos para recoger.', chips: ['Horario', '¿Dónde estáis?'] },
+    { claves: ['pago', 'pagar', 'bizum', 'financ', 'plazos'], respuesta: () =>
+      'Puedes pagar con tarjeta, Bizum o efectivo. Los bonos grandes se pueden pagar en 2 o 3 plazos sin intereses.', chips: ['Bonos', 'Pedir cita'] },
+    { claves: ['precio', 'cuesta', 'cuanto', 'cuánto', 'tarifa', 'carta'], respuesta: () =>
+      '¿De qué tratamiento? Te paso los precios al momento:', chips: ['Depilación láser', 'Facial', 'Corporal', 'Cejas y pestañas'] },
+    { claves: ['horario', 'a que hora', 'a qué hora', 'abierto', 'abris', 'abrís', 'cerrais', 'cerráis'], respuesta: () => CENTRO.horario, chips: ['¿Dónde estáis?', 'Pedir cita'] },
+    { claves: ['donde', 'dónde', 'direccion', 'dirección', 'ubicacion', 'ubicación', 'llegar', 'parking', 'aparcar'], respuesta: () => CENTRO.direccion, chips: ['Horario', 'Pedir cita'] },
+    { claves: ['hola', 'buenas', 'hey', 'saludos'], respuesta: () => '¡Hola! 👋 ¿En qué te ayudo? Te doy precios, te explico los tratamientos o te busco cita.', chips: ['Precios', 'Pedir cita', 'Bonos'] },
+    { claves: ['gracias', 'genial', 'perfecto', 'vale gracias'], respuesta: () => '¡A ti! Si necesitas algo más, aquí estoy a cualquier hora. ✨', chips: [] },
+  ];
+  const CITA = ['cita', 'reservar', 'reserva', 'pedir', 'agendar', 'hueco', 'disponibilidad', 'apuntarme'];
+
+  // ---- Flujo de cita (paso a paso) ----
+  const PASOS = [
+    { campo: 'Tratamiento', pregunta: '¡Genial! ¿Qué tratamiento te interesa?', chips: ['Depilación láser', 'Limpieza facial', 'Presoterapia', 'Valoración gratis'] },
+    { campo: '¿Primera vez?', pregunta: '¿Es tu primera vez en el centro?', chips: ['Sí, primera vez', 'No, ya he venido'] },
+    { campo: 'Preferencia de día', pregunta: '¿Qué días u horas te vienen mejor?', chips: ['Mañanas', 'Tardes entre semana', 'Sábado'] },
+    { campo: 'Nombre', pregunta: '¿Cómo te llamas?' },
+    { campo: 'Contacto', pregunta: 'Por último, ¿un teléfono para confirmarte la cita? (En esta demo no se guarda nada).' },
+  ];
+
+  // ---- Estado y utilidades ----
+  const $ = id => document.getElementById(id);
+  const msgs = $('msgs'), chips = $('chips'), txt = $('txt');
+  let paso = -1; const datos = {};
+  let nPreg = 0, nCitas = 0;
+
+  const normal = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  function burbuja(texto, quien) {
+    const d = document.createElement('div');
+    d.className = 'msg ' + quien; d.textContent = texto;
+    msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+  }
+  function ponerChips(lista) {
+    chips.innerHTML = '';
+    (lista || []).forEach(t => {
+      const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.textContent = t;
+      b.addEventListener('click', () => enviar(t));
+      chips.appendChild(b);
+    });
+  }
+  function responder(texto, lista) {
+    ponerChips([]);
+    const t = document.createElement('div'); t.className = 'typing'; t.textContent = 'escribiendo…';
+    msgs.appendChild(t); msgs.scrollTop = msgs.scrollHeight;
+    setTimeout(() => { t.remove(); burbuja(texto, 'bot'); ponerChips(lista); }, 650 + Math.min(texto.length * 6, 900));
+  }
+  function contar() {
+    $('cPreg').textContent = nPreg; $('cCitas').textContent = nCitas; $('cMin').textContent = nPreg * 2;
+  }
+
+  function mostrarFicha() {
+    const dl = $('fichaDatos'); dl.innerHTML = '';
+    Object.entries(datos).forEach(([k, v]) => {
+      const dt = document.createElement('dt'); dt.textContent = k;
+      const dd = document.createElement('dd'); dd.textContent = v;
+      dl.append(dt, dd);
+    });
+    $('ficha').classList.add('on'); $('fichaVacia').style.display = 'none';
+  }
+
+  function enviar(texto) {
+    texto = texto.trim(); if (!texto) return;
+    burbuja(texto, 'user');
+    nPreg++; contar();
+    if (nPreg === 1 && window.engranaEv) window.engranaEv('demo-chat');
+
+    // Dentro del flujo de cita
+    if (paso >= 0) {
+      datos[PASOS[paso].campo] = texto;
+      paso++;
+      if (paso < PASOS.length) { responder(PASOS[paso].pregunta, PASOS[paso].chips); return; }
+      paso = -1; nCitas++; contar(); mostrarFicha();
+      if (window.engranaEv) window.engranaEv('demo-reserva');
+      responder(`¡Listo, ${datos['Nombre']}! He pasado tu solicitud al centro. Te escriben para confirmarte el hueco y el día antes te llegará un recordatorio. ✨`, ['Bonos', '¿Dónde estáis?']);
+      return;
+    }
+
+    const n = normal(texto);
+    const cambio = ['cambiar', 'cancel', 'anular', 'mover', 'no puedo ir'].some(c => n.includes(c));
+    if (!cambio && CITA.some(c => n.includes(normal(c)))) {
+      paso = 0; responder(PASOS[0].pregunta, PASOS[0].chips); return;
+    }
+    const intent = INTENCIONES.find(i => i.claves.some(c => n.includes(normal(c))));
+    if (intent) { responder(intent.respuesta(), intent.chips); return; }
+
+    responder('Esa pregunta prefiero pasársela a la esteticista para no decirte nada incorrecto. Te contestará en cuanto salga de cabina. Mientras, ¿te ayudo con precios, bonos o una cita?', ['Precios', 'Pedir cita', 'Bonos']);
+  }
+
+  $('send').addEventListener('submit', e => { e.preventDefault(); enviar(txt.value); txt.value = ''; txt.focus(); });
+
+  // Mensaje de bienvenida
+  responder('¡Hola! 👋 Soy el asistente de Nácar Estética. Te contesto al momento, a cualquier hora, aunque estemos en cabina. ¿Qué necesitas?', ['Precios', 'Pedir cita', 'Bonos', 'Valoración gratis']);
+</script>
+<script defer src="../../m.js" data-site="engrana" data-api="https://script.google.com/macros/s/AKfycbxUQt_fUgS_BEP-gdpqzNt1EqRblhiBikMZr5ThNytjFnjY_kvcknVICwr1iis0NjyO/exec"></script>
+</body>
+</html>
