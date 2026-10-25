@@ -47,7 +47,8 @@
   .cart-count { position: absolute; top: -6px; right: -6px; min-width: 22px; height: 22px; border-radius: 11px; background: var(--dark); color: #fff; font: 700 .75rem Inter; display: grid; place-items: center; padding: 0 5px; }
   .cart-count[hidden] { display: none; }
 
-  .hero { padding: 40px 0 28px; }
+  .hero { padding: 40px 0 28px; background: #fff url(acuarela.svg) center / cover no-repeat; border-bottom: 1px solid var(--line); }
+  .hero-grid > div:first-child { background: rgba(255,255,255,.88); border-radius: 18px; padding: 18px 20px; box-shadow: 0 0 40px 20px rgba(255,255,255,.85); }
   .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; align-items: center; }
   .photo { border-radius: 18px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(21,22,58,.12); }
   .photo img { display: block; width: 100%; height: auto; }
@@ -139,6 +140,7 @@
     .hero-grid, .info-grid, .steps-row { grid-template-columns: 1fr; }
     .steps-row .step + .step { border-left: 0; border-top: 1px dashed var(--line); }
     .svc-grid { grid-template-columns: 1fr 1fr; }
+    .hero { background-size: 1250px auto; background-position: -40px -20px; padding-top: 120px; }
     .notfound { grid-template-columns: 1fr; }
     .top .call-txt { display: none; }
   }
