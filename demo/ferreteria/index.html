@@ -89,6 +89,11 @@
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
   .thumb { aspect-ratio: 4/3; display: grid; place-items: center; background: var(--brand-soft); color: var(--brand-dark); }
   .thumb svg { width: 56px; height: 56px; }
+  .thumb.foto { background: #fff; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
+  .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .price small { display: block; font: 600 .7rem Inter; color: #B3261E; text-transform: uppercase; letter-spacing: .04em; }
+  .svc .fotos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin: 4px 0; }
+  .svc .fotos img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; }
   .card .body { padding: 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
   .card .cat { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
   .card p { font-size: .88rem; color: var(--muted); margin: 0; flex: 1; }
@@ -159,7 +164,7 @@
 </head>
 <body>
 
-<div class="demo-bar">Demostración preparada por <a href="https://engranaia.com/">Engrana</a> · productos de ejemplo · <a href="tienda.html">mira cómo le llegan las reservas a la tienda →</a></div>
+<div class="demo-bar">Demostración preparada por <a href="https://engranaia.com/">Engrana</a> · fotos y productos de su Instagram · <a href="tienda.html">mira cómo le llegan las reservas a la tienda →</a></div>
 
 <header class="top">
   <div class="wrap">
@@ -201,7 +206,7 @@
   <div class="wrap">
     <h2>También en tienda</h2>
     <div class="svc-grid">
-      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.8-9.8M17 6l3 3M15 8l2 2"/></svg></div><h3>Copia de llaves y mandos</h3><p>Llaves de casa, de seguridad y mandos de garaje. Tráenos el tuyo y te hacemos la copia.</p><a class="wa-svc" data-t="Hola, ¿me podéis hacer una copia de una llave/mando? Es de tipo: ">Consultar →</a></div>
+      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.8-9.8M17 6l3 3M15 8l2 2"/></svg></div><h3>Copia de llaves y mandos</h3><div class="fotos"><img src="fotos/p52.jpg" alt="Llaves serreta" loading="lazy"><img src="fotos/p55.jpg" alt="Llaves de seguridad" loading="lazy"><img src="fotos/p54.jpg" alt="Llaves magnéticas" loading="lazy"><img src="fotos/p53.jpg" alt="Mandos de garaje" loading="lazy"></div><p>Llaves serreta, de seguridad y de puntos, magnéticas, y mandos de garaje y puertas correderas.</p><a class="wa-svc" data-t="Hola, ¿me podéis hacer una copia de una llave/mando? Es de tipo: ">Consultar →</a></div>
       <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 6v5h3v10h10V11h3V6l-4-3c0 2-1.8 3-4 3S8 5 8 3z"/></svg></div><h3>Vestuario laboral personalizado</h3><p>Ropa de trabajo con el logo de tu empresa, alta visibilidad y calzado de seguridad.</p><a class="wa-svc" data-t="Hola, quería información sobre ropa de trabajo personalizada para ">Pedir presupuesto →</a></div>
       <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a9 9 0 0 1 18 0zM2 15h20v3H2zM12 6V3"/></svg></div><h3>Material de protección</h3><p>Cascos, guantes, gafas, mascarillas y chalecos para obra, taller o campo.</p><a class="wa-svc" data-t="Hola, ¿tenéis este material de protección?: ">Consultar →</a></div>
       <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l6 4V9l6 4V5h6v16zM7 17h2M12 17h2M17 17h2"/></svg></div><h3>Suministros industriales</h3><p>Para empresas, talleres y profesionales: te preparamos los pedidos y te los tenemos listos.</p><a class="wa-svc" data-t="Hola, soy de una empresa y quería consultar un pedido de: ">Hablar con nosotros →</a></div>
@@ -286,96 +291,79 @@ const ICONOS = {
   jardin: '<path d="M12 22V12M12 12C12 7 8 4 3 4c0 5 4 8 9 8zM12 12c0-5 4-8 9-8 0 5-4 8-9 8z"/>',
   pilas: '<path d="M7 6h10v15H7zM10 3h4v3M10 13h4M12 11v4"/>',
   vestuario: '<path d="M8 3 4 6v5h3v10h10V11h3V6l-4-3c0 2-1.8 3-4 3S8 5 8 3z"/>',
-  electro: '<path d="M6 3h12v18H6zM6 8h12M9 5.5h1M12 14a2.5 2.5 0 1 0 0-.01"/>'
+  electro: '<path d="M6 3h12v18H6zM6 8h12M9 5.5h1M12 14a2.5 2.5 0 1 0 0-.01"/>',
+  estufas: '<path d="M5 8h14v13H5zM8 3h3v5H8zM8 12h8v5H8z"/>'
 };
 
 const CATS = [
-  ['todo','Todo'], ['electricidad','Electricidad'], ['iluminacion','Iluminación'], ['herramienta','Herramienta manual'],
+  ['todo','Todo'], ['ofertas','Ofertas'], ['estufas','Estufas y deshollinado'], ['electricidad','Electricidad'], ['iluminacion','Iluminación'], ['herramienta','Herramienta manual'],
   ['electrica','Herramienta eléctrica'], ['fontaneria','Fontanería'], ['tornilleria','Tornillería y cerrajería'],
   ['pintura','Pintura y adhesivos'], ['vestuario','Ropa de trabajo y protección'], ['electro','Pequeño electrodoméstico'],
   ['hogar','Hogar y menaje'], ['jardin','Jardín'], ['pilas','Pilas y electrónica']
 ];
 
-// Productos de ejemplo (se sustituyen por los reales de la tienda). precio: null = "Consultar precio"
+// Productos reales de su Instagram (@fersamansl, 25/10/2026). foto: fotos/pNN.jpg. precio: null = "Precio en tienda".
+// Los de electricidad, iluminación y pilas siguen siendo de ejemplo hasta que la tienda pase su lista.
 const PRODUCTOS = [
-  ['electricidad','Regleta de 5 enchufes con interruptor','Con protección infantil y cable de 1,5 m.',null],
-  ['electricidad','Alargador de 3 metros','Enchufe schuko, para interior.',null],
-  ['electricidad','Enchufe de superficie','Base schuko blanca para montar en pared.',null],
-  ['electricidad','Clavija macho schuko','Para reparar cables de electrodomésticos.',null],
-  ['electricidad','Cinta aislante','Rollo de 20 m, varios colores.',null],
-  ['electricidad','Interruptor de paso','Para lámparas y cables de mesa.',null],
-  ['electricidad','Cable manguera 3×1,5 mm','Por metros, a la medida que necesites.',null],
-  ['electricidad','Programador horario','Analógico, para enchufe.',null],
-  ['iluminacion','Bombilla LED E27','Luz cálida o fría, equivale a 60 W.',null],
-  ['iluminacion','Bombilla LED E14','Rosca fina, para lámparas pequeñas.',null],
-  ['iluminacion','Bombilla LED GU10','Para focos empotrados.',null],
-  ['iluminacion','Tira LED','Con fuente de alimentación, para muebles y cocinas.',null],
-  ['iluminacion','Foco LED de exterior','Resistente al agua, con o sin sensor.',null],
-  ['iluminacion','Linterna LED','Recargable o de pilas.',null],
-  ['iluminacion','Foco solar con sensor','Sin cables: se carga con el sol.',null],
-  ['herramienta','Martillo de carpintero','Mango de fibra antivibración.',null],
-  ['herramienta','Juego de destornilladores','Planos y de estrella.',null],
-  ['herramienta','Alicates universales','Con mango aislado.',null],
-  ['herramienta','Cinta métrica 5 m','Con freno y gancho magnético.',null],
-  ['herramienta','Nivel de burbuja','40 cm, de aluminio.',null],
-  ['herramienta','Llave inglesa','Ajustable, varias medidas.',null],
-  ['herramienta','Cúter profesional','Con cuchillas de repuesto.',null],
-  ['herramienta','Juego de llaves Allen','De 1,5 a 10 mm.',null],
-  ['electrica','Taladro percutor','Para pared, madera y metal.',null],
-  ['electrica','Atornillador de batería','Con dos baterías y cargador.',null],
-  ['electrica','Juego de brocas','Para pared, madera y metal.',null],
-  ['electrica','Pistola de silicona caliente','Con barras de repuesto.',null],
-  ['electrica','Soldador de estaño','Para electrónica y reparaciones.',null],
-  ['electrica','Polímetro','Para medir tensión, corriente y continuidad.',null],
-  ['fontaneria','Cinta de teflón','Para sellar roscas de agua.',null],
-  ['fontaneria','Latiguillo flexible','Para grifos y cisternas, varias medidas.',null],
-  ['fontaneria','Grifo de lavabo','Monomando, con instalación sencilla.',null],
-  ['fontaneria','Alcachofa de ducha','Varias funciones, rosca universal.',null],
-  ['fontaneria','Sifón de lavabo','Extensible, de PVC.',null],
-  ['fontaneria','Desatascador','De ventosa o químico.',null],
-  ['fontaneria','Llave de paso','De 1/2" y 3/4".',null],
-  ['tornilleria','Tacos y tornillos surtidos','Caja con las medidas más usadas.',null],
-  ['tornilleria','Bisagras para puertas','Varias medidas y acabados.',null],
-  ['tornilleria','Candado de seguridad','Con dos llaves.',null],
-  ['tornilleria','Cerradura de sobreponer','Para puertas de madera.',null],
-  ['tornilleria','Ganchos y escarpias','Para colgar cuadros y herramientas.',null],
-  ['tornilleria','Cáncamos y argollas','Para cuerdas y cadenas.',null],
-  ['pintura','Silicona transparente','Para baños y cocinas, antimoho.',null],
-  ['pintura','Cinta de carrocero','Para pintar sin manchar.',null],
-  ['pintura','Brochas y rodillos','Para pintura plástica y esmaltes.',null],
-  ['pintura','Masilla para paredes','Tapa agujeros y grietas.',null],
-  ['pintura','Pegamento instantáneo','Gota precisa, pega casi todo.',null],
-  ['pintura','Cola blanca para madera','Bote de 250 g.',null],
-  ['hogar','Burlete para puertas y ventanas','Evita corrientes y ahorra calefacción.',null],
-  ['electro','Calefactor eléctrico','Compacto, con termostato.',null],
-  ['electro','Ventilador de sobremesa','Tres velocidades.',null],
-  ['electro','Freidora de aire','Cocina con poco aceite.',null],
-  ['electro','Plancha de vapor','Suela antiadherente.',null],
-  ['electro','Batidora de mano','Con accesorios de picar y montar.',null],
-  ['electro','Cafetera','De goteo o espresso.',null],
-  ['vestuario','Chaleco reflectante','Alta visibilidad, talla única.',null],
-  ['vestuario','Guantes de trabajo','De nitrilo, piel o anticorte.',null],
-  ['vestuario','Gafas de protección','Antiempañantes.',null],
-  ['vestuario','Mascarillas FFP2','Caja de 10 o de 20.',null],
-  ['vestuario','Casco de obra','Con ajuste de rueda.',null],
-  ['vestuario','Calzado de seguridad','Con puntera y plantilla antiperforación.',null],
-  ['vestuario','Pantalón de trabajo','Multibolsillos, varias tallas.',null],
-  ['hogar','Tendedero plegable','De aluminio, para interior o terraza.',null],
-  ['hogar','Escalera de 3 peldaños','Plegable y ligera.',null],
-  ['hogar','Menaje de cocina','Sartenes, cazos y utensilios.',null],
-  ['jardin','Manguera de jardín','Con enlaces y pistola de riego.',null],
-  ['jardin','Tijera de podar','Corte limpio para ramas finas.',null],
-  ['jardin','Regadera','De 10 litros.',null],
-  ['jardin','Guantes de jardinería','Resistentes y transpirables.',null],
-  ['jardin','Programador de riego','Para grifo, a pilas.',null],
-  ['pilas','Pilas alcalinas AA','Pack de 4 o de 8.',null],
-  ['pilas','Pilas AAA','Para mandos y juguetes.',null],
-  ['pilas','Pila de botón','CR2032 y otras medidas.',null],
-  ['pilas','Cargador USB','Uno o dos puertos, carga rápida.',null],
-  ['pilas','Cable HDMI','De 1,5 a 5 metros.',null],
-  ['pilas','Antena de TV interior','Para TDT.',null],
-  ['pilas','Mando universal de TV','Fácil de configurar.',null]
-].map((p, i) => ({ id: i + 1, cat: p[0], nombre: p[1], desc: p[2], precio: p[3] }));
+  ['fontaneria','Grifo de fregadero','Caño giratorio. Precio de oferta hasta fin de existencias.',37.95,22],
+  ['fontaneria','Grifo de baño-ducha','Mezclador de pared. Precio de oferta hasta fin de existencias.',33.95,23],
+  ['fontaneria','Grifo de pared con caño alto','Precio de oferta hasta fin de existencias.',34.95,24],
+  ['electrica','Pantalla de soldar automática','Se oscurece sola al soldar. Precio de oferta.',39.90,61],
+  ['estufas','Estufa de leña con rejilla para cocinar','Con rejilla para cocinar y otra tapa ciega.',null,49],
+  ['estufas','Accesorios para estufas de leña','Tubos, codos, sombreros, plafones, abrazaderas y masilla de alta temperatura.',null,7],
+  ['estufas','Kit deshollinador para tubo de 150 mm','Con 4 varillas.',null,15],
+  ['estufas','Kit deshollinador para tubos de 80 mm','Para el mantenimiento de tubos de estufas.',null,16],
+  ['estufas','Erizos de nylon para deshollinar','Varios tamaños.',null,13],
+  ['estufas','Erizos de metal para deshollinar','Para limpiar a fondo el tubo.',null,14],
+  ['estufas','Tronco deshollinador','Se quema en la estufa y ayuda a limpiar el hollín.',null,45],
+  ['estufas','Limpiador de cristales de estufa','Pulverizador para el cristal de estufas e insertables.',null,12],
+  ['estufas','Espuma limpiacristales','Para cristales de estufas, hornos y cocinas.',null,40],
+  ['estufas','Kit de cordón y pegamento','Para reparar juntas a altas temperaturas.',null,43],
+  ['tornilleria','Candados','Gran variedad: latón, acero, arco largo y de combinación.',null,0],
+  ['tornilleria','Bombines de seguridad','Varias medidas, con llaves.',null,8],
+  ['tornilleria','Cerraduras de encastrar','Varios modelos y tamaños.',null,44],
+  ['tornilleria','Candado espiral para bicicleta','Varios tipos y largos.',null,10],
+  ['tornilleria','Patas para somier','Varios tamaños.',null,63],
+  ['herramienta','Juego de carraca de 1/4"','Con vasos y puntas.',null,75],
+  ['herramienta','Destornillador de precisión','22 piezas: mango y 21 puntas.',null,76],
+  ['herramienta','Destornillador de puntas intercambiables','Con 10 puntas.',null,77],
+  ['electrica','Herramientas a batería','Varias máquinas con una sola batería y cargador.',null,34],
+  ['electrica','Pistola de pintar eléctrica','Para paredes, vallas y muebles.',null,26],
+  ['electrica','Pistola de pintar con depósito','Aerográfica, para compresor.',null,32],
+  ['jardin','Desbrozadora de gasolina 52 cc','Motor de dos tiempos.',null,95],
+  ['jardin','Arnés para desbrozadora','Reparte el peso en los dos hombros.',null,94],
+  ['jardin','Cortabordes de batería 20 V','Ligero y sin cables.',null,93],
+  ['jardin','Cortasetos 500 W','Eléctrico, para setos y arbustos.',null,90],
+  ['vestuario','Bota de seguridad con membrana','Puntera y plantilla no metálicas.',null,46],
+  ['vestuario','Bota de montaña','Cómoda y resistente.',null,6],
+  ['vestuario','Plantillas de gel','Para calzado de trabajo y deporte.',null,2],
+  ['vestuario','Faja lumbar','Con tirantes, para proteger la espalda.',null,65],
+  ['vestuario','Petos, camisetas y sudaderas de trabajo','También personalizados con el logo de tu empresa.',null,72],
+  ['electro','Cafetera espresso 1350 W','20 bares de presión.',null,29],
+  ['electro','Aspiradora sin bolsa 700 W','Depósito de 2,2 litros.',null,31],
+  ['electro','Fondue eléctrica 800 W','Juego completo con tenedores.',null,28],
+  ['electro','Gofrera antiadherente','De 200 mm.',null,57],
+  ['electro','Manta eléctrica','180 × 130 cm.',null,58],
+  ['electro','Máquina cortapelo','Con accesorios.',null,80],
+  ['hogar','Cafeteras de acero inoxidable','Válidas para inducción.',null,37],
+  ['hogar','Jarra filtradora Laica','Agua filtrada en casa.',null,56],
+  ['hogar','Jarra Laica con 3 filtros','Pack con filtros de recambio.',null,68],
+  ['hogar','Cocina portátil de gas','Para cartucho o bombona de butano, con patas antideslizantes.',null,27],
+  ['hogar','Hornillo de gas','Compacto, para camping o emergencias.',null,60],
+  ['hogar','Mosquiteras para ventana','Que no te molesten los insectos.',null,25],
+  ['hogar','Trampas para ratas y ratones','De madera, varios tamaños.',null,1],
+  ['pintura','Caucho de fibras antigoteras','Impermeabiliza terrazas y tejados.',null,11],
+  ['electricidad','Regleta de 5 enchufes con interruptor','Con protección infantil y cable de 1,5 m.',null,null],
+  ['electricidad','Alargador de 3 metros','Enchufe schuko, para interior.',null,null],
+  ['electricidad','Cinta aislante','Rollo de 20 m, varios colores.',null,null],
+  ['electricidad','Programador horario','Analógico, para enchufe.',null,null],
+  ['iluminacion','Bombillas LED','E27, E14 y GU10, luz cálida o fría.',null,null],
+  ['iluminacion','Foco LED de exterior','Resistente al agua, con o sin sensor.',null,null],
+  ['iluminacion','Linterna LED','Recargable o de pilas.',null,null],
+  ['pilas','Pilas alcalinas','AA, AAA y de botón.',null,null],
+  ['pilas','Cargador USB','Uno o dos puertos, carga rápida.',null,null],
+  ['pilas','Mando universal de TV','Fácil de configurar.',null,null]
+].map((p, i) => ({ id: i + 1, cat: p[0], nombre: p[1], desc: p[2], precio: p[3], foto: p[4] == null ? null : `fotos/p${String(p[4]).padStart(2, '0')}.jpg` }));
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -411,20 +399,20 @@ function pintarChips() {
 }
 function pintarGrid() {
   const q = sinTildes($('#q').value.trim());
-  const lista = PRODUCTOS.filter(p => (filtro === 'todo' || p.cat === filtro) && (!q || sinTildes(p.nombre + ' ' + p.desc + ' ' + nombreCat(p.cat)).includes(q)));
+  const lista = PRODUCTOS.filter(p => (filtro === 'todo' || p.cat === filtro || (filtro === 'ofertas' && p.precio != null)) && (!q || sinTildes(p.nombre + ' ' + p.desc + ' ' + nombreCat(p.cat)).includes(q)));
   if (!lista.length) {
     $('#grid').innerHTML = `<div class="empty" style="grid-column:1/-1"><h3>No lo vemos en la web…</h3><p class="muted">…pero puede que lo tengamos en tienda.</p><a class="btn btn-brand" href="${wa('Hola, ¿tenéis ' + $('#q').value.trim() + '?')}" target="_blank" rel="noopener">Preguntar por «${esc($('#q').value.trim())}»</a></div>`;
     return;
   }
   $('#grid').innerHTML = lista.map(p => `
     <article class="card">
-      <div class="thumb">${icono(p.cat)}</div>
+      <div class="thumb${p.foto ? ' foto' : ''}">${p.foto ? `<img src="${p.foto}" alt="${esc(p.nombre)}" loading="lazy">` : icono(p.cat)}</div>
       <div class="body">
         <span class="cat">${nombreCat(p.cat)}</span>
         <h3>${esc(p.nombre)}</h3>
         <p>${esc(p.desc)}</p>
         <div class="row">
-          ${p.precio != null ? `<span class="price">${p.precio.toFixed(2).replace('.', ',')} €</span>` : `<span class="ask">Precio en tienda</span>`}
+          ${p.precio != null ? `<span class="price">${p.precio.toFixed(2).replace('.', ',')} €<small>Oferta</small></span>` : `<span class="ask">Precio en tienda</span>`}
           <button class="btn btn-brand add${carrito[p.id] ? ' done' : ''}" data-id="${p.id}">${carrito[p.id] ? 'Añadido ✓' : 'Reservar'}</button>
         </div>
       </div>
@@ -433,8 +421,8 @@ function pintarGrid() {
 
 // ---- Reserva ----
 let carrito = {};
-try { carrito = JSON.parse(localStorage.getItem('fersaman_reserva') || '{}'); } catch (e) { carrito = {}; }
-const guardar = () => { try { localStorage.setItem('fersaman_reserva', JSON.stringify(carrito)); } catch (e) {} };
+try { carrito = JSON.parse(localStorage.getItem('fersaman_reserva2') || '{}'); } catch (e) { carrito = {}; }
+const guardar = () => { try { localStorage.setItem('fersaman_reserva2', JSON.stringify(carrito)); } catch (e) {} };
 const nItems = () => Object.values(carrito).reduce((a, b) => a + b, 0);
 function pintarContador() {
   const n = nItems();
