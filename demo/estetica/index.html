@@ -80,6 +80,12 @@
   .btn { display: inline-flex; padding: .85em 1.3em; border-radius: 12px; font-weight: 700; text-decoration: none; background: var(--grad); color: #0B1217; }
   footer { padding: 0 0 40px; }
 
+  .fchat { align-self: stretch; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px; display: grid; gap: 8px; }
+  .fchat label { display: grid; gap: 3px; font-size: .8rem; color: var(--muted); }
+  .fchat input, .fchat textarea { font: 400 .95rem Inter, sans-serif; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: .5em .7em; }
+  .fchat textarea { min-height: 60px; resize: vertical; }
+  .fchat button { font: 700 .9rem Inter, sans-serif; border: 0; border-radius: 10px; padding: .7em; background: var(--grad); color: #0B1217; cursor: pointer; }
+  form.send button:disabled { opacity: .5; cursor: default; }
   @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .phone { height: 580px; } }
 </style>
 </head>
@@ -94,7 +100,7 @@
 
 <header class="intro wrap">
   <h1>Así atendería un asistente a las clientas de <span class="grad">un centro de estética.</span></h1>
-  <p class="muted" style="max-width:44em">Escríbele como si fueras una clienta: pregunta precios, bonos o cuidados, o pide cita. A la derecha ves lo que le llegaría al centro y los avisos que se mandarían solos. El centro «Nácar Estética» y todos sus datos son inventados.</p>
+  <p class="muted" style="max-width:44em">Es un asistente con IA de verdad: escríbele como si fueras una clienta, con tus palabras. Pregunta precios, bonos o cuidados, o pide cita. A la derecha ves lo que le llegaría al centro y los avisos que se mandarían solos. El centro «Nácar Estética» y todos sus datos son inventados.</p>
 </header>
 
 <main class="wrap grid">
@@ -116,7 +122,7 @@
       <h3>📥 Lo que recibe el centro</h3>
       <p class="small" style="margin:0">Cuando alguien pide cita, el centro recibe la solicitud ordenada (en su correo, WhatsApp u hoja de cálculo) y solo tiene que confirmar el hueco. Mientras estás en cabina, nadie se queda sin respuesta.</p>
       <div class="ficha" id="ficha">
-        <b>Nueva solicitud de cita</b>
+        <b id="fichaTitulo">Nueva solicitud de cita</b>
         <dl id="fichaDatos"></dl>
       </div>
       <p class="small" id="fichaVacia" style="margin:12px 0 0">Aún no hay solicitudes. Pide una cita en el chat para verla aparecer aquí.</p>
@@ -156,68 +162,39 @@
   </div>
 </div>
 
-<footer class="wrap small">Demo de <a href="../../">Engrana</a>. Este chat funciona con respuestas predefinidas para enseñar el flujo: no guarda ni envía nada de lo que escribas.</footer>
+<footer class="wrap small">Demo de <a href="../../">Engrana</a>. El chat usa IA (Gemini) con los datos inventados de este centro; lo que escribes en el chat se guarda para mejorar el asistente, así que no pongas datos personales. El formulario de la demo no envía nada.</footer>
 
 <script>
-  // ---- Datos del centro (de ejemplo) ----
+  // El chat usa el asistente real (Apps Script + Gemini) con la ficha inventada de Nácar
+  // (asistente/clientes/nacar.json). Si el motor no responde, contesta con las respuestas
+  // predefinidas de abajo. El formulario de la demo NO envía nada: solo pinta la ficha del panel.
+  const API = 'https://script.google.com/macros/s/AKfycbxNv4YXqEmTXgU6KEkQeRlx4Kc0GMvzJWpqSsMA2JLULC-mGQCh8S_wHp-cGqmYgqyqDQ/exec';
+
+  // ---- Respuestas de reserva (por palabras clave) ----
   const CENTRO = {
-    nombre: 'Nácar Estética',
     horario: 'De lunes a viernes, de 10:00 a 14:00 y de 16:00 a 20:30. Sábados, de 10:00 a 14:00.',
     direccion: 'Calle Ejemplo 8, Valladolid (junto a la Plaza de España). Hay parking público a 2 minutos.',
   };
-
-  // ---- Intenciones: palabras clave → respuesta ----
   const INTENCIONES = [
-    { claves: ['laser', 'láser', 'depila', 'vello'], respuesta: () =>
-      `Depilación láser de diodo, precios por sesión:\n• Axilas o ingles: 35 €\n• Medias piernas: 59 €\n• Piernas enteras: 89 €\n• Bono 6 sesiones: paga 5\n\nLas sesiones van cada 4–6 semanas y conviene no tomar el sol antes ni después. La primera visita incluye una valoración gratis de piel y vello. ¿Te reservo?`,
-      chips: ['Pedir cita', '¿Duele?', 'Bonos'] },
-    { claves: ['facial', 'limpieza', 'cara', 'acne', 'acné', 'manchas', 'arrugas', 'rejuven', 'hidrata'], respuesta: () =>
-      `Tratamientos faciales:\n• Limpieza facial profunda: 45 €\n• Hidratación con ácido hialurónico (cosmético): 55 €\n• Radiofrecuencia facial: 60 € (bono de 5: 250 €)\n\nSi no sabes cuál te conviene, en la primera visita la esteticista te mira la piel y te recomienda uno, sin compromiso.`,
-      chips: ['Pedir cita', 'Bonos', 'Valoración gratis'] },
-    { claves: ['corporal', 'celulitis', 'grasa', 'reductor', 'reduccion', 'reducción', 'presoterapia', 'maderoterapia', 'piernas cansadas', 'crio'], respuesta: () =>
-      `Tratamientos corporales:\n• Presoterapia: 30 € (bono de 10: 250 €)\n• Maderoterapia: 45 €\n• Radiofrecuencia corporal: 55 €\n\nLos resultados dependen de cada persona, por eso empezamos con una valoración gratis y te proponemos un plan con las sesiones justas.`,
-      chips: ['Valoración gratis', 'Bonos', 'Pedir cita'] },
-    { claves: ['ceja', 'pestaña', 'pestana', 'lifting', 'micropig', 'laminado'], respuesta: () =>
-      `Cejas y pestañas:\n• Diseño de cejas: 15 €\n• Laminado de cejas: 35 €\n• Lifting de pestañas con tinte: 40 €\n\nDura unas 6–8 semanas. ¿Te busco hueco?`,
-      chips: ['Pedir cita', 'Horario'] },
-    { claves: ['bono', 'pack', 'oferta', 'descuento', 'promo'], respuesta: () =>
-      `Bonos activos:\n• Láser: 6 sesiones al precio de 5\n• Presoterapia: 10 sesiones por 250 €\n• Radiofrecuencia facial: 5 sesiones por 250 €\n\nLos bonos duran 12 meses y te avisamos antes de cada sesión para que no se te pase.`,
-      chips: ['Pedir cita', 'Valoración gratis'] },
-    { claves: ['valoracion', 'valoración', 'primera vez', 'primera visita', 'gratis', 'asesor', 'cual me conviene', 'cuál me conviene'], respuesta: () =>
-      'La primera visita incluye una valoración gratis (unos 20 minutos): la esteticista mira tu piel, te explica qué tratamiento te conviene y cuántas sesiones harían falta. No te comprometes a nada.', chips: ['Pedir cita'] },
-    { claves: ['duele', 'dolor', 'molest'], respuesta: () =>
-      'El láser de diodo se nota como un pequeño pellizco de calor; lleva frío en el cabezal y la mayoría lo tolera muy bien. Ajustamos la potencia en cada sesión.', chips: ['Pedir cita', 'Depilación láser'] },
-    { claves: ['embaraz', 'lactancia', 'medicac', 'enfermedad', 'marcapasos', 'piel morena', 'bronceada'], respuesta: () =>
-      'Hay casos en los que algunos tratamientos no se recomiendan o hay que esperar. Prefiero que te lo valore la esteticista para no decirte nada incorrecto: le paso tu duda y te contesta ella. Si quieres, te reservo la valoración gratis.', chips: ['Valoración gratis'] },
-    { claves: ['cancel', 'cambiar', 'anular', 'no puedo ir', 'mover'], respuesta: () =>
-      'Sin problema: si avisas con 24 h de antelación, cambias la cita sin coste. El día antes te llega un recordatorio con un botón para confirmarla o cambiarla.', chips: ['Pedir cita', 'Horario'] },
-    { claves: ['regalo', 'regalar', 'cumple'], respuesta: () =>
-      'Sí, tenemos tarjetas regalo del importe que quieras o de un tratamiento concreto. Se compran en el centro o te la preparamos para recoger.', chips: ['Horario', '¿Dónde estáis?'] },
-    { claves: ['pago', 'pagar', 'bizum', 'financ', 'plazos'], respuesta: () =>
-      'Puedes pagar con tarjeta, Bizum o efectivo. Los bonos grandes se pueden pagar en 2 o 3 plazos sin intereses.', chips: ['Bonos', 'Pedir cita'] },
-    { claves: ['precio', 'cuesta', 'cuanto', 'cuánto', 'tarifa', 'carta'], respuesta: () =>
-      '¿De qué tratamiento? Te paso los precios al momento:', chips: ['Depilación láser', 'Facial', 'Corporal', 'Cejas y pestañas'] },
-    { claves: ['horario', 'a que hora', 'a qué hora', 'abierto', 'abris', 'abrís', 'cerrais', 'cerráis'], respuesta: () => CENTRO.horario, chips: ['¿Dónde estáis?', 'Pedir cita'] },
-    { claves: ['donde', 'dónde', 'direccion', 'dirección', 'ubicacion', 'ubicación', 'llegar', 'parking', 'aparcar'], respuesta: () => CENTRO.direccion, chips: ['Horario', 'Pedir cita'] },
-    { claves: ['hola', 'buenas', 'hey', 'saludos'], respuesta: () => '¡Hola! 👋 ¿En qué te ayudo? Te doy precios, te explico los tratamientos o te busco cita.', chips: ['Precios', 'Pedir cita', 'Bonos'] },
-    { claves: ['gracias', 'genial', 'perfecto', 'vale gracias'], respuesta: () => '¡A ti! Si necesitas algo más, aquí estoy a cualquier hora. ✨', chips: [] },
+    { claves: ['laser', 'láser', 'depila', 'vello'], respuesta: `Depilación láser de diodo, precios por sesión:\n• Axilas o ingles: 35 €\n• Medias piernas: 59 €\n• Piernas enteras: 89 €\n• Bono 6 sesiones: paga 5\n\nLa primera visita incluye una valoración gratis. ¿Te reservo?`, chips: ['Pedir cita', '¿Duele?', 'Bonos'] },
+    { claves: ['facial', 'limpieza', 'cara', 'acne', 'acné', 'manchas', 'arrugas'], respuesta: `Tratamientos faciales:\n• Limpieza facial profunda: 45 €\n• Hidratación con ácido hialurónico (cosmético): 55 €\n• Radiofrecuencia facial: 60 € (bono de 5: 250 €)`, chips: ['Pedir cita', 'Bonos', 'Valoración gratis'] },
+    { claves: ['corporal', 'celulitis', 'presoterapia', 'maderoterapia', 'piernas cansadas'], respuesta: `Tratamientos corporales:\n• Presoterapia: 30 € (bono de 10: 250 €)\n• Maderoterapia: 45 €\n• Radiofrecuencia corporal: 55 €`, chips: ['Valoración gratis', 'Bonos', 'Pedir cita'] },
+    { claves: ['ceja', 'pestaña', 'pestana', 'lifting', 'laminado'], respuesta: `Cejas y pestañas:\n• Diseño de cejas: 15 €\n• Laminado de cejas: 35 €\n• Lifting de pestañas con tinte: 40 €`, chips: ['Pedir cita', 'Horario'] },
+    { claves: ['bono', 'pack', 'oferta', 'descuento'], respuesta: `Bonos activos:\n• Láser: 6 sesiones al precio de 5\n• Presoterapia: 10 sesiones por 250 €\n• Radiofrecuencia facial: 5 sesiones por 250 €`, chips: ['Pedir cita', 'Valoración gratis'] },
+    { claves: ['valoracion', 'valoración', 'primera vez'], respuesta: 'La primera visita incluye una valoración gratis (unos 20 minutos), sin compromiso.', chips: ['Pedir cita'] },
+    { claves: ['embaraz', 'lactancia', 'medicac', 'enfermedad'], respuesta: 'Eso prefiero que te lo valore la esteticista para no decirte nada incorrecto. Déjale tu duda en el formulario de abajo.', chips: [], accion: 'formulario_duda' },
+    { claves: ['precio', 'cuesta', 'cuanto', 'cuánto', 'tarifa'], respuesta: '¿De qué tratamiento? Te paso los precios al momento:', chips: ['Depilación láser', 'Facial', 'Corporal', 'Cejas y pestañas'] },
+    { claves: ['horario', 'abierto', 'abris', 'abrís', 'sabado', 'sábado'], respuesta: CENTRO.horario, chips: ['¿Dónde estáis?', 'Pedir cita'] },
+    { claves: ['donde', 'dónde', 'direccion', 'dirección', 'parking'], respuesta: CENTRO.direccion, chips: ['Horario', 'Pedir cita'] },
+    { claves: ['hola', 'buenas'], respuesta: '¡Hola! 👋 ¿En qué te ayudo? Te doy precios, te explico los tratamientos o te busco cita.', chips: ['Precios', 'Pedir cita', 'Bonos'] },
   ];
-  const CITA = ['cita', 'reservar', 'reserva', 'pedir', 'agendar', 'hueco', 'disponibilidad', 'apuntarme'];
+  const CITA = ['cita', 'reservar', 'reserva', 'pedir', 'hueco', 'apuntarme'];
 
-  // ---- Flujo de cita (paso a paso) ----
-  const PASOS = [
-    { campo: 'Tratamiento', pregunta: '¡Genial! ¿Qué tratamiento te interesa?', chips: ['Depilación láser', 'Limpieza facial', 'Presoterapia', 'Valoración gratis'] },
-    { campo: '¿Primera vez?', pregunta: '¿Es tu primera vez en el centro?', chips: ['Sí, primera vez', 'No, ya he venido'] },
-    { campo: 'Preferencia de día', pregunta: '¿Qué días u horas te vienen mejor?', chips: ['Mañanas', 'Tardes entre semana', 'Sábado'] },
-    { campo: 'Nombre', pregunta: '¿Cómo te llamas?' },
-    { campo: 'Contacto', pregunta: 'Por último, ¿un teléfono para confirmarte la cita? (En esta demo no se guarda nada).' },
-  ];
-
-  // ---- Estado y utilidades ----
   const $ = id => document.getElementById(id);
-  const msgs = $('msgs'), chips = $('chips'), txt = $('txt');
-  let paso = -1; const datos = {};
-  let nPreg = 0, nCitas = 0;
+  const msgs = $('msgs'), chips = $('chips'), txt = $('txt'), btnEnviar = document.querySelector('form.send button');
+  const historial = [];
+  let nPreg = 0, nCitas = 0, ocupado = false;
+  const conv = 'demo-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
   const normal = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   function burbuja(texto, quien) {
@@ -233,17 +210,86 @@
       chips.appendChild(b);
     });
   }
-  function responder(texto, lista) {
-    ponerChips([]);
-    const t = document.createElement('div'); t.className = 'typing'; t.textContent = 'escribiendo…';
-    msgs.appendChild(t); msgs.scrollTop = msgs.scrollHeight;
-    setTimeout(() => { t.remove(); burbuja(texto, 'bot'); ponerChips(lista); }, 650 + Math.min(texto.length * 6, 900));
-  }
   function contar() {
     $('cPreg').textContent = nPreg; $('cCitas').textContent = nCitas; $('cMin').textContent = nPreg * 2;
   }
 
-  function mostrarFicha() {
+  function reserva(texto) {
+    const n = normal(texto);
+    const cambio = ['cambiar', 'cancel', 'anular', 'mover'].some(c => n.includes(c));
+    if (!cambio && CITA.some(c => n.includes(normal(c)))) return { texto: '¡Genial! Rellena el formulario de abajo y el centro te escribe para confirmarte el hueco.', chips: [], accion: 'formulario_cita' };
+    const i = INTENCIONES.find(x => x.claves.some(c => n.includes(normal(c))));
+    if (i) return { texto: i.respuesta, chips: i.chips, accion: i.accion || 'ninguna' };
+    return { texto: 'Esa pregunta prefiero pasársela a la esteticista para no decirte nada incorrecto. Déjale tu duda en el formulario de abajo.', chips: [], accion: 'formulario_duda' };
+  }
+
+  async function enviar(texto) {
+    texto = String(texto || '').trim(); if (!texto || ocupado) return;
+    burbuja(texto, 'user'); ponerChips([]);
+    historial.push({ r: 'u', x: texto });
+    nPreg++; contar();
+    if (nPreg === 1 && window.engranaEv) window.engranaEv('demo-chat');
+    ocupado = true; btnEnviar.disabled = true;
+    const t = document.createElement('div'); t.className = 'typing'; t.textContent = 'escribiendo…';
+    msgs.appendChild(t); msgs.scrollTop = msgs.scrollHeight;
+    let r;
+    try {
+      const ctl = new AbortController(); const corte = setTimeout(() => ctl.abort(), 20000);
+      const resp = await fetch(API, { method: 'POST', body: JSON.stringify({ t: 'chat', c: 'nacar', conv, h: historial.slice(-12) }), signal: ctl.signal });
+      clearTimeout(corte);
+      r = await resp.json();
+      if (!r || !r.texto) throw new Error('sin texto');
+    } catch (e) {
+      r = reserva(texto);
+    }
+    t.remove();
+    burbuja(r.texto, 'bot');
+    historial.push({ r: 'a', x: r.texto });
+    if (r.accion === 'formulario_cita' || r.accion === 'formulario_duda') formulario(r.accion === 'formulario_cita' ? 'cita' : 'duda', texto);
+    ponerChips(r.chips);
+    ocupado = false; btnEnviar.disabled = false;
+  }
+
+  function campo(etiqueta, nombre, attrs) {
+    const l = document.createElement('label'); l.textContent = etiqueta;
+    const i = document.createElement(attrs && attrs.area ? 'textarea' : 'input');
+    i.name = nombre; if (attrs && attrs.value) i.value = attrs.value;
+    if (attrs && attrs.placeholder) i.placeholder = attrs.placeholder;
+    l.appendChild(i); return l;
+  }
+
+  function formulario(tipo, ultimo) {
+    const viejo = msgs.querySelector('.fchat'); if (viejo) viejo.remove();
+    const f = document.createElement('form'); f.className = 'fchat';
+    const b = document.createElement('b'); b.textContent = tipo === 'cita' ? '📅 Solicitud de cita' : '💬 Tu duda para el centro'; f.appendChild(b);
+    if (tipo === 'cita') {
+      f.appendChild(campo('Tratamiento', 'Tratamiento', { placeholder: 'Por ejemplo: limpieza facial' }));
+      f.appendChild(campo('Días u horas que te vienen bien', 'Preferencia de día', { placeholder: 'Por ejemplo: jueves por la tarde' }));
+    } else {
+      f.appendChild(campo('Tu duda', 'Duda', { area: true, value: ultimo }));
+    }
+    f.appendChild(campo('Nombre', 'Nombre'));
+    f.appendChild(campo('Teléfono', 'Contacto', { placeholder: 'En la demo no se envía' }));
+    const p = document.createElement('p'); p.className = 'small'; p.style.margin = '0';
+    p.textContent = 'Demo: este formulario no envía nada. En el asistente real llega al correo del centro.'; f.appendChild(p);
+    const enviarBtn = document.createElement('button'); enviarBtn.type = 'submit'; enviarBtn.textContent = tipo === 'cita' ? 'Enviar solicitud' : 'Enviar duda'; f.appendChild(enviarBtn);
+    f.addEventListener('submit', e => {
+      e.preventDefault();
+      const datos = {};
+      [...f.elements].filter(x => x.name).forEach(x => { if (x.value.trim()) datos[x.name] = x.value.trim(); });
+      if (!datos.Nombre) { f.elements.Nombre.focus(); return; }
+      f.remove();
+      mostrarFicha(tipo === 'cita' ? 'Nueva solicitud de cita' : 'Nueva duda para la esteticista', datos);
+      if (tipo === 'cita') { nCitas++; contar(); if (window.engranaEv) window.engranaEv('demo-reserva'); }
+      burbuja(tipo === 'cita'
+        ? `¡Listo, ${datos.Nombre}! He pasado tu solicitud al centro. Te escriben para confirmarte el hueco y el día antes te llegará un recordatorio. ✨`
+        : `¡Gracias, ${datos.Nombre}! Le he pasado tu duda a la esteticista y te contesta en cuanto salga de cabina.`, 'bot');
+    });
+    msgs.appendChild(f); msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function mostrarFicha(titulo, datos) {
+    $('fichaTitulo').textContent = titulo;
     const dl = $('fichaDatos'); dl.innerHTML = '';
     Object.entries(datos).forEach(([k, v]) => {
       const dt = document.createElement('dt'); dt.textContent = k;
@@ -253,38 +299,11 @@
     $('ficha').classList.add('on'); $('fichaVacia').style.display = 'none';
   }
 
-  function enviar(texto) {
-    texto = texto.trim(); if (!texto) return;
-    burbuja(texto, 'user');
-    nPreg++; contar();
-    if (nPreg === 1 && window.engranaEv) window.engranaEv('demo-chat');
+  $('send').addEventListener('submit', e => { e.preventDefault(); const v = txt.value; txt.value = ''; enviar(v); txt.focus(); });
 
-    // Dentro del flujo de cita
-    if (paso >= 0) {
-      datos[PASOS[paso].campo] = texto;
-      paso++;
-      if (paso < PASOS.length) { responder(PASOS[paso].pregunta, PASOS[paso].chips); return; }
-      paso = -1; nCitas++; contar(); mostrarFicha();
-      if (window.engranaEv) window.engranaEv('demo-reserva');
-      responder(`¡Listo, ${datos['Nombre']}! He pasado tu solicitud al centro. Te escriben para confirmarte el hueco y el día antes te llegará un recordatorio. ✨`, ['Bonos', '¿Dónde estáis?']);
-      return;
-    }
-
-    const n = normal(texto);
-    const cambio = ['cambiar', 'cancel', 'anular', 'mover', 'no puedo ir'].some(c => n.includes(c));
-    if (!cambio && CITA.some(c => n.includes(normal(c)))) {
-      paso = 0; responder(PASOS[0].pregunta, PASOS[0].chips); return;
-    }
-    const intent = INTENCIONES.find(i => i.claves.some(c => n.includes(normal(c))));
-    if (intent) { responder(intent.respuesta(), intent.chips); return; }
-
-    responder('Esa pregunta prefiero pasársela a la esteticista para no decirte nada incorrecto. Te contestará en cuanto salga de cabina. Mientras, ¿te ayudo con precios, bonos o una cita?', ['Precios', 'Pedir cita', 'Bonos']);
-  }
-
-  $('send').addEventListener('submit', e => { e.preventDefault(); enviar(txt.value); txt.value = ''; txt.focus(); });
-
-  // Mensaje de bienvenida
-  responder('¡Hola! 👋 Soy el asistente de Nácar Estética. Te contesto al momento, a cualquier hora, aunque estemos en cabina. ¿Qué necesitas?', ['Precios', 'Pedir cita', 'Bonos', 'Valoración gratis']);
+  const hola = '¡Hola! 👋 Soy el asistente de Nácar Estética. Te contesto al momento, a cualquier hora, aunque estemos en cabina. ¿Qué necesitas?';
+  burbuja(hola, 'bot'); historial.push({ r: 'a', x: hola });
+  ponerChips(['Precios', 'Pedir cita', 'Bonos', 'Valoración gratis']);
 </script>
 <script defer src="../../m.js" data-site="engrana" data-api="https://script.google.com/macros/s/AKfycbxUQt_fUgS_BEP-gdpqzNt1EqRblhiBikMZr5ThNytjFnjY_kvcknVICwr1iis0NjyO/exec"></script>
 </body>
