@@ -1,0 +1,44 @@
+{
+  "id": "nacar",
+  "nombre": "Nácar Estética",
+  "tipo": "un centro de estética",
+  "ciudad": "Valladolid",
+  "demo": true,
+  "ui": {
+    "iniciales": "NE",
+    "color": "#B5654A",
+    "bienvenida": "¡Hola! 👋 Soy el asistente de Nácar Estética. Te contesto al momento, a cualquier hora, aunque estemos en cabina. ¿Qué necesitas?",
+    "chips": ["Precios", "Pedir cita", "Bonos", "Valoración gratis"],
+    "tratamientos": ["Depilación láser", "Limpieza facial", "Radiofrecuencia", "Presoterapia", "Maderoterapia", "Cejas y pestañas", "Valoración gratis"]
+  },
+  "info": {
+    "aviso": "Centro inventado para la demo de Engrana: todos los datos son de ejemplo.",
+    "horario": "Lunes a viernes de 10:00 a 14:00 y de 16:00 a 20:30. Sábados de 10:00 a 14:00. Domingos y festivos cerrado.",
+    "direccion": "Calle Ejemplo 8, Valladolid (junto a la Plaza de España). Parking público a 2 minutos.",
+    "servicios": [
+      { "categoria": "Depilación láser de diodo (precio por sesión)", "items": [
+        "Axilas o ingles: 35 €", "Medias piernas: 59 €", "Piernas enteras: 89 €"
+      ], "notas": "Sesiones cada 4-6 semanas. No tomar el sol antes ni después. Se nota como un pellizco de calor; el cabezal lleva frío y se ajusta la potencia en cada sesión." },
+      { "categoria": "Faciales", "items": [
+        "Limpieza facial profunda: 45 €", "Hidratación con ácido hialurónico (cosmético): 55 €", "Radiofrecuencia facial: 60 €"
+      ] },
+      { "categoria": "Corporales", "items": [
+        "Presoterapia: 30 €", "Maderoterapia: 45 €", "Radiofrecuencia corporal: 55 €"
+      ], "notas": "Los resultados dependen de cada persona; se empieza con una valoración gratis y un plan con las sesiones justas." },
+      { "categoria": "Cejas y pestañas", "items": [
+        "Diseño de cejas: 15 €", "Laminado de cejas: 35 €", "Lifting de pestañas con tinte: 40 €"
+      ], "notas": "Duran unas 6-8 semanas." }
+    ],
+    "bonos": [
+      "Láser: 6 sesiones al precio de 5",
+      "Presoterapia: 10 sesiones por 250 €",
+      "Radiofrecuencia facial: 5 sesiones por 250 €",
+      "Los bonos duran 12 meses."
+    ],
+    "primera_visita": "Incluye una valoración gratis de unos 20 minutos: la esteticista mira la piel, explica qué tratamiento conviene y cuántas sesiones harían falta. Sin compromiso.",
+    "pagos": "Tarjeta, Bizum o efectivo. Los bonos grandes se pueden pagar en 2 o 3 plazos sin intereses.",
+    "cambios_y_cancelaciones": "Avisando con 24 h, la cita se cambia sin coste. El día antes llega un recordatorio.",
+    "tarjetas_regalo": "Sí, del importe que quieras o de un tratamiento concreto. Se compran en el centro.",
+    "derivar_siempre": "Embarazo, lactancia, medicación, enfermedades, marcapasos, alergias, problemas de piel, piel bronceada o cualquier duda de salud: lo valora la esteticista."
+  }
+}
