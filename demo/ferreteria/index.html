@@ -159,7 +159,7 @@
 </head>
 <body>
 
-<div class="demo-bar">Demostración preparada por <a href="https://engranaia.com/">Engrana</a> · los productos son de ejemplo</div>
+<div class="demo-bar">Demostración preparada por <a href="https://engranaia.com/">Engrana</a> · productos de ejemplo · <a href="tienda.html">mira cómo le llegan las reservas a la tienda →</a></div>
 
 <header class="top">
   <div class="wrap">
@@ -192,7 +192,7 @@
     <div class="steps steps-row">
       <div class="step"><b class="n">1</b><div><b>Busca lo que necesitas</b><span>Por nombre o por sección.</span></div></div>
       <div class="step"><b class="n">2</b><div><b>Añádelo a tu reserva</b><span>Sin pagar nada por adelantado.</span></div></div>
-      <div class="step"><b class="n">3</b><div><b>Elige cuándo pasas</b><span>Te lo dejamos preparado 48 horas.</span></div></div>
+      <div class="step"><b class="n">3</b><div><b>Te confirmamos por WhatsApp</b><span>Comprobamos que lo tenemos y te lo guardamos 48 horas.</span></div></div>
     </div>
   </div>
 </section>
@@ -479,7 +479,7 @@ function pintarReserva() {
       <label for="nota">Algo más (opcional)</label><textarea id="nota" placeholder="Medida, color, cantidad…"></textarea>
       <div class="err" id="err"></div>
     </form>`;
-  $('#drawerFoot').innerHTML = `<button class="btn btn-brand" style="width:100%" id="enviar">Enviar reserva</button><p class="small" style="margin:8px 0 0">No pagas nada ahora. Te lo guardamos 48 horas.</p>`;
+  $('#drawerFoot').innerHTML = `<button class="btn btn-brand" style="width:100%" id="enviar">Enviar reserva</button><p class="small" style="margin:8px 0 0">No pagas nada ahora. Comprobamos que lo tenemos y te confirmamos por WhatsApp.</p>`;
   const franjas = () => {
     const f = new Date($('#dia').value + 'T12:00'); const tr = HORARIO[f.getDay()];
     $('#franja').innerHTML = tr.map(([a, b]) => `<option value="${a}-${b}">${a < 900 ? 'Mañana' : 'Tarde'} (${hhmm(a)}–${hhmm(b)})</option>`).join('');
@@ -500,19 +500,22 @@ async function enviar() {
   };
   const texto = `Hola, quiero reservar en ${TIENDA.nombre}:\n` + reserva.productos.map(p => `• ${p.n} × ${p.nombre}`).join('\n') +
     `\n\nRecogida: ${reserva.diaTxt}, ${reserva.franjaTxt.toLowerCase()}\nNombre: ${nombre}\nTeléfono: ${tel}` + (reserva.nota ? `\nNota: ${reserva.nota}` : '');
-  let porWhatsApp = !TIENDA.API;
+  let porWhatsApp = !TIENDA.API, enlaceEstado = '';
   if (TIENDA.API) {
     $('#enviar').disabled = true; $('#enviar').textContent = 'Enviando…';
     try {
       const r = await fetch(TIENDA.API, { method: 'POST', body: JSON.stringify(reserva) });
       const j = await r.json(); if (!j.ok) throw new Error(j.error || 'error');
+      enlaceEstado = j.estado || '';
     } catch (e) { porWhatsApp = true; }
   }
   if (porWhatsApp) window.open(wa(texto), '_blank', 'noopener');
   carrito = {}; guardar(); pintarContador(); pintarGrid();
   $('#drawerContent').innerHTML = `<div class="ok-box"><div class="big">✓</div><h3>¡Reserva ${porWhatsApp ? 'preparada' : 'enviada'}!</h3>
-    <p class="muted">${porWhatsApp ? 'Se ha abierto WhatsApp con tu reserva escrita: solo tienes que enviarla.' : 'Te esperamos el ' + esc(reserva.diaTxt) + '. Si cambia algo, te llamamos.'}</p>
-    <p class="small">Recuerda: te lo guardamos 48 horas y pagas al recogerlo.</p></div>`;
+    <p class="muted">${porWhatsApp ? 'Se ha abierto WhatsApp con tu reserva escrita: solo tienes que enviarla. Te contestamos para confirmarte que lo tenemos.'
+      : 'Estamos comprobando que lo tenemos. Te confirmamos por WhatsApp al ' + esc(tel) + ', normalmente en horario de tienda.'}</p>
+    ${enlaceEstado ? `<p><a href="${esc(enlaceEstado)}" target="_blank" rel="noopener">Ver el estado de mi reserva</a></p>` : ''}
+    <p class="small">Cuando te confirmemos, te lo guardamos 48 horas y pagas al recogerlo.</p></div>`;
   $('#drawerFoot').innerHTML = `<button class="btn btn-light" style="width:100%" onclick="cerrar()">Seguir mirando</button>`;
 }
 

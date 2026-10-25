@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Así te llegan las reservas · Fersaman</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #15163A; --muted: #626478; --line: #E2E2DA; --brand: #1B1A86; --ok: #1E8E4E; --mid: #C98A00; --ko: #B3261E; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff url(acuarela.svg) center top / 100% auto repeat-y; color: var(--ink); font: 400 16px/1.5 Inter, system-ui, sans-serif; }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 24px 16px 60px; }
+  h1, h2 { font-family: Archivo, sans-serif; line-height: 1.1; margin: 0 0 .4em; }
+  h1 { font-size: clamp(1.7rem, 5vw, 2.4rem); }
+  h2 { font-size: 1.2rem; }
+  .intro { background: rgba(255,255,255,.92); border-radius: 16px; padding: 16px 18px; box-shadow: 0 0 30px 14px rgba(255,255,255,.9); }
+  .paso { display: flex; gap: 10px; align-items: center; margin: 26px 0 10px; font-weight: 700; }
+  .paso b { width: 30px; height: 30px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; flex: none; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 18px; box-shadow: 0 8px 24px rgba(21,22,58,.08); }
+  .mail-head { font-size: .85rem; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 12px; }
+  .btn { display: inline-block; margin: 4px 6px 4px 0; padding: 12px 16px; border: 0; border-radius: 10px; color: #fff; font: 700 1rem Inter, sans-serif; cursor: pointer; text-decoration: none; }
+  .si { background: var(--ok); } .parte { background: var(--mid); } .no { background: var(--ko); } .azul { background: var(--brand); }
+  ul { list-style: none; padding: 0; margin: 10px 0; }
+  li { padding: 10px 0; border-bottom: 1px solid #eee; }
+  input[type=checkbox] { width: 22px; height: 22px; vertical-align: middle; margin-right: 8px; }
+  .wa { background: #E7F8EC; border-radius: 12px; padding: 12px 14px; white-space: pre-line; font-size: .95rem; margin: 10px 0; }
+  .estado { display: inline-block; padding: 4px 10px; border-radius: 999px; font-weight: 700; font-size: .85rem; color: #fff; }
+  .muted { color: var(--muted); font-size: .9rem; }
+  [hidden] { display: none !important; }
+  a.volver { display: inline-block; margin-top: 24px; font-weight: 600; color: var(--brand); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="intro">
+    <h1>Así te llegan las reservas</h1>
+    <p>Cuando alguien reserva en la web, la reserva queda <b>sin confirmar</b> hasta que compruebas que lo tienes. Pruébalo con esta reserva de ejemplo: los botones funcionan.</p>
+  </div>
+
+  <div class="paso"><b>1</b>Te llega un correo al móvil (y queda apuntada en tu calendario)</div>
+  <div class="card">
+    <div class="mail-head">Nueva reserva web: Juan García (3 productos)</div>
+    <p><b>Juan García</b> · 600 12 34 56<br>Recoge: martes, 27 de octubre, tarde (17:00–20:00)</p>
+    <p>• 2 × Bombilla LED E27<br>• 1 × Silicona transparente<br>• 1 × Cinta de teflón</p>
+    <p>¿Lo tienes?</p>
+    <button class="btn si" data-a="si">✅ Lo tengo</button>
+    <button class="btn parte" data-a="parte">🟡 Solo una parte</button>
+    <button class="btn no" data-a="no">❌ No tengo</button>
+  </div>
+
+  <div id="p2" hidden>
+    <div class="paso"><b>2</b>Marcas lo que sí tienes y guardas</div>
+    <div class="card">
+      <ul id="lista"></ul>
+      <button class="btn azul" id="guardar">Guardar y avisar al cliente</button>
+    </div>
+  </div>
+
+  <div id="p3" hidden>
+    <div class="paso"><b>3</b>Avisas al cliente con un toque</div>
+    <div class="card">
+      <p>Reserva de Juan García: <span class="estado" id="estado"></span></p>
+      <p class="muted">Al pulsar el botón verde se abre WhatsApp con este mensaje ya escrito. Solo tienes que enviarlo:</p>
+      <div class="wa" id="msg"></div>
+      <button class="btn si" type="button">Avisar a Juan por WhatsApp</button>
+      <p class="muted" id="cal"></p>
+      <p class="muted">Juan también puede ver en su móvil si la reserva está confirmada.</p>
+    </div>
+  </div>
+
+  <a class="volver" href="./">← Volver a la web de la tienda</a>
+</div>
+<script>
+const P = [['2 × Bombilla LED E27'], ['1 × Silicona transparente'], ['1 × Cinta de teflón']].map(x => x[0]);
+const $ = s => document.querySelector(s);
+document.querySelectorAll('[data-a]').forEach(b => b.addEventListener('click', () => {
+  const marcar = b.dataset.a !== 'no';
+  $('#lista').innerHTML = P.map((p, i) => `<li><label><input type="checkbox" value="${i}"${marcar && !(b.dataset.a === 'parte' && i === 1) ? ' checked' : ''}>${p}</label></li>`).join('');
+  $('#p2').hidden = false; $('#p3').hidden = true;
+  $('#p2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}));
+$('#guardar').addEventListener('click', () => {
+  const hay = [...document.querySelectorAll('#lista input:checked')].map(c => +c.value);
+  const si = P.filter((_, i) => hay.includes(i)), no = P.filter((_, i) => !hay.includes(i));
+  const estado = hay.length === P.length ? ['CONFIRMADA', 'var(--ok)'] : hay.length ? ['CONFIRMADA EN PARTE', 'var(--mid)'] : ['SIN STOCK', 'var(--ko)'];
+  $('#estado').textContent = estado[0]; $('#estado').style.background = estado[1];
+  const l = a => a.map(p => '• ' + p).join('\n');
+  $('#msg').textContent = hay.length === P.length
+    ? `Hola Juan, somos Fersaman. Tu reserva está lista:\n${l(si)}\n\nTe la guardamos hasta 48 h. Te esperamos el martes, 27 de octubre, por la tarde. ¡Gracias!`
+    : hay.length ? `Hola Juan, somos Fersaman. De tu reserva tenemos:\n${l(si)}\n\nAhora mismo no nos queda:\n${l(no)}\n\nSi quieres te lo pedimos. Lo que hay te lo guardamos 48 h.`
+    : `Hola Juan, somos Fersaman. Lo sentimos, ahora mismo no tenemos:\n${l(P)}\n\n¿Quieres que te lo pidamos? Te avisamos cuando llegue.`;
+  $('#cal').textContent = hay.length ? 'En tu calendario la reserva pasa de ⏳ a ' + (hay.length === P.length ? '✅' : '🟡') + ' con lo que hay.' : 'Se quita de tu calendario.';
+  $('#p3').hidden = false; $('#p3').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+</script>
+</body>
+</html>
