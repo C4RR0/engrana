@@ -1,0 +1,66 @@
+{
+  "id": "adore",
+  "nombre": "Adore Studio",
+  "tipo": "un estudio de manicura rusa, uñas y estética",
+  "ciudad": "Valladolid",
+  "prueba": true,
+  "ui": {
+    "iniciales": "AS",
+    "color": "#B0607A",
+    "bienvenida": "¡Hola! 💅 Soy el asistente de Adore Studio. Te contesto al momento, aunque Ángela esté con una clienta. ¿Qué necesitas?",
+    "chips": ["Precios", "Manicura rusa", "Extensiones", "Reservar"],
+    "tratamientos": ["Semipermanente", "Nivelación", "Extensión de uñas", "Relleno", "Pedicura", "Cejas con hilo", "Lifting o laminado", "Presoterapia"]
+  },
+  "info": {
+    "aviso": "Prueba preparada por Engrana con los datos públicos de Adore Studio en Booksy (27/10/2026). No es su canal oficial.",
+    "horario": "Lunes, miércoles, jueves y viernes de 10:00 a 14:00 y de 14:30 a 21:00. Martes de 10:00 a 14:00 y de 14:30 a 19:45. Sábados de 10:00 a 14:00.",
+    "direccion": "Avenida de Palencia 19, 47010 Valladolid.",
+    "reservas": "Se reserva online en Booksy, eligiendo servicio y hora: https://adorestudiovll.booksy.com",
+    "sobre_nosotros": "Estudio especializado en manicura rusa y refuerzo de gel, dirigido por Ángela, técnica especializada y formadora del sector. Todo el material se desinfecta y esteriliza en autoclave y se usa una lima nueva por clienta.",
+    "servicios": [
+      { "categoria": "Manicura", "items": [
+        "Manicura rusa combinada (40 min): 20 €",
+        "Esmaltado tradicional (45 min): 21 €",
+        "Semipermanente (limado, manicura rusa y esmaltado, 1 h): 24 €",
+        "Semipermanente con decoración (1 h 20 min): desde 24 €",
+        "Semipermanente francesa (1 h 15 min): 29 €",
+        "Semipermanente con nivelación, uña corta (1 h 10 min): 31 €",
+        "Semipermanente con nivelación, uña larga (1 h 15 min): 33 €",
+        "Con nivelación y decoración: desde 31 € (cortas) o 33 € (largas)",
+        "Con nivelación francesa: 36 € (cortas) o 38 € (largas)",
+        "Retirada de semipermanente (15 min): 6 €"
+      ], "notas": "La nivelación con base de gel es la opción más duradera y rígida para uñas naturales; se hace en uñas con mucha base o cuando la largura supera el borde libre. La retirada del semipermanente hecho en el estudio va incluida en el precio." },
+      { "categoria": "Pedicura", "items": [
+        "Pedicura con esmaltado tradicional (1 h): 27 €",
+        "Pedicura completa sin esmaltar (1 h 15 min): 28 €",
+        "Pedicura con esmaltado tradicional completa (1 h 25 min): 31 €",
+        "Pedicura con semipermanente (1 h 20 min): 31 €",
+        "Pedicura con semipermanente completa (1 h 30 min): 35 €",
+        "Pedicura con semipermanente francesa: 36 € (completa: 40 €)"
+      ] },
+      { "categoria": "Extensión de uñas con polygel o gel", "items": [
+        "Cortas: 43 € (con francesa 48 €)",
+        "Medianas: 48 € (con francesa 53 €)",
+        "Largas: 53 € (con francesa 58 €)",
+        "Con decoración: desde el precio de su largo",
+        "Arreglo de uña rota: 4 €",
+        "Retirada de gel, polygel o acrílico (30 min): 15 €"
+      ], "notas": "Entre 2 h 30 min y 3 h 35 min según el largo y el diseño." },
+      { "categoria": "Relleno de polygel o gel", "items": [
+        "Cortas: 41 € (con francesa 46 €)",
+        "Medianas: 46 € (con francesa 51 €)",
+        "Largas: 51 € (con francesa 56 €)"
+      ], "notas": "Relleno con un máximo de 3 uñas caídas. No se hacen rellenos de trabajos de otros centros." },
+      { "categoria": "Depilación con hilo", "items": [
+        "Cejas: 12 €", "Bigote: 8 €", "Cejas + bigote: 17 €", "Mentón: 6 €", "Bigote + mentón: 12 €", "Facial completo: 30 €"
+      ] },
+      { "categoria": "Lifting y laminado", "items": [
+        "Lifting y tinte de pestañas (1 h 15 min): 35 €", "Laminado de cejas (1 h 10 min): 35 €"
+      ] },
+      { "categoria": "Presoterapia", "items": [
+        "Presoterapia (30 min): el precio se confirma en el estudio"
+      ], "notas": "Presión de aire suave con un traje que se infla y desinfla, como un masaje: ayuda a la circulación, a eliminar líquidos y a quitar la sensación de piernas cansadas." }
+    ],
+    "derivar_siempre": "Uñas con hongos, heridas o alergias, embarazo, problemas de circulación antes de la presoterapia o cualquier duda de salud: lo valora Ángela en persona."
+  }
+}

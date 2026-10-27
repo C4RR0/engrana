@@ -191,6 +191,7 @@
         if (!r.ok) { err.textContent = r.texto || 'No se ha podido enviar.'; enviarBtn.disabled = false; enviarBtn.textContent = 'Reintentar'; return; }
         f.remove();
         burbuja(r.texto, 'bot');
+        if (ficha.prueba) nota('Esto es una prueba: la solicitud le ha llegado a Engrana. Con el asistente activado, le llegaría a ' + ficha.nombre + ' por correo al momento, con los datos ordenados.');
         if (window.engranaEv) window.engranaEv(tipo === 'cita' ? 'asistente-cita' : 'asistente-duda');
       } catch (e2) {
         err.textContent = 'No se ha podido enviar. Revisa la conexión y prueba otra vez.';
@@ -216,7 +217,7 @@
     if (ui.color) document.documentElement.style.setProperty('--c', ui.color);
     $('nombre').textContent = ficha.nombre;
     $('avatar').textContent = ui.iniciales || ficha.nombre.slice(0, 2).toUpperCase();
-    nota('Asistente automático. Para pedir cita te saldrá un formulario: no escribas en el chat datos de salud ni personales.' + (ficha.demo ? ' Centro de ejemplo: los datos son inventados.' : ''));
+    nota('Asistente automático. Para pedir cita te saldrá un formulario: no escribas en el chat datos de salud ni personales.' + (ficha.demo ? ' Centro de ejemplo: los datos son inventados.' : '') + (ficha.prueba ? ' Prueba preparada por Engrana con datos públicos de ' + ficha.nombre + ': no es su canal oficial.' : ''));
     const hola = ui.bienvenida || '¡Hola! 👋 ¿En qué te ayudo?';
     burbuja(hola, 'bot');
     historial.push({ r: 'a', x: hola });

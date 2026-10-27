@@ -1,0 +1,40 @@
+{
+  "id": "magma",
+  "nombre": "Magma Hair Studio",
+  "tipo": "una barbería y peluquería",
+  "ciudad": "Valladolid",
+  "prueba": true,
+  "ui": {
+    "iniciales": "MH",
+    "color": "#B4532A",
+    "bienvenida": "¡Hola! 👋 Soy el asistente de Magma Hair Studio. Te contesto al momento, aunque estemos cortando. ¿Qué necesitas?",
+    "chips": ["Precios", "Horario", "Reservar", "Barba"],
+    "tratamientos": ["Corte", "Corte + barba", "Ritual de barba", "Afeitado clásico", "Corte y peinado de melena", "Cambio de imagen", "Color"]
+  },
+  "info": {
+    "aviso": "Prueba preparada por Engrana con los datos públicos de Magma Hair Studio en Booksy (27/10/2026). No es su canal oficial.",
+    "horario": "Martes a viernes de 11:00 a 20:00. Sábados de 10:00 a 13:00. Lunes y domingos cerrado.",
+    "direccion": "Calle Padilla 9, local 06, 47003 Valladolid.",
+    "reservas": "Se reserva online en Booksy, eligiendo servicio y hora: https://magmahairstudiovalladolid.booksy.com . Los trabajos de color se reservan por teléfono, porque hay que calcular el tiempo antes.",
+    "servicios": [
+      { "categoria": "Barbería", "items": [
+        "Corte (corte, lavado y styling, 40 min): desde 18 €",
+        "Corte + arreglo de barba (línea y forma a máquina, 50 min): 28 €",
+        "Corte + ritual de barba (1 h 10 min): 34 €",
+        "Arreglo de barba (líneas y forma a máquina, 15 min): 10 €",
+        "Ritual de barba (líneas, forma, afeitado a navaja y toallas calientes, 30 min): 16 €",
+        "Ritual de afeitado clásico (45 min): 25 €",
+        "Cortar y peinar melena con plancha (45 min): desde 30 €"
+      ] },
+      { "categoria": "Cambio de imagen", "items": [
+        "Asesoramiento y cambio de imagen de corte (1 h): precio según el trabajo, se confirma en el salón"
+      ] },
+      { "categoria": "Color", "items": [
+        "Asesoramiento de color (10 min): primero se valora y se explica el tiempo y el precio; el trabajo de color se reserva por teléfono"
+      ] }
+    ],
+    "sobre_nosotros": "Estilistas, coloristas y asesoramiento personalizado. Barbería y peluquería. 5,0 de nota media con más de 100 reseñas en Booksy.",
+    "bonos": ["Hay cupones de varias sesiones en Booksy para usarlos cuando quieras."],
+    "derivar_siempre": "Trabajos de color, cambios de imagen complicados, alergias o problemas del cuero cabelludo: lo valora el estilista en persona."
+  }
+}

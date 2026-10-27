@@ -1,0 +1,33 @@
+{
+  "id": "velvet",
+  "nombre": "Velvet Nails",
+  "tipo": "un centro de uñas y estética",
+  "ciudad": "Valladolid",
+  "prueba": true,
+  "ui": {
+    "iniciales": "VN",
+    "color": "#A3507A",
+    "bienvenida": "¡Hola! 💖 Soy el asistente de Velvet Nails. Te contesto al momento y, si quieres cita, se la paso a Alba ya apuntada. ¿Qué necesitas?",
+    "chips": ["Pedir cita", "Uñas", "Joyas dentales", "Horario"],
+    "tratamientos": ["Acrylgel", "Nivelación", "Semipermanente", "Lifting de pestañas", "Joyas dentales", "Tratamientos Bellaction"]
+  },
+  "info": {
+    "aviso": "Prueba preparada por Engrana con los datos públicos de Velvet Nails (web e Instagram, 27/10/2026). No es su canal oficial.",
+    "horario": "Lunes a viernes de 9:00 a 19:00.",
+    "direccion": "Calle Felipe II nº 15, Valladolid.",
+    "reservas": "Ahora mismo la agenda online está completa. Para pedir cita, rellena el formulario que aparece aquí y Alba te contesta para darte hueco; también puedes llamar al 670 957 141.",
+    "sobre_nosotros": "«No solo hacemos uñas, cuidamos de ti». Centro de uñas y estética dirigido por Alba Castrillo, experta en acrylgel y nivelaciones.",
+    "servicios": [
+      { "categoria": "Uñas", "items": [
+        "Acrylgel (la especialidad del centro)",
+        "Nivelación",
+        "Esmaltado semipermanente"
+      ], "notas": "El precio depende del largo, del estado de la uña y del diseño: Alba lo confirma al darte la cita." },
+      { "categoria": "Mirada", "items": ["Lifting de pestañas"] },
+      { "categoria": "Joyas dentales", "items": ["Colocación de joyas dentales: «tus dientes van a brillar tanto como tu futuro»"] },
+      { "categoria": "Estética", "items": ["Tratamientos Bellaction"], "notas": "Alba recomienda el tratamiento adecuado en una primera visita." }
+    ],
+    "precios": "Velvet Nails no publica precios en internet: el asistente no da cifras. Ofrece pedir cita o que Alba conteste con el precio exacto.",
+    "derivar_siempre": "Precios exactos, uñas dañadas, alergias, embarazo o cualquier duda de salud: lo contesta Alba."
+  }
+}
