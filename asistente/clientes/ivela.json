@@ -1,0 +1,74 @@
+{
+  "id": "ivela",
+  "nombre": "Ivela Beauty Concept",
+  "tipo": "un centro de estética avanzada, experto en rejuvenecimiento y reducción corporal",
+  "ciudad": "Valladolid",
+  "prueba": true,
+  "ui": {
+    "iniciales": "IB",
+    "color": "#9C7A3C",
+    "bienvenida": "¡Hola! ⚜️ Soy el asistente de Ivela Beauty Concept. Te explico nuestros tratamientos al momento y, si quieres, te paso la cita ya apuntada. ¿Qué te gustaría mejorar?",
+    "chips": ["Rejuvenecimiento facial", "Reducción corporal", "Depilación láser", "Pedir valoración"],
+    "tratamientos": ["Valoración", "Facial", "Corporal", "Depilación láser", "Micropigmentación", "Pestañas y cejas", "Masajes y drenaje"]
+  },
+  "info": {
+    "aviso": "Prueba preparada por Engrana con los datos públicos de Ivela Beauty Concept (web, Instagram y Google, 27/10/2026). No es su canal oficial.",
+    "horario": "Lunes a viernes de 10:00 a 20:00. Sábados y domingos cerrado.",
+    "direccion": "Plaza del Ochavo 2, bajo 8, 47001 Valladolid (en pleno centro).",
+    "contacto": "WhatsApp y teléfono: 644 36 31 53.",
+    "precios": "Ivela Beauty Concept no publica precios en internet porque cada plan se hace a medida: el asistente no da cifras. Ofrece una valoración en el centro o que el equipo conteste con el precio.",
+    "servicios": [
+      { "categoria": "Rejuvenecimiento y tratamientos faciales", "items": [
+        "Limpieza facial personalizada",
+        "Hidratación facial",
+        "Tratamientos para el acné y sus marcas",
+        "Dermaplaning",
+        "Peeling químico",
+        "Carbon Peel (láser con carbón para poros, brillos e imperfecciones)",
+        "Radiofrecuencia facial",
+        "HIFU facial (ultrasonidos focalizados para tensar la piel)",
+        "LPG facial",
+        "Morpheus 8",
+        "FHOS y Procyon",
+        "Plasma Pen",
+        "Láser Q-Switch Nd:YAG",
+        "Kobido (masaje facial japonés)"
+      ] },
+      { "categoria": "Reducción y reafirmación corporal", "items": [
+        "Crioskin (frío para reducir grasa localizada; según el centro, único en Valladolid)",
+        "LPG Endermologie",
+        "Zionic",
+        "Vacuslim 48",
+        "Kestos T2",
+        "Liposonix",
+        "Cavitación",
+        "Radiofrecuencia corporal",
+        "Maderoterapia",
+        "Tratamiento de celulitis con FHOS y Procyon",
+        "Reafirmación corporal",
+        "Tratamiento de estrías"
+      ], "notas": "Los resultados dependen de cada persona: se empieza con una valoración y un plan a medida." },
+      { "categoria": "Masajes y drenaje", "items": [
+        "Método Renata França",
+        "Drenaje linfático",
+        "Drenaje linfático después de una cirugía",
+        "Presoterapia",
+        "Quiromasaje",
+        "Masaje relajante"
+      ] },
+      { "categoria": "Depilación", "items": [
+        "Láser Milesman",
+        "Láser Trionda",
+        "Cera",
+        "Hilo"
+      ] },
+      { "categoria": "Mirada y micropigmentación", "items": [
+        "Micropigmentación de cejas y ojos",
+        "Lifting de pestañas y de cejas"
+      ] },
+      { "categoria": "Nutricosmética", "items": ["Suplementos para cuidar la piel desde dentro, con consejo del centro"] }
+    ],
+    "primera_visita": "Lo mejor para empezar es una valoración en el centro: el equipo mira la piel o la zona, explica qué tratamiento conviene y cuántas sesiones harían falta.",
+    "derivar_siempre": "Precios, embarazo, lactancia, medicación, enfermedades, marcapasos, alergias, cirugías recientes (salvo para pedir el drenaje postcirugía), problemas de piel o cualquier duda de salud: lo valora el equipo de Ivela en persona."
+  }
+}
