@@ -317,7 +317,7 @@ const CATS = [
 ];
 
 // Productos reales de su Instagram (@fersamansl, 25/10/2026). foto: número → fotos/pNN.jpg; texto → fotos/<texto>.jpg. precio: null = "Precio en tienda".
-// Fotos tNN: las que hizo la tienda el 27/10/2026 (NN = orden de las fotos de WhatsApp).
+// Fotos tNN: las que hizo la tienda el 27/10/2026; nNN: las del 3/11/2026 (NN = orden de las fotos de WhatsApp).
 const PRODUCTOS = [
   ['fontaneria','Grifo de fregadero','Caño giratorio.',null,22],
   ['fontaneria','Grifo de baño-ducha','Mezclador de pared.',null,23],
@@ -367,6 +367,42 @@ const PRODUCTOS = [
   ['hogar','Mosquiteras para ventana','Que no te molesten los insectos.',null,25],
   ['hogar','Trampas para ratas y ratones','De madera, varios tamaños.',null,1],
   ['pintura','Caucho de fibras antigoteras','Impermeabiliza terrazas y tejados.',null,11],
+  ['estufas','Pintura anticalórica en spray','Cofan, 400 ml, negra o gris. Para estufas y chimeneas.',null,'n01'],
+  ['electricidad','Bombillas LED E27','EDM, luz cálida o fría, varias potencias.',null,'n06'],
+  ['tornilleria','Candados de latón Niza','Varios tamaños, con llaves.',null,'n12'],
+  ['tornilleria','Candados de combinación','De latón, varias medidas.',null,'n13'],
+  ['tornilleria','Candados antipalanca','Niza y Cofan, de latón macizo.',null,'n14'],
+  ['tornilleria','Candados de exterior Cofan','Laminados e inoxidables, 50 mm.',null,'n15'],
+  ['tornilleria','Candados de arco largo','EDM, Cofan y FAC, varias medidas.',null,'n38'],
+  ['tornilleria','Cerraduras de buzón','Curvas y de presión, con llaves.',null,'n11'],
+  ['tornilleria','Cadenas y retenedores de puerta','De latón, para abrir sin dejar pasar.',null,'n33'],
+  ['herramienta','Hacha con mango de madera','Para leña.',null,'n50'],
+  ['electrica','Taladro percutor Black+Decker 710 W','Con maletín.',null,'n16'],
+  ['electrica','Amoladora Black+Decker 115 mm','710 W.',null,'n17'],
+  ['electrica','Sierra circular Black+Decker 1250 W','Corte inclinado hasta 45°.',null,'n18'],
+  ['electrica','Juegos de brocas para metal','Varias medidas, en estuche.',null,'n57'],
+  ['electrica','Brocas para hormigón y SDS','Juegos de varias medidas.',null,'n58'],
+  ['fontaneria','Grifo flotador de alimentación lateral','Para cisterna, 5 años de garantía.',null,'n04'],
+  ['fontaneria','Descargador de cisterna interrumpible','Con base y goma de asiento.',null,'n07'],
+  ['fontaneria','Excéntricas de 1/2" × 3/4" inox','Genil, juego de 2, para grifos de pared.',null,'n05'],
+  ['fontaneria','Llaves de escuadra','Cofan, 1/2" × 3/8", juego de 2.',null,'n54'],
+  ['fontaneria','Grifo de bola con racor','De latón, para conectar la manguera.',null,'n52'],
+  ['pintura','Agua Stop caucho con fibras','Ceys. Impermeabiliza terrazas y tejados, varios tamaños.',null,'n02'],
+  ['pintura','Espuma de poliuretano y antifuego','Penosil y Krafft Nonfire (resistente al fuego).',null,'n03'],
+  ['vestuario','Guantes de serraje reforzados','Para obra y carga.',null,'n19'],
+  ['vestuario','Guantes de piel flor','Ligeros y resistentes.',null,'n20'],
+  ['vestuario','Guantes de nitrilo Cofan','Buen agarre, para trabajos de precisión.',null,'n21'],
+  ['electro','Radio portátil AM/FM','Dovelis, con salida de auriculares.',null,'n56'],
+  ['coche','Calentador de vaso para coche','12 V, se enchufa al mechero.',null,'n55'],
+  ['jardin','Serruchos de poda Samurai','Hoja curva, fijos con funda o plegables.',null,'n35'],
+  ['hogar','Escalera de aluminio doméstica','Plegable, varios peldaños.',null,'n47'],
+  ['hogar','Tendederos de alas','Sasan y otros modelos plegables.',null,'n26'],
+  ['hogar','Mesas de planchar','Sasan y Cofan, varios diseños.',null,'n28'],
+  ['hogar','Recogedores de cinta de persiana','De embutir y de superficie, con cinta.',null,'n22'],
+  ['hogar','Poleas y discos para persiana','Varias medidas.',null,'n24'],
+  ['hogar','Tubo flexible de aluminio','Para extractores y campanas.',null,'n09'],
+  ['hogar','Afiladores de cuchillos','Arcos, LifeStyle y con ventosa.',null,'n44'],
+  ['hogar','Encorchadora de botellas','Para tapones de corcho.',null,'n30'],
   ['estufas','Deshollinador Sasan','Se echa al fuego y ayuda a reducir el hollín del tubo.',null,'t69'],
   ['estufas','Aspirador de cenizas 1200 W','Dicogar, depósito de 20 l inoxidable. Estufas, chimeneas, barbacoas y pellets.',null,'t81'],
   ['estufas','Cubo galvanizado','Ideal para sacar las cenizas de la estufa.',null,'t79'],
@@ -498,8 +534,8 @@ function pintarGrid() {
 
 // ---- Reserva ----
 let carrito = {};
-try { carrito = JSON.parse(localStorage.getItem('fersaman_reserva3') || '{}'); } catch (e) { carrito = {}; }
-const guardar = () => { try { localStorage.setItem('fersaman_reserva3', JSON.stringify(carrito)); } catch (e) {} };
+try { carrito = JSON.parse(localStorage.getItem('fersaman_reserva4') || '{}'); } catch (e) { carrito = {}; }
+const guardar = () => { try { localStorage.setItem('fersaman_reserva4', JSON.stringify(carrito)); } catch (e) {} };
 const nItems = () => Object.values(carrito).reduce((a, b) => a + b, 0);
 function pintarContador() {
   const n = nItems();
