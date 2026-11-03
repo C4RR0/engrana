@@ -286,7 +286,7 @@
 
 <script>
 // Configuración de la tienda. API: URL /exec de Google Apps Script (reservas.gs). Vacía = la reserva se envía por WhatsApp.
-const TIENDA = { nombre: 'Fersaman', tel: '34647784536', API: '' };
+const TIENDA = { nombre: 'Fersaman', tel: '34647784536', API: 'https://script.google.com/macros/s/AKfycbx2Gus88SgPk3mgTTm9S3Nt7nZLkFLbRDpEosiY5hrIvoiLRUdKZLcewU74mBP21W0/exec' };
 
 // Horario: [día (0=domingo)] -> tramos [inicio, fin] en minutos
 const HORARIO = {1:[[570,840],[1020,1200]],2:[[570,840],[1020,1200]],3:[[570,840],[1020,1200]],4:[[570,840],[1020,1200]],5:[[570,840],[1020,1200]],6:[[600,840]],0:[]};
@@ -546,7 +546,9 @@ function pintarReserva() {
     </form>`;
   $('#drawerFoot').innerHTML = `<button class="btn btn-brand" style="width:100%" id="enviar">Enviar reserva</button><p class="small" style="margin:8px 0 0">No pagas nada ahora. Comprobamos que lo tenemos y te confirmamos por WhatsApp. Tus datos solo se usan para tu reserva (<a href="legal.html#privacidad">privacidad</a>).</p>`;
   const franjas = () => {
-    const f = new Date($('#dia').value + 'T12:00'); const tr = HORARIO[f.getDay()];
+    const f = new Date($('#dia').value + 'T12:00'); let tr = HORARIO[f.getDay()];
+    // Hoy solo las franjas que no han terminado (con 30 min de margen, como en diasRecogida)
+    if ($('#dia').value === fechaISO(new Date())) tr = tr.filter(([, b]) => ahoraMadrid().m < b - 30);
     $('#franja').innerHTML = tr.map(([a, b]) => `<option value="${a}-${b}">${a < 900 ? 'Mañana' : 'Tarde'} (${hhmm(a)}–${hhmm(b)})</option>`).join('');
   };
   $('#dia').addEventListener('change', franjas); franjas();
