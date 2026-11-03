@@ -68,7 +68,7 @@ function doPost(e) {
         boton('✅ Lo tengo', '#1E8E4E', 'si') + boton('🟡 Solo una parte', '#C98A00', 'parte') + boton('❌ No tengo', '#B3261E', 'no') +
         `<p style="color:#666;font-size:13px">Todas las pendientes: <a href="${url}?panel=${k}">panel de reservas</a></p>`
     });
-    return json({ ok: true, id, codigo, estado: `${url}?e=${id}&c=${codigo}` });
+    return json({ ok: true, id, codigo, estado: `${url}?e=${id}&cod=${codigo}` });
   } catch (err) {
     return json({ ok: false, error: String(err.message || err) });
   }
@@ -80,17 +80,33 @@ function doGet(e) {
   if (q.panel && q.panel === k) return pagina('Reservas pendientes', panel());
   if (q.r && q.k === k) {
     const res = leer(q.r); if (!res) return pagina('Reserva', '<p>No encuentro esta reserva.</p>');
-    if (q.hecho && ['CONFIRMADA', 'PARCIAL', 'SIN STOCK'].indexOf(q.hecho) >= 0) return pagina('Reserva', responder(res, q.hecho, q.hay ? q.hay.split(',').filter(String).map(Number) : []));
+    if (q.hecho && res.estado !== 'PENDIENTE') {
+      // Ya respondida: no se cambia, pero se vuelve a enseñar el WhatsApp por si no se llegó a enviar
+      let hay = []; try { hay = JSON.parse(res.respuesta).hay || []; } catch (err) { hay = res.productos.map((_, i) => i); }
+      return pagina('Reserva', responder(res, res.estado, hay));
+    }
+    if (q.hecho) {
+      const hay = (q.hay || '').split(',').filter(String).map(Number).filter(i => i >= 0 && i < res.productos.length)
+        .filter((i, n, a) => a.indexOf(i) === n);
+      const estado = hay.length === res.productos.length ? 'CONFIRMADA' : hay.length ? 'PARCIAL' : 'SIN STOCK';
+      return pagina('Reserva', responder(res, estado, hay));
+    }
     // Los botones del correo solo abren esta pantalla (ya marcada): nada cambia hasta pulsar «Guardar», por si el
     // programa de correo abre los enlaces por su cuenta.
-    if (res.estado !== 'PENDIENTE') return pagina('Reserva', `<p>Esta reserva ya está respondida: <b>${esc(res.estado)}</b>.</p>`);
+    if (res.estado !== 'PENDIENTE') return pagina('Reserva', `<p>Esta reserva ya está respondida: <b>${esc(res.estado)}</b>.</p>
+      <p><a href="${ScriptApp.getService().getUrl()}?r=${res.id}&k=${k}&hecho=1" target="_top">Volver a ver el mensaje de WhatsApp para el cliente</a></p>`);
     return pagina('Reserva', elegir(res, q.a !== 'no'));
   }
-  if (q.e && q.c) {
-    const res = leer(q.e); if (!res || res.codigo !== q.c) return pagina('Tu reserva', '<p>No encuentro esta reserva.</p>');
+  // OJO: el parámetro «c» está reservado por Google en las URL /exec (devuelve 400); por eso el código va en «cod».
+  if (q.e && q.cod) {
+    const res = leer(q.e); if (!res || res.codigo !== q.cod) return pagina('Tu reserva', '<p>No encuentro esta reserva.</p>');
     const txt = { 'PENDIENTE': '⏳ La tienda está comprobando si lo tiene. Te avisará por WhatsApp.', 'CONFIRMADA': '✅ ¡Confirmada! Te lo tenemos preparado.',
       'PARCIAL': '🟡 Confirmada en parte: mira el mensaje que te hemos enviado.', 'SIN STOCK': '❌ Lo sentimos, ahora mismo no lo tenemos.' }[res.estado];
-    return pagina('Tu reserva en ' + TIENDA, `<p style="font-size:1.15rem"><b>${txt}</b></p>${tabla(res)}<p>Recogida: ${esc(res.dia)}, ${esc(res.franja)}</p>`);
+    let hay = null; try { hay = JSON.parse(res.respuesta).hay; } catch (err) { /* reservas antiguas: sin detalle */ }
+    const lista = res.estado === 'PARCIAL' && Array.isArray(hay)
+      ? '<ul style="padding-left:0;list-style:none">' + res.productos.map((p, i) => `<li style="padding:10px 0;border-bottom:1px solid #eee">${hay.indexOf(i) >= 0 ? '✅' : '❌'} ${p.n} × ${esc(p.nombre)}</li>`).join('') + '</ul>'
+      : tabla(res);
+    return pagina('Tu reserva en ' + TIENDA, `<p style="font-size:1.15rem"><b>${txt}</b></p>${lista}<p>Recogida: ${esc(res.dia)}, ${esc(res.franja)}</p>`);
   }
   return pagina(TIENDA, '<p>Página de reservas de ' + TIENDA + '.</p>');
 }
@@ -115,7 +131,7 @@ function responder(res, estado, hay) {
   if (res.estado === 'PENDIENTE') {
     const sh = hoja();
     sh.getRange(res.fila, COL.estado).setValue(estado);
-    sh.getRange(res.fila, COL.respuesta).setValue(new Date());
+    sh.getRange(res.fila, COL.respuesta).setValue(JSON.stringify({ fecha: new Date().toISOString(), hay: hay }));
     try {
       const cal = CALENDARIO === 'primary' ? CalendarApp.getDefaultCalendar() : CalendarApp.getCalendarById(CALENDARIO);
       const ev = cal.getEventById(res.evento);
@@ -132,7 +148,7 @@ function responder(res, estado, hay) {
   const si = res.productos.filter((_, i) => hay.indexOf(i) >= 0), no = res.productos.filter((_, i) => hay.indexOf(i) < 0);
   const lista = a => a.map(p => `• ${p.n} × ${p.nombre}`).join('\n');
   const msg = res.estado === 'CONFIRMADA'
-    ? `Hola ${res.nombre}, somos ${TIENDA}. Tu reserva está lista:\n${lista(si)}\n\nTe la guardamos hasta ${HORAS_GUARDADO} h. Te esperamos el ${res.dia}, ${res.franja.toLowerCase()}. ¡Gracias!`
+    ? `Hola ${res.nombre}, somos ${TIENDA}. Tu reserva está lista:\n${lista(si)}\n\nTe la guardamos ${HORAS_GUARDADO} horas. Te esperamos el ${res.dia}, ${res.franja.toLowerCase()}. ¡Gracias!`
     : res.estado === 'PARCIAL'
     ? `Hola ${res.nombre}, somos ${TIENDA}. De tu reserva tenemos:\n${lista(si)}\n\nAhora mismo no nos queda:\n${lista(no)}\n\nSi quieres te lo pedimos. Lo que hay te lo guardamos ${HORAS_GUARDADO} h.`
     : `Hola ${res.nombre}, somos ${TIENDA}. Lo sentimos, ahora mismo no tenemos:\n${lista(res.productos)}\n\n¿Quieres que te lo pidamos? Te avisamos cuando llegue.`;
