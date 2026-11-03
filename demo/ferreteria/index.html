@@ -308,10 +308,10 @@ const CATS = [
 // Fotos tNN: las que hizo la tienda el 27/10/2026 (NN = orden de las fotos de WhatsApp).
 // Los que no tienen foto (electricidad, iluminación y pilas) son de ejemplo hasta que la tienda pase su lista.
 const PRODUCTOS = [
-  ['fontaneria','Grifo de fregadero','Caño giratorio. Precio de oferta hasta fin de existencias.',37.95,22],
-  ['fontaneria','Grifo de baño-ducha','Mezclador de pared. Precio de oferta hasta fin de existencias.',33.95,23],
-  ['fontaneria','Grifo de pared con caño alto','Precio de oferta hasta fin de existencias.',34.95,24],
-  ['electrica','Pantalla de soldar automática','Se oscurece sola al soldar. Precio de oferta.',39.90,61],
+  ['fontaneria','Grifo de fregadero','Caño giratorio.',null,22],
+  ['fontaneria','Grifo de baño-ducha','Mezclador de pared.',null,23],
+  ['fontaneria','Grifo de pared con caño alto','Pregunta por los modelos disponibles.',null,24],
+  ['electrica','Pantalla de soldar automática','Se oscurece sola al soldar.',null,61],
   ['estufas','Estufa de leña con rejilla para cocinar','Con rejilla para cocinar y otra tapa ciega.',null,49],
   ['estufas','Accesorios para estufas de leña','Tubos, codos, sombreros, plafones, abrazaderas y masilla de alta temperatura.',null,7],
   ['estufas','Kit deshollinador para tubo de 150 mm','Con 4 varillas.',null,15],
@@ -469,7 +469,8 @@ function pintarHorario() {
 // ---- Catálogo ----
 let filtro = 'todo';
 function pintarChips() {
-  $('#chips').innerHTML = CATS.map(([k, n]) => `<button class="chip${k === filtro ? ' on' : ''}" data-c="${k}">${n}</button>`).join('');
+  // «Ofertas» solo aparece si algún producto tiene precio (3/11: la tienda prefiere «Precio en tienda» en todo).
+  $('#chips').innerHTML = CATS.filter(([k]) => k !== 'ofertas' || PRODUCTOS.some(p => p.precio != null)).map(([k, n]) => `<button class="chip${k === filtro ? ' on' : ''}" data-c="${k}">${n}</button>`).join('');
 }
 function pintarGrid() {
   const q = sinTildes($('#q').value.trim());
