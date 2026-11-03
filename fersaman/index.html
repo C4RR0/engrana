@@ -465,7 +465,7 @@ const PRODUCTOS = [
   ['vestuario','Bota de seguridad deportiva','Ligera, de piel.',null,'t29'],
   ['vestuario','Bota de montaña de piel','Suela de taco.',null,'t25'],
   ['vestuario','Bota de trekking Cofan','Suela amortiguada.',null,'t26'],
-  ['vestuario','Bota de serraje Cofan','Cómoda para el día a día.',null,'t28'],
+  ['vestuario','Bota de montaña hidrófuga','De serraje, repele el agua.',null,'t28'],
   ['vestuario','Plantillas deportivas','Por tallas: 38-40, 41-43 y 44-46.',null,'t58'],
   ['hogar','Burlete bajo puerta','CB, 1 m, marrón o blanco.',null,'t51'],
   ['hogar','Burlete adhesivo de caucho','CB, 6 m. Frena el frío y el ruido.',null,'t52'],
@@ -474,7 +474,20 @@ const PRODUCTOS = [
   ['hogar','Hacha de cocina Arcos','Acero inoxidable y mango de madera.',null,'t54'],
   ['hogar','Pelador de hoja cerámica','5five.',null,'t55'],
   ['hogar','Peladores LifeStyle de 2 posiciones','Hoja cerámica.',null,'t56'],
-  ['hogar','Pelador de 2 cortes LifeStyle','Para tomate y pimiento, con protector.',null,'t57']
+  ['hogar','Pelador de 2 cortes LifeStyle','Para tomate y pimiento, con protector.',null,'t57'],
+  // mNN: fotos del 3/11/2026 por la noche. Van al final para no cambiar los id de las reservas guardadas.
+  ['electrica','Taladro percutor Koma Tools 12 V','Sin escobillas. Con batería, cargador y puntas.',null,'m12'],
+  ['electrica','Amoladora a batería Cofan 20 V','115 mm. Con batería y cargador.',null,'m11'],
+  ['herramienta','Cortapernos','Varias medidas, mango de goma.',null,'m09'],
+  ['tornilleria','Cadena por metros','Varios gruesos. Te cortamos los metros que necesites.',null,'m07'],
+  ['pintura','Pintura en spray Cofan','Colores RAL en mate, satinado y brillo.',null,'m03'],
+  ['pintura','Pegamentos y selladores','Ceys, Pattex y Nural: montaje, contacto, cola, silicona y más.',null,'m06'],
+  ['jardin','Rueda de carretilla maciza','3.50-8, no se pincha.',null,'m05'],
+  ['hogar','Detector de humo Smartwares','Con pila de 1 año. Fácil de instalar.',null,'m10'],
+  ['hogar','Paelleras de acero pulido La Ideal','Varios tamaños.',null,'m04'],
+  ['hogar','Taburete plegable de 2 peldaños','Hantums, de acero, aguanta 150 kg.',null,'m01'],
+  ['hogar','Filtros Aqua Optima Evolve+','Pack de 3 (3 meses). Valen para jarras Aqua Optima y Brita Maxtra.',null,'m02'],
+  ['electro','Sandwichera doble GSC Blasus','Para dos sándwiches a la vez.',null,'m00']
 ].map((p, i) => ({ id: i + 1, cat: p[0], nombre: p[1], desc: p[2], precio: p[3], foto: p[4] == null ? null : typeof p[4] === 'string' ? `fotos/${p[4]}.jpg` : `fotos/p${String(p[4]).padStart(2, '0')}.jpg` }));
 
 const $ = s => document.querySelector(s);
