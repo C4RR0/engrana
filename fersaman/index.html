@@ -199,8 +199,8 @@
       <p class="lead">Ferretería, herramientas, ropa de trabajo, menaje y copia de llaves y mandos. Si no lo ves, pregúntanos: lo buscamos y te lo traemos.</p>
       <div class="status" id="status"><span class="dot"></span><span id="statusTxt">Comprobando horario…</span></div>
       <div class="hero-actions">
-        <a class="btn btn-brand" href="#catalogo">Ver productos</a>
-        <a class="btn btn-light" id="waTop" href="#">Escribir por WhatsApp</a>
+        <a class="btn btn-brand" href="#catalogo" data-ev="fersaman-ver-productos">Ver productos</a>
+        <a class="btn btn-light" id="waTop" href="#" data-ev="fersaman-whatsapp">Escribir por WhatsApp</a>
       </div>
     </div>
     <div class="photo"><img src="fachada.jpg" alt="Fachada de la ferretería Fersaman en Tudela de Duero" width="1290" height="671"></div>
@@ -593,7 +593,7 @@ function pintarReserva() {
       <label for="nota">Algo más (opcional)</label><textarea id="nota" placeholder="Medida, color, cantidad…"></textarea>
       <div class="err" id="err"></div>
     </form>`;
-  $('#drawerFoot').innerHTML = `<button class="btn btn-brand" style="width:100%" id="enviar">Enviar reserva</button><p class="small" style="margin:8px 0 0">No pagas nada ahora. Comprobamos que lo tenemos y te confirmamos por WhatsApp. Tus datos solo se usan para tu reserva (<a href="legal.html#privacidad">privacidad</a>).</p>`;
+  $('#drawerFoot').innerHTML = `<button class="btn btn-brand" style="width:100%" id="enviar" data-ev="fersaman-enviar-reserva">Enviar reserva</button><p class="small" style="margin:8px 0 0">No pagas nada ahora. Comprobamos que lo tenemos y te confirmamos por WhatsApp. Tus datos solo se usan para tu reserva (<a href="legal.html#privacidad">privacidad</a>).</p>`;
   const franjas = () => {
     const f = new Date($('#dia').value + 'T12:00'); let tr = HORARIO[f.getDay()];
     // Hoy solo las franjas que no han terminado (con 30 min de margen, como en diasRecogida)
@@ -658,5 +658,6 @@ document.querySelectorAll('.wa-svc').forEach(a => { a.href = wa(a.dataset.t); a.
 pintarHorario(); setInterval(pintarHorario, 60000);
 pintarChips(); pintarGrid(); pintarContador();
 </script>
+<script defer src="../m.js" data-site="engrana" data-api="https://script.google.com/macros/s/AKfycbxUQt_fUgS_BEP-gdpqzNt1EqRblhiBikMZr5ThNytjFnjY_kvcknVICwr1iis0NjyO/exec"></script>
 </body>
 </html>
