@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>José Luis Vadillo · Fotografía</title>
+<meta name="description" content="Fotografía de parejas, retratos, deporte y naturaleza en Valladolid. Sesiones por encargo.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0d0b0a">
+<meta property="og:title" content="José Luis Vadillo · Fotografía">
+<meta property="og:image" content="fotos/09.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="fotos/09.jpg">
+<style>
+:root{
+  --negro:#0d0b0a; --carbon:#171312; --papel:#efe8dd; --papel2:#f6f2ea; --gris:#9c9189; --linea:#2b2421;
+  --rojo:#d0412a; --ambar:#e0913f;
+  --serif:"Instrument Serif",Georgia,serif; --sans:"Inter Tight",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.2,.7,.15,1); --lado:clamp(16px,4vw,48px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--negro)}
+body{background:var(--negro);color:var(--papel);font:400 16px/1.55 var(--sans);overflow-x:clip;-webkit-font-smoothing:antialiased}
+body.cargando{overflow:hidden;height:100svh}
+img{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit;color:inherit}
+.mono{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+em{font-style:italic}
+.palabra{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.palabra>span{display:inline-block;will-change:transform}
+
+/* grano de película (estático: no carga la tarjeta gráfica) */
+.grano{position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ===== INTRO: la cámara ===== */
+#cuarto{position:fixed;inset:0;z-index:100;pointer-events:none}
+#cuarto.fuera{display:none}
+#iris{position:absolute;inset:0;width:100%;height:100%}
+.cuarto-txt,.cuarto-nombre{position:absolute;left:0;right:0;text-align:center;transition:opacity .6s}
+.cuarto-txt{bottom:6vh;color:var(--gris)}
+.cuarto-txt b{color:var(--papel);font-weight:500}
+.cuarto-nombre{top:7vh;font:italic 400 clamp(1.3rem,2.4vw,1.8rem) var(--serif);color:var(--papel)}
+.cuarto-nombre small{display:block;font:500 .66rem var(--mono);letter-spacing:.3em;text-transform:uppercase;color:var(--rojo);font-style:normal;margin-top:8px}
+#cuarto.zoom .cuarto-txt,#cuarto.zoom .cuarto-nombre{opacity:0}
+.anillo-txt{font:500 13px var(--mono);letter-spacing:4px;fill:#8d7f75}
+#flash{position:fixed;inset:0;z-index:101;background:#fff;opacity:0;pointer-events:none}
+
+/* ===== visor (cursor) ===== */
+.visor{position:fixed;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;pointer-events:none;z-index:95;transition:width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease),opacity .3s;opacity:0}
+.visor i{position:absolute;width:9px;height:9px;border:1.5px solid var(--papel)}
+.visor i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}
+.visor i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}
+.visor i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}
+.visor i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
+.visor b{position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px;border-radius:50%;background:var(--rojo)}
+.visor span{position:absolute;left:50%;top:100%;transform:translate(-50%,6px);font:500 .62rem var(--mono);letter-spacing:.14em;color:var(--papel);opacity:0;transition:opacity .3s;white-space:nowrap}
+.visor.foto{width:86px;height:86px;margin:-43px 0 0 -43px}
+.visor.foto span,.visor.luz span{opacity:1}
+.visor.foto i{border-color:var(--ambar)}
+.visor.luz{width:0;height:0;margin:0}
+.visor.luz i,.visor.luz b{opacity:0}
+@media (pointer:fine){body.con-visor,body.con-visor a,body.con-visor button{cursor:none}}
+
+/* ===== cabecera y contador ===== */
+.nav{position:fixed;top:0;left:0;right:0;z-index:80;display:flex;justify-content:space-between;align-items:center;padding:18px var(--lado);mix-blend-mode:difference;color:#fff}
+.firma{font:italic 400 1.45rem/1 var(--serif);text-decoration:none}
+.nav ul{display:flex;gap:clamp(14px,2.6vw,34px);list-style:none}
+.nav a{text-decoration:none;font:500 .74rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.contador{position:fixed;right:var(--lado);bottom:18px;z-index:80;mix-blend-mode:difference;color:#fff;display:flex;gap:10px;align-items:center}
+.contador .pto{width:7px;height:7px;border-radius:50%;background:var(--rojo);animation:rec 1.4s infinite}
+@keyframes rec{50%{opacity:.2}}
+
+/* ===== HERO: pintar con luz ===== */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;touch-action:pan-y}
+.hero-media{position:absolute;inset:0}
+.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:38% 50%}
+.hero-bn{filter:grayscale(1) brightness(.38) contrast(1.15)}
+.hero-color{--x:50%;--y:45%;--r:0px;
+  -webkit-mask-image:radial-gradient(circle var(--r) at var(--x) var(--y),#000 0%,#000 42%,rgba(0,0,0,.55) 68%,transparent 100%);
+  mask-image:radial-gradient(circle var(--r) at var(--x) var(--y),#000 0%,#000 42%,rgba(0,0,0,.55) 68%,transparent 100%)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,11,10,.5) 0%,transparent 24%,transparent 52%,rgba(13,11,10,.85) 100%);pointer-events:none}
+.hero-txt{position:absolute;left:var(--lado);right:var(--lado);bottom:clamp(70px,11vh,120px);z-index:2;pointer-events:none}
+.hero h1{font-weight:400;line-height:.86}
+.hero .l1{display:block;font:500 clamp(.9rem,1.5vw,1.15rem) var(--mono);letter-spacing:.34em;text-transform:uppercase;margin:0 0 .7em .3vw}
+.hero .l2{display:block;font:italic 400 clamp(5.4rem,22vw,20rem)/.8 var(--serif);letter-spacing:-.035em;margin-left:-.06em}
+.letra{display:inline-block;transform:translateY(108%) rotate(6deg);transform-origin:left bottom}
+.recorte{display:inline-block;overflow:hidden;vertical-align:bottom;padding:0 .04em .1em}
+.hero-pie{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-top:20px}
+.hero-pie p{max-width:32ch;color:#d9d0c4}
+.pista-luz{display:flex;align-items:center;gap:10px;color:var(--papel)}
+.pista-luz i{width:22px;height:22px;border-radius:50%;background:radial-gradient(#fff6,transparent 70%);border:1px solid #fff8;animation:latido 1.6s ease-in-out infinite}
+@keyframes latido{50%{transform:scale(1.35);opacity:.5}}
+.solo-tactil{display:none}
+@media (pointer:coarse){.solo-raton{display:none}.solo-tactil{display:inline}}
+.baja{position:absolute;left:50%;bottom:20px;z-index:2;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:#d9d0c4}
+.baja i{width:1px;height:36px;background:linear-gradient(var(--papel),transparent);animation:baja 1.8s var(--ease) infinite;transform-origin:top}
+@keyframes baja{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+.hero-pie,.baja,.hero .l1{opacity:0}
+
+/* ===== MANIFIESTO ===== */
+.manifiesto{padding:clamp(120px,22vh,240px) var(--lado);max-width:1320px;margin:0 auto}
+.manifiesto .mono{color:var(--rojo);display:block;margin-bottom:28px}
+.manifiesto p{font:400 clamp(2rem,5.4vw,4.6rem)/1.07 var(--serif);letter-spacing:-.01em}
+.manifiesto .pal{color:#3a312d}
+.manifiesto .pal.acento{font-style:italic}
+
+/* ===== cabeceras de serie ===== */
+.serie-cab{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;padding:0 var(--lado)}
+.serie-cab .mono{color:var(--rojo)}
+.serie-cab h2{font:400 clamp(2.6rem,7vw,6.4rem)/.9 var(--serif);letter-spacing:-.02em;margin-top:10px}
+.serie-cab h2 em{color:var(--ambar)}
+.serie-cab p{max-width:36ch;color:var(--gris)}
+
+/* ===== efecto revelado (negativo -> positivo) ===== */
+.revela{position:relative;overflow:hidden;background:var(--c,#222)}
+.revela img{filter:invert(1) hue-rotate(180deg) saturate(.35) contrast(.85);opacity:.85;transition:filter 2.2s var(--ease),opacity 1.4s var(--ease)}
+.revela::after{content:"";position:absolute;inset:0;background:#7a1d10;opacity:.45;transition:opacity 2s var(--ease) .15s;pointer-events:none}
+.revela.on img{filter:none;opacity:1}
+.revela.on::after{opacity:0}
+
+/* ===== SERIE I: carrete horizontal ===== */
+.carrete-pin{height:100svh;display:flex;flex-direction:column;justify-content:center;gap:clamp(16px,4vh,40px);overflow:hidden}
+.pista{display:flex;gap:18px;padding:32px 18px;width:max-content;background:#120f0e;position:relative;will-change:transform}
+.pista::before,.pista::after{content:"";position:absolute;left:0;right:0;height:11px;background:repeating-linear-gradient(90deg,transparent 0 12px,#d9cfbf 12px 24px,transparent 24px 30px);opacity:.75}
+.pista::before{top:11px}.pista::after{bottom:11px}
+.fotograma{position:relative;height:clamp(230px,52vh,560px);flex:none;cursor:zoom-in}
+.fotograma.h{aspect-ratio:3/2}.fotograma.v{aspect-ratio:2/3}
+.fotograma img{position:absolute;top:0;left:-10%;width:120%;height:100%;object-fit:cover;max-width:none}
+.fotograma figcaption{position:absolute;left:0;bottom:-26px;color:var(--ambar);font:500 .64rem var(--mono);letter-spacing:.12em}
+.fotograma figcaption span{color:#6d615a;margin-left:12px}
+.titulo-film{flex:none;width:clamp(240px,30vw,420px);height:clamp(230px,52vh,560px);display:flex;flex-direction:column;justify-content:space-between;padding:22px;border:1px solid var(--linea);background:#161210}
+.titulo-film .num{font:italic 400 clamp(5rem,11vw,9rem)/.8 var(--serif);color:var(--ambar)}
+.titulo-film p{color:var(--gris);font-size:.95rem}
+.fin-film{flex:none;width:clamp(200px,24vw,340px);height:clamp(230px,52vh,560px);display:flex;align-items:center;justify-content:center;font:italic 400 2.2rem var(--serif);color:#5a4e47;border:1px dashed var(--linea)}
+.carrete-pie{display:flex;align-items:center;gap:20px;padding:0 var(--lado);color:var(--gris)}
+.carrete-pie b{font:italic 400 2.6rem/1 var(--serif);color:var(--papel);min-width:2ch}
+.barra{flex:1;max-width:360px;height:1px;background:var(--linea);position:relative}
+.barra i{position:absolute;inset:0;background:var(--ambar);transform-origin:left;transform:scaleX(0)}
+
+/* ===== SERIE II: copias que caen sobre la mesa ===== */
+.agua-pin{position:relative;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(260px,32%) 1fr;align-items:center;
+  background:radial-gradient(ellipse at 65% 55%,#231b17 0%,#120e0c 60%,#0d0b0a 100%)}
+.agua-txt{padding:0 0 0 var(--lado);position:relative;z-index:3}
+.agua-txt .mono{color:var(--rojo)}
+.agua-txt h2{font:400 clamp(2.6rem,6vw,5.6rem)/.9 var(--serif);letter-spacing:-.02em;margin:10px 0 18px}
+.agua-txt h2 em{color:var(--ambar)}
+.agua-txt p{color:var(--gris);max-width:30ch}
+.agua-cap{margin-top:34px;display:flex;align-items:baseline;gap:14px;border-top:1px solid var(--linea);padding-top:16px;max-width:30ch}
+.agua-cap b{font:italic 400 2.4rem/1 var(--serif);color:var(--papel)}
+.agua-cap span{color:#cfc5b8}
+.mesa-copias{position:relative;height:100%}
+.copia{position:absolute;left:50%;top:50%;background:#f4efe6;padding:clamp(8px,1vw,14px) clamp(8px,1vw,14px) clamp(26px,3vw,42px);box-shadow:0 30px 50px -18px rgba(0,0,0,.75),0 2px 6px rgba(0,0,0,.4);cursor:zoom-in;will-change:transform}
+.copia.h{width:min(48vw,720px)}.copia.v{width:min(25vw,380px)}
+.copia img{width:100%;height:auto}
+.copia small{position:absolute;left:14px;bottom:10px;font:600 1.15rem/1 "Caveat",cursive;color:#5b4c42}
+.copia .velo{position:absolute;inset:0;background:#0d0b0a;opacity:0;pointer-events:none}
+
+/* ===== LUNA ===== */
+.luna-pin{position:relative;height:100svh;overflow:hidden;background:#050404}
+.luna-pin img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;cursor:zoom-in}
+.luna-pin::after{content:"";position:absolute;left:0;right:0;bottom:0;height:45%;background:linear-gradient(transparent,rgba(5,4,4,.65));pointer-events:none}
+.luna-txt{position:absolute;left:0;right:0;z-index:2;text-align:center;padding:0 16px;font:400 clamp(2.1rem,6vw,5.4rem)/1 var(--serif);letter-spacing:-.015em;text-shadow:0 2px 24px rgba(0,0,0,.6);pointer-events:none}
+.luna-txt.t1{bottom:13vh}
+.luna-txt.t2{bottom:11vh;opacity:0}
+.luna-txt.t2 em{color:#ffd88a}
+.luna .leyenda{position:absolute;left:var(--lado);top:84px;z-index:2;color:#dfe6ef;opacity:0}
+
+/* ===== SERIE III: hoja de contactos ===== */
+.mesa{background:var(--papel2);color:#1c1714;padding:clamp(90px,14vh,150px) var(--lado) clamp(80px,12vh,130px);position:relative;overflow:hidden}
+.mesa::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#fff,transparent 70%);pointer-events:none}
+.mesa .serie-cab{padding:0;position:relative}
+.mesa .serie-cab p{color:#6c625b}
+.mesa .serie-cab h2 em{color:var(--rojo)}
+.hoja{position:relative;margin-top:clamp(40px,7vh,70px);background:#141110;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,36vw),1fr));gap:clamp(18px,2.4vw,30px) clamp(10px,1.4vw,18px);box-shadow:0 40px 70px -30px rgba(40,25,10,.5);transform:rotate(-.6deg)}
+.contacto-f{position:relative;cursor:zoom-in}
+.contacto-f .marco{aspect-ratio:3/2;background:#000;display:grid;place-items:center;overflow:hidden}
+.contacto-f .marco img{height:100%;width:auto;object-fit:contain}
+.contacto-f.h .marco img{width:100%;object-fit:cover}
+.contacto-f small{display:flex;justify-content:space-between;margin-top:6px;color:var(--ambar);font:500 .6rem var(--mono);letter-spacing:.12em}
+.contacto-f small span{color:#6d615a}
+.lapiz{position:absolute;inset:-14px -12px -4px;pointer-events:none;overflow:visible}
+.lapiz path{fill:none;stroke:var(--rojo);stroke-width:3.2;stroke-linecap:round;stroke-dasharray:1200;stroke-dashoffset:1200;transition:stroke-dashoffset 1.4s var(--ease) .3s;vector-effect:non-scaling-stroke}
+.contacto-f.on .lapiz path{stroke-dashoffset:0}
+.nota{position:absolute;right:-6px;top:-30px;font:600 1.55rem/1 "Caveat",cursive;color:var(--rojo);transform:rotate(-6deg);opacity:0;transition:opacity .6s 1.3s;z-index:2;text-shadow:0 0 6px #141110}
+.contacto-f.on .nota{opacity:1}
+.rotulo{grid-column:2/-1;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:10px 6px;color:#8a7d73}
+.rotulo b{font:600 clamp(1.5rem,3vw,2.4rem)/1.05 "Caveat",cursive;color:#e9e1d3;transform:rotate(-1.5deg);display:block}
+.rotulo .mono{color:var(--ambar)}
+.lupa{position:fixed;left:0;top:0;width:190px;height:190px;margin:-95px 0 0 -95px;border-radius:50%;pointer-events:none;z-index:85;border:3px solid #e9e1d3;box-shadow:0 18px 40px rgba(0,0,0,.5);background-repeat:no-repeat;opacity:0;transition:opacity .25s}
+.lupa.on{opacity:1}
+.mesa-pie{margin-top:26px;color:#6c625b;position:relative}
+
+/* ===== ENCARGOS ===== */
+.encargos{padding:clamp(90px,14vh,160px) var(--lado)}
+.encargos .mono.t{color:var(--rojo)}
+.encargos h2{font:400 clamp(2.4rem,6vw,5rem)/.95 var(--serif);margin:12px 0 clamp(36px,6vh,60px);max-width:16ch}
+.encargos h2 em{color:var(--ambar)}
+.lista{list-style:none;border-top:1px solid var(--linea)}
+.lista li{display:grid;grid-template-columns:4ch 1fr auto;gap:16px;align-items:baseline;padding:clamp(16px,2.6vh,26px) 0;border-bottom:1px solid var(--linea);position:relative}
+.lista li .n{color:var(--gris)}
+.lista li h3{font:400 clamp(1.9rem,4.6vw,3.8rem)/1 var(--serif);letter-spacing:-.01em;transition:transform .5s var(--ease),color .4s}
+.lista li p{color:var(--gris);max-width:30ch;text-align:right;font-size:.92rem}
+.lista li:hover h3{transform:translateX(14px);font-style:italic;color:var(--ambar)}
+.lista .mini{display:none}
+.flotante{position:fixed;left:0;top:0;width:clamp(200px,22vw,320px);aspect-ratio:4/5;pointer-events:none;z-index:70;overflow:hidden;clip-path:inset(50% 50% 50% 50%);transition:clip-path .55s var(--ease)}
+.flotante.on{clip-path:inset(0 0 0 0)}
+.flotante img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s}
+.flotante img.on{opacity:1}
+
+/* ===== CONTACTO ===== */
+.contacto{padding:clamp(90px,14vh,150px) 0 40px;overflow:hidden;border-top:1px solid var(--linea)}
+.cinta{display:flex;width:max-content;animation:cinta 24s linear infinite}
+.cinta span{font:italic 400 clamp(4rem,13vw,11rem)/1 var(--serif);letter-spacing:-.03em;padding-right:.4em;white-space:nowrap}
+.cinta span b{font-weight:400;font-style:normal;color:var(--rojo);font-size:.5em;vertical-align:middle;margin:0 .3em}
+@keyframes cinta{to{transform:translateX(-50%)}}
+.contacto-cuerpo{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:30px;padding:clamp(40px,8vh,80px) var(--lado) 0}
+.contacto-cuerpo p{max-width:40ch;color:#cfc5b8;font-size:1.08rem}
+.iman{display:inline-flex;align-items:center;gap:14px;padding:22px 34px;border-radius:999px;background:var(--papel);color:var(--negro);text-decoration:none;font:600 1.05rem var(--sans);transition:background .3s}
+.iman:hover{background:var(--ambar)}
+.iman svg{width:22px;height:22px}
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding:70px var(--lado) 64px;color:#6d615a}
+footer a{color:#9c9189}
+
+/* ===== VISOR DE FOTOS: la foto siempre entera ===== */
+.caja{position:fixed;inset:0;z-index:92;height:100svh;background:#090706;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+.caja.on{opacity:1;visibility:visible}
+.caja-top{flex:none;height:58px;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 var(--lado);color:var(--gris)}
+.caja-top b{color:var(--papel);font-weight:500}
+.caja-top button{background:none;border:0;padding:10px 0;cursor:pointer;color:var(--papel)}
+.caja-escena{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;padding:6px clamp(10px,7vw,110px)}
+.caja-escena img{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100svh - 58px - 96px - 12px);object-fit:contain;box-shadow:0 30px 80px rgba(0,0,0,.6);transition:opacity .3s,transform .5s var(--ease)}
+.caja-escena img.cambiando{opacity:0;transform:scale(.97)}
+.flecha{position:absolute;top:50%;transform:translateY(-50%);width:54px;height:54px;border-radius:50%;border:1px solid #3a302b;background:rgba(23,19,18,.75);font-size:1.25rem;cursor:pointer;display:grid;place-items:center;transition:background .3s,border-color .3s}
+.flecha:hover{background:var(--ambar);border-color:var(--ambar);color:var(--negro)}
+.flecha.izq{left:clamp(6px,2vw,28px)}.flecha.der{right:clamp(6px,2vw,28px)}
+.tiras{flex:none;height:96px;display:flex;gap:6px;overflow-x:auto;padding:14px var(--lado);scrollbar-width:none}
+.tiras::-webkit-scrollbar{display:none}
+.tiras button{flex:none;height:62px;padding:0;border:0;background:#000;opacity:.4;cursor:pointer;transition:opacity .3s,outline-color .3s;outline:2px solid transparent;outline-offset:2px}
+.tiras button img{height:100%;width:auto}
+.tiras button.on{opacity:1;outline-color:var(--ambar)}
+
+/* ===== móvil ===== */
+@media (max-width:760px){
+  .nav ul{display:none}
+  .contador{bottom:14px}
+  .baja{display:none}
+  .hero-pie{flex-direction:column;align-items:start}
+  .agua-pin{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start}
+  .agua-txt{padding:84px var(--lado) 0}
+  .agua-txt h2{font-size:2.6rem;margin:6px 0 8px}
+  .agua-txt p{display:none}
+  .agua-cap{margin-top:10px;padding-top:10px}
+  .agua-cap b{font-size:1.8rem}
+  .copia.h{width:80vw}.copia.v{width:52vw}
+  .carrete-pin{padding-top:56px;gap:14px}
+  .fotograma,.titulo-film,.fin-film{height:44vh}
+  .serie-cab p{font-size:.9rem}
+  .hoja{transform:none}
+  .lapiz{inset:-8px -6px -2px}
+  .nota{font-size:1.25rem;top:-22px}
+  .lista li{grid-template-columns:3ch 1fr}
+  .lista li p{grid-column:2;text-align:left}
+  .lista .mini{display:block;grid-column:2;width:100%;aspect-ratio:3/2;object-fit:cover;margin-top:6px}
+  .flotante{display:none}
+  .flecha{width:42px;height:42px;font-size:1rem;background:rgba(23,19,18,.55)}
+  .caja-escena{padding:6px 8px}
+}
+
+/* ===== sin librerías de animación: todo visible y usable ===== */
+.estatico .hero-color{-webkit-mask-image:none;mask-image:none}
+.estatico .letra,.estatico .hero-pie,.estatico .baja,.estatico .hero .l1{transform:none;opacity:1}
+.estatico .manifiesto .pal{color:var(--papel)}
+.estatico .carrete-pin{height:auto;padding:80px 0}
+.estatico .film{overflow-x:auto}
+.estatico .agua-pin{height:auto;display:block;padding:80px 0}
+.estatico .mesa-copias{display:flex;flex-wrap:wrap;gap:20px;padding:30px var(--lado)}
+.estatico .copia{position:relative;left:auto;top:auto}
+.estatico .luna-txt.t1{display:none}.estatico .luna-txt.t2,.estatico .luna .leyenda{opacity:1}
+</style>
+</head>
+<body class="cargando">
+<div class="grano" aria-hidden="true"></div>
+
+<div id="cuarto" aria-hidden="true">
+  <svg id="iris" viewBox="-500 -500 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+  <div class="cuarto-nombre">José Luis Vadillo<small>Fotografía</small></div>
+  <div class="cuarto-txt mono">Cargando el carrete · <b id="pct">00</b> / 23</div>
+</div>
+<div id="flash" aria-hidden="true"></div>
+
+<div class="visor" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b><span>VER</span></div>
+<div class="lupa" aria-hidden="true"></div>
+<div class="flotante" aria-hidden="true"></div>
+
+<nav class="nav">
+  <a class="firma" href="#inicio">J. L. Vadillo</a>
+  <ul>
+    <li><a href="#series">Series</a></li>
+    <li><a href="#encargos">Encargos</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+<div class="contador mono" aria-hidden="true"><i class="pto"></i><span>Fotograma <b id="fnum">09</b> / 23</span></div>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-media">
+      <img class="hero-bn" src="fotos/09.jpg" alt="">
+      <img class="hero-color" src="fotos/09.jpg" alt="Chica en el agua de una fuente lanzando el pelo hacia atrás y formando un arco de gotas">
+    </div>
+    <div class="hero-txt">
+      <h1><span class="l1">José Luis</span><span class="l2" data-letras>Vadillo</span></h1>
+      <div class="hero-pie">
+        <p>Fotografía de parejas, retratos, deporte y naturaleza. Valladolid y alrededores.</p>
+        <span class="pista-luz mono"><i></i><span class="solo-raton">Mueve el ratón: pinta con luz</span><span class="solo-tactil">Arrastra el dedo: pinta con luz</span></span>
+      </div>
+    </div>
+    <div class="baja mono" aria-hidden="true">Baja<i></i></div>
+  </section>
+
+  <!-- MANIFIESTO -->
+  <section class="manifiesto">
+    <span class="mono">Sobre mí</span>
+    <p id="manifiesto">Me gusta la luz que dura poco: la *niebla* de una mañana de otoño, el *agua* al caer, el segundo exacto en que alguien se ríe de verdad. Mi trabajo es *atraparla* para que, dentro de veinte años, sigas sintiendo lo mismo al verla.</p>
+  </section>
+
+  <!-- SERIE I -->
+  <section class="carrete" id="series">
+    <div class="carrete-pin">
+      <div class="serie-cab">
+        <div><span class="mono">Serie I · 6 fotogramas</span><h2 data-partir>Niebla <em>y gasolina</em></h2></div>
+        <p>Una sesión de otoño con su moto: hojas, bruma y una chaqueta roja que lo enciende todo.</p>
+      </div>
+      <div class="film"><div class="pista" id="pista">
+        <div class="titulo-film"><span class="mono" style="color:var(--gris)">Carrete</span><span class="num">I</span><p>Sigue bajando: el carrete avanza solo.</p></div>
+      </div></div>
+      <div class="carrete-pie mono"><b id="cnum">01</b><span>/ 06</span><span class="barra"><i id="cbarra"></i></span></div>
+    </div>
+  </section>
+
+  <!-- SERIE II -->
+  <section class="agua" id="agua">
+    <div class="agua-pin">
+      <div class="agua-txt">
+        <span class="mono">Serie II · 5 fotogramas</span>
+        <h2 data-partir>Dentro <em>del agua</em></h2>
+        <p>Una pareja, una fuente y la decisión de mojarse hasta la cintura. Las mejores fotos casi nunca salen desde la orilla.</p>
+        <div class="agua-cap"><b id="anum">01</b><span id="atxt">El arco de agua</span></div>
+      </div>
+      <div class="mesa-copias" id="copias"></div>
+    </div>
+  </section>
+
+  <!-- LUNA -->
+  <section class="luna" id="luna">
+    <div class="luna-pin">
+      <img src="fotos/12.jpg" alt="Una chica en el campo que parece sostener una enorme luna llena sobre sus manos" id="lunaimg" data-abrir="12">
+      <span class="mono leyenda" id="lleyenda">Fotograma 12 · La luna en las manos</span>
+      <p class="luna-txt t1" id="lt1">Hay fotos que salen en un segundo…</p>
+      <p class="luna-txt t2" id="lt2">…y otras que hay que <em>esperar</em>.</p>
+    </div>
+  </section>
+
+  <!-- SERIE III -->
+  <section class="mesa">
+    <div class="serie-cab">
+      <div><span class="mono">Serie III · Hoja de contactos · 11 fotogramas</span><h2 data-partir>Hojas <em>y medallas</em></h2></div>
+      <p>Retrato deportivo para una triatleta: corre, pedalea, salta… y también sonríe. Marcadas en rojo, mis favoritas.</p>
+    </div>
+    <div class="hoja" id="hoja"></div>
+    <p class="mesa-pie mono"><span class="solo-raton">Pasa el ratón por encima para mirar con la lupa · </span>Toca una foto para verla grande</p>
+  </section>
+
+  <!-- ENCARGOS -->
+  <section class="encargos" id="encargos">
+    <span class="mono t">Encargos</span>
+    <h2 data-partir>¿Qué quieres que <em>fotografíe</em>?</h2>
+    <ul class="lista" id="lista"></ul>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="contacto" id="contacto">
+    <div class="cinta" aria-hidden="true"><span>¿Hacemos la tuya? <b>●</b></span><span>¿Hacemos la tuya? <b>●</b></span><span>¿Hacemos la tuya? <b>●</b></span><span>¿Hacemos la tuya? <b>●</b></span></div>
+    <div class="contacto-cuerpo">
+      <p>Cuéntame qué tienes en mente —una boda, un retrato, una sesión con tu moto o con tu bici— y lo vemos juntos.</p>
+      <a class="iman" id="wa" href="#contacto" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3.9 2.5c.1.2 1.6 2.5 4 3.5 1.5.6 2 .7 2.8.6.4-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.5-.3z"/></svg>
+        Escríbeme por WhatsApp
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="mono">
+  <span>© José Luis Vadillo · Todas las fotos tienen derechos reservados</span>
+  <span>Web hecha por <a href="https://engranaia.com/">Engrana</a></span>
+</footer>
+
+<div class="caja" id="caja" role="dialog" aria-modal="true" aria-label="Foto ampliada">
+  <div class="caja-top mono"><span id="cajaserie"></span><span><b id="cajanum">01</b> / 23</span><button id="cerrar" class="mono">Cerrar ✕</button></div>
+  <div class="caja-escena">
+    <button class="flecha izq" id="ant" aria-label="Foto anterior">←</button>
+    <img id="cajaimg" alt="">
+    <button class="flecha der" id="sig" aria-label="Foto siguiente">→</button>
+  </div>
+  <div class="tiras" id="tiras"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+/* Número de WhatsApp de José Luis (formato 34XXXXXXXXX). Vacío = el botón no abre chat. */
+const WHATSAPP = "34652971714";
+
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+scrollTo(0, 0);
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const img = (n, m) => `fotos/${n}${m ? "-m" : ""}.jpg`;
+const fino = matchMedia("(pointer: fine)").matches;
+const ANIM = !!(window.gsap && window.ScrollTrigger);
+if (!ANIM) document.documentElement.classList.add("estatico");
+else gsap.registerPlugin(ScrollTrigger);
+
+const C = {"01":"#90857d","02":"#7a6051","03":"#6a584d","04":"#755b4b","05":"#665b51","06":"#7a695d","07":"#4f4648","08":"#4e474a","09":"#564c4b","10":"#554c4c","11":"#514948","12":"#6c7c90","13":"#716f6a","14":"#878178","15":"#6a5a4f","16":"#736358","17":"#5a5855","18":"#675e58","19":"#484643","20":"#686461","21":"#6f625a","22":"#6d6f6a","23":"#818078"};
+const V = new Set(["04","06","07","08","13","23"]);
+const T = {
+  "01":"Moto en la niebla","02":"Parque de otoño","03":"Chaqueta blanca","04":"Junto al pilar","05":"Sonrisa sobre ruedas","06":"Entre los árboles",
+  "07":"Abrazo en la fuente","08":"Los dos, empapados","09":"El arco de agua","10":"Mirando al cielo","11":"Brazos abiertos",
+  "12":"La luna en las manos",
+  "13":"Retrato entre hojas","14":"La medalla","15":"Tumbada en otoño","16":"Pausa","17":"La sonrisa","18":"Zancada","19":"Entre árboles","20":"El salto","21":"De frente","22":"Pedaleando","23":"Las medallas"
+};
+const SERIES = {
+  "Niebla y gasolina":["01","02","03","04","05","06"],
+  "Dentro del agua":["09","07","08","10","11"],
+  "La luna en las manos":["12"],
+  "Hojas y medallas":["13","14","15","16","17","18","19","20","21","22","23"]
+};
+const TODAS = [];
+for (const [s, l] of Object.entries(SERIES)) for (const n of l) TODAS.push({n, s});
+const fnum = $("#fnum");
+const ponNum = n => { fnum.textContent = n; };
+
+/* ================= contenido ================= */
+const pista = $("#pista");
+SERIES["Niebla y gasolina"].forEach(n => pista.insertAdjacentHTML("beforeend",
+  `<figure class="fotograma revela ${V.has(n) ? "v" : "h"}" style="--c:${C[n]}" data-foto="${n}"><img src="${img(n, 1)}" alt="${T[n]}" loading="lazy"><figcaption>▸ ${n}A<span>JLV 400</span></figcaption></figure>`));
+pista.insertAdjacentHTML("beforeend", `<div class="fin-film">fin del carrete</div>`);
+
+const copiasEl = $("#copias");
+SERIES["Dentro del agua"].forEach(n => copiasEl.insertAdjacentHTML("beforeend",
+  `<figure class="copia ${V.has(n) ? "v" : "h"}" data-foto="${n}"><img src="${img(n, 1)}" alt="${T[n]}" loading="lazy"><small>${T[n]}</small><span class="velo"></span></figure>`));
+
+const MARCAS = {"17":"¡esta!","20":"portada","22":"✓","14":"bien"};
+const CIRC = "M10,40 C10,8 60,2 120,4 C185,6 236,18 238,60 C240,104 190,124 120,124 C52,124 4,104 6,62 C7,40 22,22 46,14";
+const hoja = $("#hoja");
+SERIES["Hojas y medallas"].forEach(n => {
+  const m = MARCAS[n];
+  hoja.insertAdjacentHTML("beforeend", `<figure class="contacto-f ${V.has(n) ? "v" : "h"}" data-foto="${n}"><div class="marco"><img src="${img(n, 1)}" alt="${T[n]}" loading="lazy"></div><small>▸ ${n}A<span>JLV 400</span></small>${m ? `<svg class="lapiz" viewBox="0 0 244 128" preserveAspectRatio="none" aria-hidden="true"><path d="${CIRC}"/></svg><span class="nota">${m}</span>` : ""}</figure>`);
+});
+hoja.insertAdjacentHTML("beforeend", `<div class="rotulo"><span class="mono">JLV 400 · Hoja 03 · Otoño</span><b>Sesión de triatlón: correr, pedalear y celebrar</b></div>`);
+
+const ENC = [
+  ["Bodas y parejas","Preboda, boda o simplemente vosotros dos.","07"],
+  ["Bautizos y comuniones","El día de los peques, sin posados eternos.","17"],
+  ["Retratos","Para ti, para tu marca o para regalar.","13"],
+  ["Deporte","Corriendo, pedaleando o con la medalla al cuello.","22"],
+  ["Motor","Tu moto o tu coche, con la luz que se merecen.","01"],
+  ["Naturaleza y paisaje","Lunas, nieblas y la fauna de aquí.","12"]
+];
+const lista = $("#lista"), flot = $(".flotante");
+ENC.forEach(([t, d, n], i) => {
+  lista.insertAdjacentHTML("beforeend", `<li data-f="${n}"><span class="n mono">0${i + 1}</span><h3>${t}</h3><p>${d}</p><img class="mini" src="${img(n, 1)}" alt="" loading="lazy"></li>`);
+  flot.insertAdjacentHTML("beforeend", `<img src="${img(n, 1)}" alt="" data-f="${n}" loading="lazy">`);
+});
+
+const wa = $("#wa");
+if (WHATSAPP) wa.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hola José Luis, he visto tu web y me gustaría hacer una sesión.")}`;
+else wa.removeAttribute("target");
+
+const man = $("#manifiesto");
+man.innerHTML = man.textContent.split(/\s+/).map(w => {
+  const ac = /^\*.*\*[,.:]?$/.test(w); return `<span class="pal${ac ? " acento" : ""}">${w.replace(/\*/g, "")}</span>`;
+}).join(" ");
+$$("[data-letras]").forEach(el => {
+  el.innerHTML = [...el.textContent].map(c => `<span class="recorte"><span class="letra">${c}</span></span>`).join("");
+});
+// títulos partidos en palabras para que suban al aparecer
+$$("[data-partir]").forEach(el => {
+  const partir = nodo => [...nodo.childNodes].forEach(ch => {
+    if (ch.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      ch.textContent.split(/(\s+)/).forEach(t => {
+        if (!t) return;
+        if (/^\s+$/.test(t)) frag.append(t);
+        else { const w = document.createElement("span"); w.className = "palabra"; w.innerHTML = `<span>${t}</span>`; frag.append(w); }
+      });
+      ch.replaceWith(frag);
+    } else partir(ch);
+  });
+  partir(el);
+});
+
+/* ================= scroll suave ================= */
+let lenis = null;
+if (ANIM && window.Lenis) {
+  lenis = new Lenis({lerp: .085, wheelMultiplier: .9});
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+  lenis.stop();
+}
+if (ANIM) ScrollTrigger.config({ignoreMobileResize: true});
+$$('a[href^="#"]').forEach(a => a.addEventListener("click", e => {
+  const id = a.getAttribute("href"); if (id.length < 2) return;
+  const t = $(id); if (!t) return;
+  e.preventDefault(); lenis ? lenis.scrollTo(t, {duration: 1.6}) : t.scrollIntoView({behavior: "smooth"});
+}));
+
+/* ================= HERO: pintar con luz ================= */
+const hero = $(".hero"), heroC = $(".hero-color");
+const luz = {x: innerWidth * .42, y: innerHeight * .42, tx: innerWidth * .42, ty: innerHeight * .42, r: Math.hypot(innerWidth, innerHeight), extra: 0};
+let ultimoMov = -1e9;
+const apuntar = (cx, cy) => { luz.tx = cx; luz.ty = cy; ultimoMov = performance.now(); };
+hero.addEventListener("pointermove", e => apuntar(e.clientX, e.clientY));
+hero.addEventListener("touchmove", e => { const t = e.touches[0]; apuntar(t.clientX, t.clientY); }, {passive: true});
+hero.addEventListener("touchstart", e => { const t = e.touches[0]; apuntar(t.clientX, t.clientY); }, {passive: true});
+function bucleLuz(t) {
+  const rc = hero.getBoundingClientRect();
+  if (rc.bottom > 0) {
+    if (t - ultimoMov > 3500) { // piloto automático: la luz pasea sola
+      const a = t / 2400;
+      luz.tx = innerWidth * (.5 + .3 * Math.sin(a)); luz.ty = innerHeight * (.42 + .2 * Math.sin(a * 1.6 + 1));
+    }
+    luz.x += (luz.tx - luz.x) * .1; luz.y += (luz.ty - luz.y) * .1;
+    heroC.style.setProperty("--x", luz.x + "px");
+    heroC.style.setProperty("--y", (luz.y - rc.top) + "px");
+    heroC.style.setProperty("--r", Math.max(1, luz.r + luz.extra) + "px");
+  }
+  requestAnimationFrame(bucleLuz);
+}
+if (ANIM) requestAnimationFrame(bucleLuz);
+
+/* ================= INTRO: la cámara ================= */
+const NL = 8, L = 185, VB = innerWidth < innerHeight ? 640 : 1000;
+const svgI = $("#iris");
+if (VB !== 1000) svgI.setAttribute("viewBox", `${-VB / 2} ${-VB / 2} ${VB} ${VB}`);
+let ticks = "";
+for (let i = 0; i < 72; i++) {
+  const a = i * 5 * Math.PI / 180, r1 = L + 44, r2 = L + (i % 6 ? 50 : 58);
+  ticks += `<line x1="${(r1 * Math.cos(a)).toFixed(1)}" y1="${(r1 * Math.sin(a)).toFixed(1)}" x2="${(r2 * Math.cos(a)).toFixed(1)}" y2="${(r2 * Math.sin(a)).toFixed(1)}" stroke="#4a3e37" stroke-width="${i % 6 ? 1 : 2}"/>`;
+}
+let lineas = "";
+for (let i = 0; i < NL; i++) lineas += `<line class="borde" stroke="#5c4b41" stroke-width="1.6"/>`;
+svgI.innerHTML = `<defs>
+  <radialGradient id="cuerpo" cx="0" cy="0" r="700" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a1210"/><stop offset=".45" stop-color="#140e0c"/><stop offset="1" stop-color="#0b0908"/></radialGradient>
+  <radialGradient id="metal" cx="-60" cy="-80" r="${L * 1.4}" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3b302b"/><stop offset=".6" stop-color="#1e1815"/><stop offset="1" stop-color="#120e0c"/></radialGradient>
+  <mask id="mLente" maskUnits="userSpaceOnUse" x="-3000" y="-3000" width="6000" height="6000"><rect x="-3000" y="-3000" width="6000" height="6000" fill="#fff"/><circle r="${L}" fill="#000"/></mask>
+  <mask id="mHueco" maskUnits="userSpaceOnUse" x="-${L + 10}" y="-${L + 10}" width="${2 * L + 20}" height="${2 * L + 20}"><circle r="${L + 2}" fill="#fff"/><polygon id="hueco" fill="#000"/></mask>
+  <clipPath id="cLente"><circle r="${L}"/></clipPath>
+  <path id="arco" d="M ${-(L + 20)},0 A ${L + 20},${L + 20} 0 1,1 ${L + 20},0 A ${L + 20},${L + 20} 0 1,1 ${-(L + 20)},0"/>
+</defs>
+<g id="cam">
+  <rect x="-3000" y="-3000" width="6000" height="6000" fill="url(#cuerpo)" mask="url(#mLente)"/>
+  <g><circle r="${L + 1}" fill="url(#metal)" mask="url(#mHueco)"/><g clip-path="url(#cLente)">${lineas}</g></g>
+  <circle r="${L}" fill="none" stroke="#000" stroke-width="5" opacity=".7"/>
+  <circle r="${L + 9}" fill="none" stroke="#2b2320" stroke-width="12"/>
+  <circle r="${L + 36}" fill="none" stroke="#2f2622" stroke-width="1"/>
+  <g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="40s" repeatCount="indefinite"/><text class="anillo-txt"><textPath href="#arco">JOSÉ LUIS VADILLO · 50 mm 1:1.8 · VALLADOLID · FOTOGRAFÍA · ∞ 10 5 3 2 1.5 m ·</textPath></text></g>
+  ${ticks}
+  <circle r="${L + 64}" fill="none" stroke="#3a2f2a" stroke-width="2"/>
+  <circle r="${L + 92}" fill="none" stroke="#1d1715" stroke-width="22"/>
+  <circle cx="${L + 120}" cy="${-(L + 40)}" r="7" fill="#d0412a" id="piloto"/>
+</g>`;
+const hueco = $("#hueco"), bordes = [...svgI.querySelectorAll(".borde")], cam = $("#cam");
+function iris(r, giro) {
+  const P = [];
+  for (let i = 0; i < NL; i++) { const a = giro + i * 2 * Math.PI / NL; P.push([r * Math.cos(a), r * Math.sin(a)]); }
+  hueco.setAttribute("points", P.map(p => p.map(v => v.toFixed(2)).join(",")).join(" "));
+  bordes.forEach((ln, i) => {
+    const [x, y] = P[i], [px, py] = P[(i + NL - 1) % NL];
+    let dx = x - px, dy = y - py; const m = Math.hypot(dx, dy);
+    if (m < .5) { const a = giro + i * 2 * Math.PI / NL + Math.PI / 2 + .35; dx = Math.cos(a); dy = Math.sin(a); } else { dx /= m; dy /= m; }
+    ln.setAttribute("x1", x.toFixed(2)); ln.setAttribute("y1", y.toFixed(2));
+    ln.setAttribute("x2", (x + dx * L * 2.2).toFixed(2)); ln.setAttribute("y2", (y + dy * L * 2.2).toFixed(2));
+  });
+}
+iris(2, 0);
+const animar = (ms, f, ease) => new Promise(res => {
+  const t0 = performance.now();
+  (function paso(t) { const k = Math.min(1, Math.max(0, (t - t0) / ms)); f(ease ? ease(k) : k); k < 1 ? requestAnimationFrame(paso) : res(); })(t0);
+});
+const enInOut = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2, enIn = k => k * k * k;
+const espera = ms => new Promise(r => setTimeout(r, ms));
+const pct = $("#pct"); let k = 0;
+const tic = setInterval(() => { k = Math.min(23, k + 1); pct.textContent = String(k).padStart(2, "0"); if (k === 23) clearInterval(tic); }, 75);
+const heroImg = $(".hero-color");
+const cargada = new Promise(r => heroImg.complete ? r() : (heroImg.onload = heroImg.onerror = r));
+
+function entrarHero() {
+  if (!ANIM) return;
+  gsap.to(".letra", {y: 0, rotation: 0, duration: 1.3, ease: "power4.out", stagger: .07});
+  gsap.to(".hero .l1", {opacity: 1, duration: 1, delay: .2});
+  gsap.to(".hero-pie, .baja", {opacity: 1, duration: 1.2, delay: .9});
+  gsap.to(luz, {r: Math.min(innerWidth, innerHeight) * (innerWidth < 760 ? .42 : .3), duration: 2.6, ease: "power2.inOut", delay: 1.1});
+}
+function fin() {
+  $("#cuarto").classList.add("fuera");
+  document.body.classList.remove("cargando");
+  if (lenis) lenis.start();
+  if (ANIM) ScrollTrigger.refresh();
+}
+Promise.all([cargada, espera(1900), document.fonts ? document.fonts.ready : 0]).then(async () => {
+  clearInterval(tic); pct.textContent = "23";
+  if (!ANIM) { fin(); return; }
+  const piloto = $("#piloto");
+  for (let i = 0; i < 3; i++) { piloto.setAttribute("opacity", ".15"); await espera(170); piloto.setAttribute("opacity", "1"); await espera(170); }
+  await animar(3000, e => iris(2 + L * 1.12 * e, -e * 1.1), enInOut);   // el diafragma se abre despacio
+  await espera(450);
+  $("#cuarto").classList.add("zoom");
+  const W = innerWidth, H = innerHeight, s0 = Math.min(W, H) / VB, zf = Math.hypot(W, H) / 2 / s0 / L * 1.15;
+  await animar(1400, e => cam.setAttribute("transform", `scale(${1 + (zf - 1) * e})`), enIn);   // entramos por el objetivo
+  gsap.fromTo("#flash", {opacity: .75}, {opacity: 0, duration: .7, ease: "power2.out"});        // el disparo
+  fin();
+  entrarHero();
+});
+
+/* ================= animaciones con el scroll ================= */
+if (ANIM) {
+  // hero: al bajar, la luz se abre del todo y el título sube
+  gsap.timeline({scrollTrigger: {trigger: hero, start: "top top", end: "bottom top", scrub: true}})
+    .to(luz, {extra: Math.hypot(innerWidth, innerHeight) * 1.2, ease: "none"}, 0)
+    .to(".hero-media", {scale: 1.12, yPercent: 12, ease: "none"}, 0)
+    .to(".hero-txt", {yPercent: -40, opacity: 0, ease: "none"}, 0);
+
+  // títulos que suben palabra a palabra
+  $$("[data-partir]").forEach(el => gsap.from(el.querySelectorAll(".palabra>span"), {
+    yPercent: 115, rotation: 4, duration: 1.2, ease: "power4.out", stagger: .08,
+    scrollTrigger: {trigger: el, start: "top 88%"}}));
+
+  // manifiesto: se ilumina palabra a palabra
+  const pals = $$(".manifiesto .pal");
+  gsap.to(pals, {color: (i, el) => el.classList.contains("acento") ? "#e0913f" : "#efe8dd", stagger: .1, ease: "none",
+    scrollTrigger: {trigger: man, start: "top 78%", end: "bottom 45%", scrub: true}});
+
+  // SERIE I: carrete horizontal fijado
+  const fotogramas = $$(".fotograma");
+  const cnum = $("#cnum"), cbarra = $("#cbarra");
+  const recorrido = () => pista.scrollWidth - innerWidth;
+  const tlC = gsap.to(pista, {x: () => -recorrido(), ease: "none",
+    scrollTrigger: {trigger: "#series", start: "top top", end: () => "+=" + recorrido() * 1.1, pin: true, scrub: .9, invalidateOnRefresh: true,
+      onUpdate: s => { cbarra.style.transform = `scaleX(${s.progress})`; }}});
+  fotogramas.forEach((f, i) => {
+    gsap.fromTo(f.querySelector("img"), {xPercent: -6}, {xPercent: 6, ease: "none",
+      scrollTrigger: {trigger: f, containerAnimation: tlC, start: "left right", end: "right left", scrub: true}});
+    ScrollTrigger.create({trigger: f, containerAnimation: tlC, start: "left 72%", end: "right 28%",
+      onToggle: s => { if (s.isActive) { f.classList.add("on"); cnum.textContent = String(i + 1).padStart(2, "0"); ponNum(f.dataset.foto); } }});
+  });
+  // al llegar al carrete se revelan los fotogramas que ya se ven
+  ScrollTrigger.create({trigger: "#series", start: "top 55%", onEnter: () => fotogramas.forEach(f => {
+    if (f.getBoundingClientRect().left < innerWidth * .9) f.classList.add("on");
+  })});
+  if (lenis) {
+    const inclina = gsap.quickTo(pista, "skewX", {duration: .6, ease: "power3"});
+    lenis.on("scroll", e => inclina(gsap.utils.clamp(-7, 7, -e.velocity * .35)));
+  }
+
+  // SERIE II: las copias caen una a una sobre la mesa
+  const copias = $$(".copia"), anum = $("#anum"), atxt = $("#atxt");
+  const POS = [{x: -.08, y: -.04, r: -6}, {x: .1, y: .02, r: 5}, {x: -.17, y: .05, r: -3}, {x: .05, y: -.06, r: 7}, {x: -.04, y: .03, r: -2}];
+  gsap.set(copias, {xPercent: -50, yPercent: -50, y: () => innerHeight, rotation: 0});
+  const tlA = gsap.timeline({scrollTrigger: {trigger: "#agua", start: "top top", end: () => "+=" + innerHeight * 3.4, pin: true, scrub: 1, invalidateOnRefresh: true,
+    onUpdate: s => {
+      const i = Math.min(copias.length - 1, Math.max(0, Math.floor(s.progress * copias.length * 1.08)));
+      const n = copias[i].dataset.foto; anum.textContent = "0" + (i + 1); atxt.textContent = T[n]; ponNum(n);
+    }}});
+  const mesaW = () => copiasEl.clientWidth, mesaH = () => copiasEl.clientHeight;
+  copias.forEach((c, i) => {
+    const p = POS[i], lado = i % 2 ? 1 : -1;
+    tlA.fromTo(c, {x: () => lado * mesaW() * .35, y: () => innerHeight * 1.05, rotation: lado * 24, scale: 1.12},
+      {x: () => p.x * mesaW() * (innerWidth < 760 ? .35 : 1), y: () => p.y * mesaH() * (innerWidth < 760 ? .6 : 1), rotation: p.r, scale: 1, duration: 1, ease: "power3.out"}, i);
+    if (i > 0) tlA.to(copias[i - 1].querySelector(".velo"), {opacity: .3, duration: .6}, i + .2);
+  });
+  tlA.to({}, {duration: .5});
+
+  // LUNA: primero solo la luna sobre negro; el círculo se abre hasta la escena entera
+  const lunaImg = $("#lunaimg"), pinL = $(".luna-pin"), estL = {p: 0};
+  function circulo() {
+    const W = pinL.clientWidth, H = pinL.clientHeight, w0 = lunaImg.naturalWidth || 1800, h0 = lunaImg.naturalHeight || 1201;
+    const s = Math.max(W / w0, H / h0), dw = w0 * s, dh = h0 * s, ox = (W - dw) / 2, oy = (H - dh) / 2;
+    const cx = ox + .502 * dw, cy = oy + .336 * dh, r0 = .25 * dh, r1 = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy)) + 10;
+    lunaImg.style.clipPath = `circle(${r0 + (r1 - r0) * estL.p}px at ${cx}px ${cy}px)`;
+  }
+  circulo(); lunaImg.addEventListener("load", circulo); addEventListener("resize", circulo);
+  gsap.timeline({scrollTrigger: {trigger: "#luna", start: "top top", end: () => "+=" + innerHeight * 2, pin: true, scrub: 1, invalidateOnRefresh: true,
+      onToggle: s => s.isActive && ponNum("12")}})
+    .fromTo(lunaImg, {scale: 1.06}, {scale: 1, duration: 1, ease: "none"}, 0)
+    .to(estL, {p: 1, duration: .75, ease: "power2.inOut", onUpdate: circulo}, .2)
+    .to("#lt1", {opacity: 0, y: -30, duration: .15}, .35)
+    .fromTo("#lt2", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: .2}, .72)
+    .to("#lleyenda", {opacity: 1, duration: .15}, .8);
+
+  // SERIE III: la hoja entra girando y las fotos aparecen una a una
+  gsap.from(hoja, {y: 140, rotation: -5, opacity: 0, duration: 1.4, ease: "power3.out", scrollTrigger: {trigger: hoja, start: "top 88%"}});
+  gsap.from(".contacto-f", {opacity: 0, y: 24, duration: .8, stagger: .06, ease: "power2.out", scrollTrigger: {trigger: hoja, start: "top 70%"}});
+  $$(".contacto-f").forEach(f => ScrollTrigger.create({trigger: f, start: "top 75%", once: true, onEnter: () => { f.classList.add("on"); ponNum(f.dataset.foto); }}));
+
+  // encargos y contacto
+  gsap.from(".lista li", {y: 50, opacity: 0, duration: 1, stagger: .09, ease: "power3.out", scrollTrigger: {trigger: ".lista", start: "top 85%"}});
+  gsap.from(".contacto-cuerpo > *", {y: 40, opacity: 0, duration: 1, stagger: .15, ease: "power3.out", scrollTrigger: {trigger: ".contacto-cuerpo", start: "top 90%"}});
+
+  addEventListener("load", () => ScrollTrigger.refresh());
+} else {
+  $$(".revela, .contacto-f").forEach(e => e.classList.add("on"));
+}
+
+/* ================= cursor visor, lupa, foto flotante, botón imán ================= */
+if (fino) {
+  document.body.classList.add("con-visor");
+  const visor = $(".visor"), lupa = $(".lupa"), etiqueta = visor.querySelector("span");
+  let mx = innerWidth / 2, my = innerHeight / 2, vx = mx, vy = my, fx = mx, fy = my;
+  addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY; visor.style.opacity = 1; }, {passive: true});
+  document.addEventListener("mouseleave", () => visor.style.opacity = 0);
+  (function bucle() {
+    vx += (mx - vx) * .22; vy += (my - vy) * .22; fx += (mx - fx) * .12; fy += (my - fy) * .12;
+    visor.style.transform = `translate3d(${vx}px,${vy}px,0)`;
+    lupa.style.transform = `translate3d(${mx}px,${my}px,0)`;
+    flot.style.transform = `translate3d(${fx + 26}px,${fy - 120}px,0) rotate(${(mx - fx) * .04}deg)`;
+    requestAnimationFrame(bucle);
+  })();
+  document.addEventListener("mouseover", e => {
+    const enHero = !!e.target.closest(".hero"), enFoto = !!e.target.closest("[data-foto], [data-abrir]");
+    visor.classList.toggle("luz", enHero && !enFoto);
+    visor.classList.toggle("foto", enFoto);
+    etiqueta.textContent = enHero ? "PINTA CON LUZ" : "VER";
+  });
+  hoja.querySelectorAll(".contacto-f").forEach(f => {
+    const im = f.querySelector("img");
+    f.addEventListener("mouseenter", () => { lupa.style.backgroundImage = `url(${img(f.dataset.foto)})`; lupa.classList.add("on"); visor.style.visibility = "hidden"; });
+    f.addEventListener("mouseleave", () => { lupa.classList.remove("on"); visor.style.visibility = ""; });
+    f.addEventListener("mousemove", e => {
+      const r = im.getBoundingClientRect(), Z = 3.2;
+      const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      lupa.style.backgroundSize = `${r.width * Z}px ${r.height * Z}px`;
+      lupa.style.backgroundPosition = `${95 - x * r.width * Z}px ${95 - y * r.height * Z}px`;
+    });
+  });
+  lista.querySelectorAll("li").forEach(li => {
+    li.addEventListener("mouseenter", () => { flot.classList.add("on"); flot.querySelectorAll("img").forEach(i => i.classList.toggle("on", i.dataset.f === li.dataset.f)); });
+    li.addEventListener("mouseleave", () => flot.classList.remove("on"));
+  });
+  if (ANIM) {
+    const ix = gsap.quickTo(wa, "x", {duration: .5, ease: "power3"}), iy = gsap.quickTo(wa, "y", {duration: .5, ease: "power3"});
+    wa.addEventListener("mousemove", e => { const r = wa.getBoundingClientRect(); ix((e.clientX - r.left - r.width / 2) * .35); iy((e.clientY - r.top - r.height / 2) * .45); });
+    wa.addEventListener("mouseleave", () => { ix(0); iy(0); });
+  }
+}
+
+/* ================= visor de fotos (siempre entera) ================= */
+const caja = $("#caja"), cimg = $("#cajaimg"), tiras = $("#tiras");
+TODAS.forEach(({n}, i) => tiras.insertAdjacentHTML("beforeend", `<button data-i="${i}" aria-label="Foto ${n}"><img src="${img(n, 1)}" alt="" loading="lazy"></button>`));
+let actual = 0;
+function mostrar(i) {
+  actual = (i + TODAS.length) % TODAS.length;
+  const {n, s} = TODAS[actual];
+  cimg.classList.add("cambiando");
+  const nueva = new Image();
+  nueva.onload = () => { cimg.src = nueva.src; cimg.alt = T[n]; requestAnimationFrame(() => cimg.classList.remove("cambiando")); };
+  nueva.src = img(n);
+  $("#cajaserie").innerHTML = `${s} · <b>${T[n]}</b>`;
+  $("#cajanum").textContent = n;
+  tiras.querySelectorAll("button").forEach((b, j) => b.classList.toggle("on", j === actual));
+  const b = tiras.children[actual]; tiras.scrollTo({left: b.offsetLeft - tiras.clientWidth / 2 + b.clientWidth / 2, behavior: "smooth"});
+  ponNum(n);
+  [1, -1].forEach(d => { const p = new Image(); p.src = img(TODAS[(actual + d + TODAS.length) % TODAS.length].n); });
+}
+function abrir(n) { mostrar(TODAS.findIndex(t => t.n === n)); caja.classList.add("on"); if (lenis) lenis.stop(); else document.body.style.overflow = "hidden"; }
+function cerrar() { caja.classList.remove("on"); if (lenis) lenis.start(); else document.body.style.overflow = ""; }
+document.addEventListener("click", e => {
+  if (caja.contains(e.target)) return;
+  const f = e.target.closest("[data-foto], [data-abrir]");
+  if (f) abrir(f.dataset.foto || f.dataset.abrir);
+});
+$("#cerrar").onclick = cerrar; $("#ant").onclick = () => mostrar(actual - 1); $("#sig").onclick = () => mostrar(actual + 1);
+tiras.addEventListener("click", e => { const b = e.target.closest("button"); if (b) mostrar(+b.dataset.i); });
+caja.addEventListener("click", e => { if (e.target.classList.contains("caja-escena")) cerrar(); });
+addEventListener("keydown", e => {
+  if (!caja.classList.contains("on")) return;
+  if (e.key === "Escape") cerrar(); if (e.key === "ArrowRight") mostrar(actual + 1); if (e.key === "ArrowLeft") mostrar(actual - 1);
+});
+let tx = 0;
+caja.addEventListener("touchstart", e => tx = e.touches[0].clientX, {passive: true});
+caja.addEventListener("touchend", e => { const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 50) mostrar(actual + (d < 0 ? 1 : -1)); });
+</script>
+<script defer src="../../m.js" data-site="engrana" data-api="https://script.google.com/macros/s/AKfycbxUQt_fUgS_BEP-gdpqzNt1EqRblhiBikMZr5ThNytjFnjY_kvcknVICwr1iis0NjyO/exec"></script>
+</body>
+</html>
