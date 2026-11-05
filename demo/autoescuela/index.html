@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Reservas de clases · Autoescuela Circular (maqueta)</title>
+<meta name="description" content="Maqueta de prueba: los alumnos reservan, cambian o anulan sus clases prácticas solos y la oficina lo ve al momento. Datos de ejemplo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --naranja:#E8641E; --naranja2:#F58A3C; --naranja-suave:#FDEEE4;
+  --verde:#5FA21E; --verde2:#7CC424; --verde-suave:#EDF6E3;
+  --tinta:#1C2320; --gris:#66706B; --gris2:#9AA39E; --linea:#E6E2DA;
+  --fondo:#F4F1EA; --papel:#FFFFFF; --asfalto:#2A302D;
+  --azul:#2C7DA0; --rojo:#D2452F;
+  --r:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font:500 15px/1.45 "Plus Jakarta Sans",system-ui,sans-serif;color:var(--tinta);background:var(--fondo);overflow-x:clip;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.oculto{display:none!important}
+
+/* ---------- fondo: carretera ---------- */
+.carretera{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.carretera svg{position:absolute;width:1400px;height:1400px;right:-520px;top:-380px;opacity:.55}
+.carretera .dash{animation:rodar 18s linear infinite}
+@keyframes rodar{to{stroke-dashoffset:-400}}
+
+/* ---------- intro: la rotonda ---------- */
+#intro{position:fixed;inset:0;z-index:50;background:var(--asfalto);display:grid;place-items:center;transition:opacity .7s ease, visibility .7s}
+#intro.fuera{opacity:0;visibility:hidden}
+#intro .caja{display:grid;justify-items:center;gap:22px;text-align:center;color:#fff;padding:24px}
+#intro h1{font-size:clamp(1.4rem,4vw,2.1rem);font-weight:800;letter-spacing:-.02em;opacity:0;transform:translateY(12px);transition:all .6s ease .2s}
+#intro p{color:#b9c2bd;font-size:.95rem;opacity:0;transition:opacity .6s ease .5s}
+#intro.txt h1{opacity:1;transform:none}
+#intro.txt p{opacity:1}
+.rotonda{width:min(220px,52vw);height:auto;overflow:visible}
+
+/* ---------- barra superior ---------- */
+.barra{position:relative;z-index:5;display:flex;align-items:center;gap:14px;padding:14px 28px;max-width:1360px;margin:0 auto}
+.barra img{height:40px;width:auto;border-radius:6px;background:#fff;padding:3px 5px}
+.barra .t{font-weight:800;letter-spacing:-.01em;line-height:1.15}
+.barra .t small{display:block;font-weight:500;color:var(--gris);font-size:.78rem;letter-spacing:0}
+.barra .etq{margin-left:auto;font-size:.75rem;font-weight:700;color:var(--naranja);background:var(--naranja-suave);border-radius:99px;padding:6px 12px;white-space:nowrap}
+.pestanas{display:none}
+
+/* ---------- escenario ---------- */
+.escenario{position:relative;z-index:2;display:grid;grid-template-columns:auto minmax(0,1fr);gap:40px;align-items:start;max-width:1360px;margin:0 auto;padding:8px 28px 40px}
+.lado-movil{display:grid;justify-items:center;gap:14px;position:sticky;top:12px}
+.pista{max-width:330px;text-align:center;font-size:.85rem;color:var(--gris)}
+.pista b{color:var(--tinta)}
+.telefono{width:384px;height:min(780px,calc(100svh - 120px));min-height:600px;border-radius:52px;background:#101312;padding:11px;box-shadow:0 40px 80px -30px rgba(28,35,32,.55),0 0 0 2px #2c3330 inset;position:relative}
+.telefono::before{content:"";position:absolute;top:20px;left:50%;translate:-50% 0;width:104px;height:28px;border-radius:20px;background:#000;z-index:30}
+.app{position:relative;height:100%;border-radius:42px;overflow:hidden;background:var(--fondo)}
+.app-scroll{height:100%;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding-bottom:110px}
+.app-scroll::-webkit-scrollbar{display:none}
+
+/* ---------- app del alumno ---------- */
+.a-cab{background:var(--asfalto);color:#fff;padding:58px 20px 66px;position:relative;overflow:hidden}
+.a-cab .hola{font-size:.85rem;color:#b9c2bd}
+.a-cab h2{font-size:1.45rem;font-weight:800;letter-spacing:-.02em;margin-top:2px}
+.a-cab .rot{position:absolute;right:-60px;top:-40px;width:230px;opacity:.16}
+.bono{margin:-48px 16px 0;background:var(--papel);border-radius:22px;padding:16px;display:flex;gap:16px;align-items:center;box-shadow:0 14px 30px -18px rgba(0,0,0,.35);position:relative;z-index:2}
+.anillo{width:86px;height:86px;flex:none;position:relative}
+.anillo svg{width:100%;height:100%;transform:rotate(-90deg)}
+.anillo circle{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dasharray .8s cubic-bezier(.6,.1,.2,1),stroke-dashoffset .8s cubic-bezier(.6,.1,.2,1)}
+.anillo .num{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-weight:800;font-size:1.3rem;line-height:1}
+.anillo .num small{display:block;font-size:.6rem;color:var(--gris);font-weight:600;margin-top:2px}
+.bono h3{font-size:.95rem;font-weight:800}
+.bono ul{list-style:none;margin-top:6px;display:grid;gap:3px;font-size:.8rem;color:var(--gris)}
+.bono li::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:0;background:var(--c)}
+.bono li b{color:var(--tinta)}
+
+.seccion{padding:22px 16px 0}
+.seccion h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;color:var(--gris);font-weight:700;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.seccion h4 span{text-transform:none;letter-spacing:0;font-weight:600;color:var(--gris2)}
+.clase{background:var(--papel);border-radius:var(--r);padding:14px;display:grid;grid-template-columns:58px 1fr;gap:12px;margin-bottom:10px;border:1px solid var(--linea);transition:transform .35s, opacity .35s}
+.clase.nueva{animation:entra .7s cubic-bezier(.2,.9,.3,1.3)}
+.clase.sale{transform:translateX(110%);opacity:0}
+@keyframes entra{from{transform:scale(.85) translateY(10px);opacity:0}}
+.fecha{border-radius:14px;background:var(--naranja-suave);color:var(--naranja);display:grid;place-items:center;text-align:center;line-height:1.05;padding:8px 0;font-weight:800}
+.fecha small{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.fecha b{font-size:1.4rem}
+.clase .info b{font-size:1rem}
+.clase .info p{font-size:.78rem;color:var(--gris)}
+.clase .acc{grid-column:1/-1;display:flex;gap:8px}
+.btn{border-radius:12px;padding:10px 14px;font-weight:700;font-size:.85rem;transition:transform .15s, background .2s}
+.btn:active{transform:scale(.96)}
+.btn.sec{background:#F1EEE7;flex:1}
+.btn.sec.peligro{color:var(--rojo)}
+.btn.pri{background:var(--naranja);color:#fff}
+.btn.ver{background:var(--verde);color:#fff}
+.vacio{font-size:.85rem;color:var(--gris);background:var(--papel);border:1px dashed var(--linea);border-radius:var(--r);padding:16px;text-align:center}
+.reservar{position:absolute;left:16px;right:16px;bottom:18px;z-index:8;border-radius:18px;background:var(--naranja);color:#fff;font-weight:800;font-size:1.02rem;padding:16px;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 14px 28px -12px rgba(232,100,30,.7);transition:transform .2s}
+.reservar:active{transform:scale(.97)}
+.reservar svg{width:22px;height:22px}
+.norma{font-size:.75rem;color:var(--gris);margin:4px 2px 0}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--papel);border:1px solid var(--linea);border-radius:99px;padding:8px 13px;font-size:.82rem;font-weight:600;transition:all .2s}
+.chip.on{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.respuesta{margin-top:12px;background:var(--verde-suave);border-radius:4px 18px 18px 18px;padding:13px 14px;font-size:.86rem;animation:entra .5s cubic-bezier(.2,.9,.3,1.2)}
+.respuesta .auto{display:block;margin-top:8px;font-size:.7rem;font-weight:700;color:var(--verde)}
+.respuesta .ej{color:var(--gris);font-style:italic}
+
+/* ---------- hoja de reservar ---------- */
+.velo{position:absolute;inset:0;background:rgba(16,19,18,.45);z-index:20;opacity:0;pointer-events:none;transition:opacity .3s}
+.velo.on{opacity:1;pointer-events:auto}
+.hoja{position:absolute;left:0;right:0;bottom:0;z-index:21;background:var(--papel);border-radius:28px 28px 0 0;max-height:92%;display:flex;flex-direction:column;transform:translateY(105%);transition:transform .45s cubic-bezier(.2,.9,.25,1)}
+.hoja.on{transform:none}
+.hoja .asa{width:44px;height:5px;border-radius:9px;background:var(--linea);margin:10px auto 0}
+.hoja .cuerpo{overflow-y:auto;padding:12px 18px 18px;scrollbar-width:none}
+.hoja .cuerpo::-webkit-scrollbar{display:none}
+.hoja h3{font-size:1.15rem;font-weight:800;letter-spacing:-.01em}
+.hoja .sub{font-size:.8rem;color:var(--gris);margin-bottom:12px}
+.hoja .lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.09em;color:var(--gris);font-weight:700;margin:14px 0 8px}
+.dias{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;scroll-snap-type:x mandatory}
+.dias::-webkit-scrollbar{display:none}
+.dia{flex:none;width:58px;border-radius:16px;border:1.5px solid var(--linea);padding:8px 0 7px;text-align:center;line-height:1.1;scroll-snap-align:start;transition:all .2s}
+.dia small{display:block;font-size:.68rem;text-transform:uppercase;color:var(--gris);font-weight:700}
+.dia b{font-size:1.25rem;font-weight:800}
+.dia i{display:block;width:8px;height:8px;border-radius:50%;margin:5px auto 0;background:var(--verde)}
+.dia i.pocas{background:var(--naranja)}
+.dia i.llena{background:var(--gris2)}
+.dia.on{background:var(--tinta);border-color:var(--tinta);color:#fff}
+.dia.on small{color:#c9d0cc}
+.horas{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hora{border-radius:12px;border:1.5px solid var(--linea);padding:10px 0 8px;text-align:center;font-weight:800;font-size:.95rem;transition:all .2s;line-height:1.1}
+.hora small{display:block;font-size:.65rem;font-weight:600;color:var(--gris)}
+.hora:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+.hora.on{background:var(--naranja);border-color:var(--naranja);color:#fff}
+.hora.on small{color:#ffe3d1}
+.lleno{border-radius:16px;background:var(--naranja-suave);padding:14px;font-size:.86rem}
+.lleno b{display:block;margin-bottom:8px}
+.resumen{margin-top:16px;border-radius:16px;background:#F7F5F0;padding:12px 14px;font-size:.86rem;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.hoja .pie{padding:12px 18px 20px;border-top:1px solid var(--linea);display:flex;gap:10px}
+.hoja .pie .btn{flex:1;padding:14px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.aviso-24{border-radius:14px;background:#FFF4E5;color:#8a4a10;padding:11px 13px;font-size:.8rem;margin-top:12px}
+
+/* ok animado */
+.ok{display:grid;justify-items:center;text-align:center;gap:10px;padding:18px 6px 8px}
+.ok svg{width:150px;height:150px;overflow:visible}
+.ok h3{font-size:1.3rem}
+.ok p{font-size:.86rem;color:var(--gris);max-width:270px}
+
+/* notificación tipo WhatsApp dentro del móvil */
+.noti{position:absolute;left:10px;right:10px;top:56px;z-index:25;background:rgba(255,255,255,.97);border-radius:20px;padding:12px 13px;box-shadow:0 18px 40px -14px rgba(0,0,0,.45);transform:translateY(-140%);transition:transform .55s cubic-bezier(.2,.9,.25,1.15)}
+.noti.on{transform:none}
+.noti .de{display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--gris);font-weight:600}
+.noti .de i{width:20px;height:20px;border-radius:6px;background:#25D366;display:grid;place-items:center}
+.noti .de i svg{width:13px;height:13px}
+.noti .de span{margin-left:auto}
+.noti p{font-size:.86rem;margin:6px 0 10px}
+.noti .acc{display:flex;gap:8px}
+.noti .btn{flex:1;padding:9px 8px;font-size:.8rem}
+
+/* ---------- oficina ---------- */
+.oficina{background:var(--papel);border-radius:28px;box-shadow:0 30px 60px -36px rgba(28,35,32,.4);overflow:hidden;min-width:0}
+.o-cab{background:var(--asfalto);color:#fff;padding:20px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.o-cab h2{font-size:1.15rem;font-weight:800}
+.o-cab p{font-size:.8rem;color:#b9c2bd}
+.o-cab .vivo{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;color:var(--verde2)}
+.o-cab .vivo i{width:9px;height:9px;border-radius:50%;background:var(--verde2);animation:latido 1.6s infinite}
+@keyframes latido{0%{box-shadow:0 0 0 0 rgba(124,196,36,.7)}100%{box-shadow:0 0 0 12px rgba(124,196,36,0)}}
+.cifras{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--linea)}
+.cifra{padding:18px 22px;border-right:1px solid var(--linea)}
+.cifra:last-child{border-right:0}
+.cifra b{display:block;font-size:2rem;font-weight:800;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.cifra span{font-size:.78rem;color:var(--gris)}
+.cifra.verde b{color:var(--verde)}
+.cifra.pop b{animation:pop .6s}
+@keyframes pop{40%{transform:scale(1.18);color:var(--naranja)}}
+.o-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)}
+.agenda{padding:18px 20px 22px;border-right:1px solid var(--linea);min-width:0}
+.o-tit{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.o-tit h3{font-size:.95rem;font-weight:800}
+.o-tit .nav{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:700}
+.o-tit .nav button{width:30px;height:30px;border-radius:10px;background:#F1EEE7;display:grid;place-items:center}
+.o-tit .nav span{min-width:92px;text-align:center}
+.tabla{display:grid;grid-template-columns:48px repeat(3,minmax(0,1fr));gap:4px;font-size:.74rem}
+.tabla .th{font-weight:800;font-size:.78rem;padding:4px 6px 6px;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}
+.tabla .th i{width:8px;height:8px;border-radius:50%;flex:none}
+.tabla .hh{color:var(--gris);font-weight:700;padding:6px 0;font-variant-numeric:tabular-nums}
+.tabla .sep{grid-column:1/-1;height:1px;background:var(--linea);margin:3px 0}
+.celda{border-radius:8px;padding:6px 7px;background:#F7F5F0;color:var(--gris2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .4s,color .4s}
+.celda.ocu{background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--tinta);font-weight:600;border-left:3px solid var(--c)}
+.celda.mia{background:var(--naranja);color:#fff;border-left-color:var(--naranja)}
+.celda.flash{animation:flash 1.8s}
+@keyframes flash{0%,40%{box-shadow:0 0 0 3px var(--naranja2);transform:scale(1.04)}100%{box-shadow:0 0 0 0 transparent}}
+.celda.pas{opacity:.45}
+.lado-o{padding:18px 20px 22px;display:grid;gap:22px;align-content:start;min-width:0}
+.feed{list-style:none;display:grid;gap:8px;max-height:330px;overflow-y:auto;scrollbar-width:thin}
+.feed li{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;font-size:.82rem;padding:9px 10px;border-radius:14px;background:#F7F5F0}
+.feed li.nuevo{animation:feedin .7s cubic-bezier(.2,.9,.3,1.2);background:var(--naranja-suave)}
+@keyframes feedin{from{opacity:0;transform:translateY(-14px) scale(.96)}}
+.feed .ic{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font-size:.9rem;background:#fff}
+.feed small{display:block;color:var(--gris);font-size:.7rem;font-weight:600;margin-top:1px}
+.espera{list-style:none;display:grid;gap:6px;font-size:.82rem}
+.espera li{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:12px;border:1px dashed var(--linea)}
+.espera li span{color:var(--gris);font-size:.75rem}
+.espera li.nuevo{animation:feedin .7s;border-color:var(--naranja)}
+.o-pie{padding:14px 22px;border-top:1px solid var(--linea);font-size:.78rem;color:var(--gris);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.o-pie b{color:var(--tinta)}
+
+.creditos{position:relative;z-index:2;max-width:1360px;margin:0 auto;padding:0 28px 34px;display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;font-size:.8rem;color:var(--gris)}
+.creditos a{color:var(--tinta);font-weight:700}
+.creditos .wa{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;border-radius:99px;padding:9px 16px;text-decoration:none}
+.creditos .wa svg{width:16px;height:16px}
+.reini{text-decoration:underline;color:var(--gris)}
+
+/* aviso flotante en móvil (cuando la oficina recibe algo) */
+.toast-o{position:fixed;left:50%;top:10px;translate:-50% -160%;z-index:40;background:var(--tinta);color:#fff;border-radius:16px;padding:11px 12px 11px 16px;display:flex;align-items:center;gap:12px;font-size:.84rem;box-shadow:0 18px 40px -14px rgba(0,0,0,.5);transition:translate .45s cubic-bezier(.2,.9,.25,1.15);width:max-content;max-width:calc(100vw - 32px)}
+.toast-o.on{translate:-50% 0}
+.toast-o .btn{padding:8px 12px}
+
+/* ---------- móvil ---------- */
+@media (max-width:980px){
+  .barra{padding:10px 16px;gap:10px}
+  .barra img{height:32px}
+  .barra .etq{display:none}
+  .pestanas{display:flex;position:sticky;top:0;z-index:12;margin:0 16px;background:#E8E4DB;border-radius:14px;padding:4px;gap:4px}
+  .pestanas button{flex:1;border-radius:11px;padding:9px 6px;font-weight:700;font-size:.88rem;position:relative;transition:background .2s}
+  .pestanas button.on{background:var(--papel);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+  .pestanas .badge{position:absolute;top:4px;right:10px;min-width:18px;height:18px;border-radius:9px;background:var(--naranja);color:#fff;font-size:.7rem;display:grid;place-items:center;padding:0 5px;animation:pop .5s}
+  .escenario{display:block;padding:10px 16px 24px}
+  .lado-movil{position:static}
+  .pista{display:none}
+  .telefono{width:100%;height:calc(100svh - 130px);min-height:520px;border-radius:30px;padding:0;background:none;box-shadow:0 20px 40px -26px rgba(0,0,0,.4)}
+  .telefono::before{display:none}
+  .app{border-radius:30px}
+  .a-cab{padding-top:26px}
+  .noti{top:12px}
+  body[data-vista="oficina"] .lado-movil{display:none}
+  body[data-vista="alumno"] .oficina{display:none}
+  .o-grid{grid-template-columns:1fr}
+  .agenda{border-right:0;border-bottom:1px solid var(--linea);padding:16px 14px}
+  .lado-o{padding:16px 14px}
+  .cifra{padding:14px 12px}
+  .cifra b{font-size:1.5rem}
+  .cifra span{font-size:.7rem;display:block;line-height:1.25}
+  .o-cab{padding:16px}
+  .creditos{padding:0 16px 30px}
+}
+@media (max-width:380px){ .horas{grid-template-columns:repeat(2,1fr)} }
+</style>
+</head>
+<body data-vista="alumno">
+
+<!-- intro: un coche da la vuelta a la rotonda -->
+<div id="intro" aria-hidden="true">
+  <div class="caja">
+    <svg class="rotonda" viewBox="-110 -110 220 220">
+      <circle r="92" fill="none" stroke="#3a423e" stroke-width="34"/>
+      <circle r="92" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="10 12" opacity=".5"/>
+      <circle id="introArco" r="92" fill="none" stroke="#E8641E" stroke-width="6" stroke-linecap="round" stroke-dasharray="0 600" transform="rotate(-90)"/>
+      <circle r="58" fill="#5FA21E"/>
+      <path d="M-30 18 Q0 -40 30 18" fill="none" stroke="#7CC424" stroke-width="10" stroke-linecap="round"/>
+      <g id="introCoche"><g transform="translate(0,-92)"><rect x="-13" y="-8" width="26" height="16" rx="5" fill="#fff"/><rect x="-5" y="-6" width="9" height="12" rx="2" fill="#2A302D"/><circle cx="12" cy="-5" r="2" fill="#F5D33A"/><circle cx="12" cy="5" r="2" fill="#F5D33A"/></g></g>
+    </svg>
+    <h1>Reserva tu práctica sin escribir a nadie</h1>
+    <p>Maqueta para Autoescuela Circular</p>
+  </div>
+</div>
+
+<div class="carretera" aria-hidden="true">
+  <svg viewBox="0 0 1400 1400"><circle cx="700" cy="700" r="560" fill="none" stroke="#E7E2D7" stroke-width="90"/><circle class="dash" cx="700" cy="700" r="560" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="26 24"/></svg>
+</div>
+
+<header class="barra">
+  <img src="logo.png" alt="Autoescuela Circular" width="49" height="40">
+  <div class="t">Reservas de prácticas<small>Maqueta para Autoescuela Circular · C/ Industrias, 1</small></div>
+  <span class="etq">Maqueta de prueba · datos de ejemplo</span>
+</header>
+
+<nav class="pestanas" aria-label="Cambiar de vista">
+  <button class="on" data-vista="alumno" data-ev="autoescuela-tab-alumno">📱 El alumno</button>
+  <button data-vista="oficina" data-ev="autoescuela-tab-oficina">🖥️ La oficina<span class="badge oculto" id="badge">0</span></button>
+</nav>
+
+<main class="escenario">
+  <!-- ======== MÓVIL DEL ALUMNO ======== -->
+  <section class="lado-movil" aria-label="Móvil del alumno">
+    <div class="telefono">
+      <div class="app" id="app">
+        <div class="app-scroll" id="appScroll">
+          <div class="a-cab">
+            <svg class="rot" viewBox="-110 -110 220 220" aria-hidden="true"><circle r="92" fill="none" stroke="#fff" stroke-width="30"/><circle r="56" fill="#fff"/></svg>
+            <div class="hola">Hola de nuevo,</div>
+            <h2>Lucía 👋</h2>
+          </div>
+          <div class="bono">
+            <div class="anillo">
+              <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" stroke="#EFEBE3"/><circle id="arcHechas" cx="50" cy="50" r="40" stroke="var(--verde)"/><circle id="arcRes" cx="50" cy="50" r="40" stroke="var(--naranja)"/></svg>
+              <div class="num"><span id="nQuedan">4</span><small>por reservar</small></div>
+            </div>
+            <div>
+              <h3>Bono 10 clases</h3>
+              <ul>
+                <li style="--c:var(--verde)"><b id="nHechas">4</b> hechas</li>
+                <li style="--c:var(--naranja)"><b id="nReservadas">2</b> reservadas</li>
+                <li style="--c:#E3DED4"><b id="nQuedan2">4</b> por reservar</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="seccion">
+            <h4>Tus próximas clases <span id="cuentaClases"></span></h4>
+            <div id="misClases"></div>
+            <p class="norma">Cambios y anulaciones gratis hasta 24 h antes <span style="color:var(--gris2)">(norma de ejemplo: la ponéis vosotros)</span>.</p>
+          </div>
+
+          <div class="seccion">
+            <h4>Preguntas rápidas <span>se contestan solas</span></h4>
+            <div class="chips" id="chips"></div>
+            <div id="respuesta"></div>
+          </div>
+          <div class="seccion" style="font-size:.72rem;color:var(--gris2);padding-bottom:10px">Maqueta de prueba. Los alumnos, profesores y horarios son inventados; los precios son los de vuestra web.</div>
+        </div>
+
+        <button class="reservar" id="btnReservar" data-ev="autoescuela-reservar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Reservar clase
+        </button>
+
+        <div class="velo" id="velo"></div>
+        <div class="hoja" id="hoja" role="dialog" aria-modal="true" aria-label="Reservar clase"><div class="asa"></div><div class="cuerpo" id="hojaCuerpo"></div><div class="pie" id="hojaPie"></div></div>
+
+        <div class="noti" id="noti" role="status"></div>
+      </div>
+    </div>
+    <p class="pista"><b>Pruébalo:</b> reserva, cambia o anula una clase en el móvil y mira a la derecha cómo le llega a la oficina, sin un solo WhatsApp.</p>
+  </section>
+
+  <!-- ======== PANTALLA DE LA OFICINA ======== -->
+  <section class="oficina" aria-label="Pantalla de la oficina">
+    <div class="o-cab">
+      <div><h2>Pantalla de la oficina</h2><p>En el ordenador o en el móvil de la autoescuela</p></div>
+      <div class="vivo"><i></i> En directo</div>
+    </div>
+    <div class="cifras">
+      <div class="cifra" id="cfRes"><b>0</b><span>reservas hechas solas esta semana</span></div>
+      <div class="cifra" id="cfCam"><b>0</b><span>cambios y anulaciones sin llamar</span></div>
+      <div class="cifra verde" id="cfMsg"><b>0</b><span>WhatsApp que no habéis tenido que contestar</span></div>
+    </div>
+    <div class="o-grid">
+      <div class="agenda">
+        <div class="o-tit"><h3>Agenda de prácticas</h3>
+          <div class="nav"><button id="oPrev" aria-label="Día anterior">‹</button><span id="oDia"></span><button id="oNext" aria-label="Día siguiente">›</button></div>
+        </div>
+        <div class="tabla" id="tabla"></div>
+      </div>
+      <div class="lado-o">
+        <div>
+          <div class="o-tit"><h3>Lo que ha pasado</h3></div>
+          <ul class="feed" id="feed"></ul>
+        </div>
+        <div>
+          <div class="o-tit"><h3>Lista de espera</h3></div>
+          <ul class="espera" id="espera"></ul>
+          <p style="font-size:.74rem;color:var(--gris);margin-top:8px">Cuando alguien anula, se avisa sola a la lista y el primero que lo coge se lo queda.</p>
+        </div>
+      </div>
+    </div>
+    <div class="o-pie"><b>Lo que la oficina ya no hace:</b> apuntar a mano, cuadrar cambios por WhatsApp ni llamar uno a uno para rellenar huecos.</div>
+  </section>
+</main>
+
+<footer class="creditos">
+  <span>Maqueta hecha por <b>Sergio</b> (<a href="https://engranaia.com" target="_blank" rel="noopener">Engrana</a>) para Autoescuela Circular. Nada de lo que toques aquí se envía a nadie.</span>
+  <a class="wa" href="https://wa.me/34601200703?text=Hola%20Sergio%2C%20he%20visto%20la%20maqueta%20de%20reservas" target="_blank" rel="noopener" data-ev="autoescuela-whatsapp-sergio"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z"/></svg>Escríbeme por WhatsApp</a>
+  <button class="reini" id="reini">Volver a empezar la prueba</button>
+</footer>
+
+<div class="toast-o" id="toastO"><span id="toastOTxt"></span><button class="btn pri" id="toastOVer">Ver</button></div>
+
+<script>
+/* =================== datos de ejemplo =================== */
+const $ = s => document.querySelector(s);
+const PROFES = [
+  {id:"marta",  n:"Marta",  coche:"Seat Ibiza", c:"#E8641E"},
+  {id:"javier", n:"Javier", coche:"VW Polo",    c:"#5FA21E"},
+  {id:"ruben",  n:"Rubén",  coche:"Toyota Yaris", c:"#2C7DA0"}
+];
+const SLOTS = ["08:00","08:45","09:30","10:15","11:00","11:45","12:30","13:15","16:00","16:45","17:30","18:15","19:00","19:45"];
+const ALUMNOS = ["Pablo G.","Irene M.","Hugo S.","Nerea P.","Álvaro R.","Sara L.","Diego C.","Carla V.","Mario T.","Andrea F.","Íñigo B.","Paula D.","Adrián N.","Elena R.","Jorge A.","Claudia H.","Rubén O.","Marina S.","Óscar L.","Noelia C."];
+const YO = "Lucía B.";
+const BONO = 10, HECHAS = 4;
+const FAQ = [
+  {q:"¿Cuánto cuesta el carnet?", a:`Pack Express <b>257 €</b> (teórico + 5 prácticas), Premium <b>417 €</b> (+10) y Top <b>737 €</b> (+20). Bono de 5 clases 172 € y de 10 clases 339 €. Las tasas de Tráfico van aparte (94,05 €).`},
+  {q:"¿Cuándo me puedo examinar?", a:`<span class="ej">Ejemplo, el texto lo escribís vosotros:</span> cuando tu profesor te vea preparada, pedimos fecha a Tráfico y te avisamos por aquí. Ahora mismo la espera es de unas 3-4 semanas.`},
+  {q:"¿Hay lista de espera?", a:`Si un día está lleno, pulsa «Apúntame a la lista de espera». En cuanto alguien anule te llega un aviso, y el primero que lo coge se lo queda.`},
+  {q:"¿Y si anulo tarde?", a:`Puedes cambiar o anular gratis hasta 24 h antes. Después, la clase cuenta como dada. <span class="ej">(Norma de ejemplo: la ponéis vosotros.)</span>`},
+  {q:"¿Dónde salen las clases?", a:`Desde la autoescuela: <b>C/ Industrias, 1</b> (47005 Valladolid). Ven 5 minutos antes.`},
+  {q:"Otra cosa", a:`Si tu duda no está aquí, escribe a la oficina por WhatsApp y te contestan en horario de oficina. Todo lo de arriba ya no hace falta preguntarlo.`}
+];
+
+/* =================== fechas =================== */
+const DIAS_N = ["dom","lun","mar","mié","jue","vie","sáb"];
+const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const deIso = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
+const fCorta = s => { const d = deIso(s); return `${DIAS_N[d.getDay()]} ${d.getDate()} ${MESES[d.getMonth()]}`; };
+const fLarga = s => { const d = deIso(s); const hoy = iso(new Date()), man = iso(sumar(new Date(),1)); return s===hoy ? "hoy" : s===man ? "mañana" : `el ${["domingo","lunes","martes","miércoles","jueves","viernes","sábado"][d.getDay()]} ${d.getDate()}`; };
+function sumar(d, n){ const x = new Date(d); x.setDate(x.getDate()+n); return x; }
+function laborables(n){ const r = []; let d = new Date(); d.setHours(0,0,0,0); while(r.length < n){ if(d.getDay()!==0 && d.getDay()!==6) r.push(iso(d)); d = sumar(d,1); } return r; }
+const momento = (dia, h) => { const d = deIso(dia); const [hh,mm] = h.split(":").map(Number); d.setHours(hh,mm,0,0); return d; };
+const pasado = (dia, h) => momento(dia,h) < new Date();
+const horasHasta = (dia, h) => (momento(dia,h) - new Date()) / 36e5;
+const ahora = () => { const d = new Date(); return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`; };
+
+/* =================== estado =================== */
+let S;
+function rng(seed){ let s = seed; return () => (s = (s*16807) % 2147483647) / 2147483647; }
+function inicial(){
+  const DIAS = laborables(12);
+  const r = rng(20091);
+  const occ = {};
+  DIAS.forEach((dia, i) => {
+    const lleno = i === 2;                      // un día completo para enseñar la lista de espera
+    const dens = lleno ? 1 : i < 2 ? .78 : i < 5 ? .66 : i < 8 ? .48 : .32;
+    PROFES.forEach(p => SLOTS.forEach(h => { if(r() < dens) occ[`${dia}|${p.id}|${h}`] = ALUMNOS[Math.floor(r()*ALUMNOS.length)]; }));
+  });
+  // las dos clases de Lucía: la del primer día laborable que venga después de hoy y otra 2 días después
+  const hoy = iso(new Date());
+  const fut = DIAS.filter(d => d !== hoy);
+  const c1 = `${fut[0]}|marta|10:15`, c2 = `${fut[3]}|javier|17:30`;
+  occ[c1] = YO; occ[c2] = YO;
+  return {
+    DIAS, occ,
+    cont: {res:23, cam:9, msg:74},
+    feed: [
+      {h:"09:12", ic:"🔁", t:"<b>Irene M.</b> cambió su clase al jueves a las 18:15"},
+      {h:"08:47", ic:"✅", t:"<b>Hugo S.</b> reservó con Rubén a las 9:30"},
+      {h:"ayer 23:10", ic:"💬", t:"<b>Sara L.</b> preguntó el precio del bono → contestado solo"},
+      {h:"ayer 22:41", ic:"❌", t:"<b>Diego C.</b> anuló su clase y <b>Paula D.</b> cogió el hueco al momento"}
+    ],
+    espera: [{n:"Pablo G.", dia:DIAS[2]}, {n:"Claudia H.", dia:DIAS[2]}],
+    oDia: fut[0],
+    flash: null
+  };
+}
+const misClases = () => Object.entries(S.occ).filter(([k,v]) => v===YO).map(([k]) => { const [dia,p,h] = k.split("|"); return {k, dia, p, h}; }).filter(c => !pasado(c.dia,c.h)).sort((a,b)=> momento(a.dia,a.h)-momento(b.dia,b.h));
+const profe = id => PROFES.find(p=>p.id===id);
+
+/* =================== app del alumno =================== */
+const C = 2*Math.PI*40;
+function pintarBono(){
+  const res = misClases().length, quedan = Math.max(0, BONO - HECHAS - res);
+  $("#nHechas").textContent = HECHAS; $("#nReservadas").textContent = res; $("#nQuedan").textContent = quedan; $("#nQuedan2").textContent = quedan;
+  const a = C*HECHAS/BONO, b = C*res/BONO;
+  $("#arcHechas").style.strokeDasharray = `${Math.max(0,a-3)} ${C}`;
+  $("#arcRes").style.strokeDasharray = `${Math.max(0,b-3)} ${C}`;
+  $("#arcRes").style.strokeDashoffset = -a;
+}
+function pintarClases(nuevaK){
+  const cl = misClases();
+  $("#cuentaClases").textContent = cl.length ? `${cl.length} reservada${cl.length>1?"s":""}` : "";
+  $("#misClases").innerHTML = cl.length ? cl.map(c => { const d = deIso(c.dia), p = profe(c.p); return `
+    <div class="clase${c.k===nuevaK?" nueva":""}" data-k="${c.k}">
+      <div class="fecha"><small>${DIAS_N[d.getDay()]}</small><b>${d.getDate()}</b><small>${MESES[d.getMonth()]}</small></div>
+      <div class="info"><b>${c.h} · con ${p.n}</b><p>${p.coche} · sale de C/ Industrias, 1</p><p>${fLarga(c.dia)[0].toUpperCase()+fLarga(c.dia).slice(1)}, 45 minutos</p></div>
+      <div class="acc"><button class="btn sec" data-cambiar="${c.k}" data-ev="autoescuela-cambiar">Cambiar</button><button class="btn sec peligro" data-anular="${c.k}" data-ev="autoescuela-anular">Anular</button></div>
+    </div>`; }).join("") : `<div class="vacio">No tienes clases reservadas. Pulsa «Reservar clase» y elige día y hora.</div>`;
+  pintarBono();
+}
+$("#misClases").addEventListener("click", e => {
+  const c = e.target.closest("[data-cambiar]"), a = e.target.closest("[data-anular]");
+  if(c) abrirReserva(c.dataset.cambiar);
+  if(a) pedirAnular(a.dataset.anular);
+});
+function pintarChips(){
+  $("#chips").innerHTML = FAQ.map((f,i)=>`<button class="chip" data-i="${i}" data-ev="autoescuela-pregunta">${f.q}</button>`).join("");
+}
+$("#chips").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if(!b) return;
+  const i = +b.dataset.i, on = b.classList.contains("on");
+  document.querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));
+  if(on){ $("#respuesta").innerHTML = ""; return; }
+  b.classList.add("on");
+  $("#respuesta").innerHTML = `<div class="respuesta">${FAQ[i].a}<span class="auto">⚡ Respuesta automática: la oficina no ha tenido que escribir</span></div>`;
+  if(i < FAQ.length-1){ sumarCont({msg:1}); evento("💬", `<b>${YO}</b> preguntó «${FAQ[i].q.replace(/[¿?]/g,"")}» → contestado solo`, null, true); }
+});
+
+/* ---------- hoja: reservar / cambiar ---------- */
+let F = null; // {modo, desde, profe, dia, hora}
+function libres(dia, h, filtro){ return PROFES.filter(p => (filtro==="any" || p.id===filtro) && !S.occ[`${dia}|${p.id}|${h}`]); }
+function tengoEsaHora(dia, h, salvo){ return PROFES.some(p => S.occ[`${dia}|${p.id}|${h}`]===YO && `${dia}|${p.id}|${h}`!==salvo); }
+function huecosDia(dia, filtro){ return SLOTS.filter(h => !pasado(dia,h) && libres(dia,h,filtro).length && !tengoEsaHora(dia,h,F&&F.desde)).length; }
+function abrirReserva(desde){
+  if(!desde && Math.max(0, BONO-HECHAS-misClases().length) === 0){ abrirHoja(`<h3>Se te ha acabado el bono</h3><p class="sub">Ya tienes reservadas todas las clases que te quedan.</p><div class="lleno"><b>¿Quieres más clases?</b>Bono de 5 clases: 172 € · Bono de 10: 339 €. Puedes pedirlo en la oficina.</div>`, `<button class="btn sec" data-cerrar>Vale</button>`); return; }
+  let profeIni = "any", diaIni = S.DIAS.find(d => huecosDia(d,"any"));
+  if(desde){ const [d,p] = desde.split("|"); profeIni = p; diaIni = d; }
+  F = {modo: desde ? "cambiar" : "nueva", desde, profe: profeIni, dia: diaIni, hora: null};
+  pintarHoja(); abrirHoja();
+}
+function pintarHoja(){
+  const cuerpo = $("#hojaCuerpo");
+  const dias = S.DIAS.map(d => { const n = huecosDia(d, F.profe), dd = deIso(d); return `<button class="dia${d===F.dia?" on":""}" data-dia="${d}"><small>${DIAS_N[dd.getDay()]}</small><b>${dd.getDate()}</b><i class="${n===0?"llena":n<5?"pocas":""}"></i></button>`; }).join("");
+  const n = huecosDia(F.dia, F.profe);
+  const horas = n ? `<div class="horas">${SLOTS.filter(h=>!pasado(F.dia,h)).map(h => { const l = libres(F.dia,h,F.profe), ok = l.length && !tengoEsaHora(F.dia,h,F.desde); return `<button class="hora${F.hora===h?" on":""}" data-hora="${h}" ${ok?"":"disabled"}>${h}<small>${ok ? (F.profe==="any" ? l[0].n : "libre") : "ocupada"}</small></button>`; }).join("")}</div>`
+    : `<div class="lleno"><b>Este día está completo${F.profe!=="any"?" con "+profe(F.profe).n:""}.</b>Apúntate a la lista de espera: si alguien anula, te avisamos y lo coges con un toque.<div style="margin-top:12px"><button class="btn pri" id="btnEspera" data-ev="autoescuela-lista-espera">Apúntame a la lista de espera</button></div></div>`;
+  let resumen = "";
+  if(F.hora){ const p = libres(F.dia,F.hora,F.profe)[0]; resumen = `<div class="resumen"><span><b>${fCorta(F.dia)} · ${F.hora}</b><br>con ${p.n} · ${p.coche}</span><span style="font-size:1.5rem">🚗</span></div>`; }
+  let aviso = "";
+  if(F.modo==="cambiar"){ const [d,,h] = F.desde.split("|"); if(horasHasta(d,h) < 24) aviso = `<div class="aviso-24">Tu clase es en menos de 24 h. Con la norma de ejemplo contaría como dada; aquí te dejamos cambiarla igualmente para que lo pruebes.</div>`; }
+  cuerpo.innerHTML = `<h3>${F.modo==="cambiar" ? "Cambiar tu clase" : "Reservar una clase"}</h3>
+    <p class="sub">${F.modo==="cambiar" ? `Ahora: ${fCorta(F.desde.split("|")[0])} a las ${F.desde.split("|")[2]}. Elige el nuevo hueco.` : "Clases de 45 minutos. Elige profesor, día y hora."}</p>${aviso}
+    <div class="lbl">Profesor</div>
+    <div class="chips" id="fProfe"><button class="chip${F.profe==="any"?" on":""}" data-p="any">El que esté libre</button>${PROFES.map(p=>`<button class="chip${F.profe===p.id?" on":""}" data-p="${p.id}">${p.n}</button>`).join("")}</div>
+    <div class="lbl">Día</div><div class="dias" id="fDias">${dias}</div>
+    <div class="lbl">Hora</div>${horas}${resumen}`;
+  $("#hojaPie").innerHTML = `<button class="btn sec" data-cerrar>Cancelar</button><button class="btn pri" id="btnConfirmar" ${F.hora?"":"disabled"} data-ev="autoescuela-confirmar">${F.modo==="cambiar" ? "Cambiar a esta hora" : "Confirmar reserva"}</button>`;
+  const sel = cuerpo.querySelector(".dia.on"), tira = cuerpo.querySelector(".dias");
+  if(sel && tira) tira.scrollLeft = sel.offsetLeft - tira.offsetLeft - tira.clientWidth/2 + sel.offsetWidth/2;
+}
+$("#hojaCuerpo").addEventListener("click", e => {
+  if(!F) return;
+  const p = e.target.closest("[data-p]"), d = e.target.closest("[data-dia]"), h = e.target.closest("[data-hora]");
+  if(p){ F.profe = p.dataset.p; F.hora = null; pintarHoja(); }
+  if(d){ F.dia = d.dataset.dia; F.hora = null; pintarHoja(); }
+  if(h && !h.disabled){ F.hora = h.dataset.hora; pintarHoja(); }
+  if(e.target.closest("#btnEspera")) apuntarEspera();
+});
+$("#hojaPie").addEventListener("click", e => {
+  if(e.target.closest("[data-cerrar]")) cerrarHoja();
+  if(e.target.closest("#btnConfirmar")) confirmar();
+  if(e.target.closest("#btnAnularSi")) anular(e.target.closest("#btnAnularSi").dataset.k);
+});
+$("#velo").addEventListener("click", cerrarHoja);
+function abrirHoja(html, pie){ if(html!==undefined){ $("#hojaCuerpo").innerHTML = html; $("#hojaPie").innerHTML = pie||""; } $("#velo").classList.add("on"); $("#hoja").classList.add("on"); }
+function cerrarHoja(){ $("#velo").classList.remove("on"); $("#hoja").classList.remove("on"); F = null; }
+
+function confirmar(){
+  const p = libres(F.dia,F.hora,F.profe)[0]; if(!p) return;
+  const k = `${F.dia}|${p.id}|${F.hora}`;
+  const modo = F.modo, desde = F.desde;
+  if(modo==="cambiar"){ delete S.occ[desde]; }
+  S.occ[k] = YO;
+  if(modo==="cambiar"){
+    const [d0,,h0] = desde.split("|");
+    sumarCont({cam:1, msg:3});
+    evento("🔁", `<b>${YO}</b> cambió su clase de ${fCorta(d0)} ${h0} a <b>${fCorta(F.dia)} ${F.hora}</b> con ${p.n}`, k);
+    setTimeout(() => rellenarHueco(desde), 2600);
+  } else {
+    sumarCont({res:1, msg:2});
+    evento("✅", `<b>${YO}</b> reservó <b>${fCorta(F.dia)} a las ${F.hora}</b> con ${p.n}`, k);
+  }
+  animacionOk(modo==="cambiar" ? "¡Clase cambiada!" : "¡Clase reservada!", `${fCorta(F.dia)} a las ${F.hora} con ${p.n}. Te mandamos un recordatorio por WhatsApp el día antes.`, k);
+}
+function animacionOk(tit, txt, k){
+  $("#hojaCuerpo").innerHTML = `<div class="ok">
+    <svg viewBox="-80 -80 160 160"><circle r="60" fill="none" stroke="#EFEBE3" stroke-width="22"/><circle r="60" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="6 7"/><circle id="okArco" r="60" fill="none" stroke="#E8641E" stroke-width="5" stroke-linecap="round" stroke-dasharray="0 400" transform="rotate(-90)"/><circle r="36" fill="#5FA21E"/><path id="okCheck" d="M-15 1 L-4 12 L17 -11" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="50" stroke-dashoffset="50"/><g id="okCoche"><g transform="translate(0,-60)"><rect x="-10" y="-6" width="20" height="12" rx="4" fill="#2A302D"/><rect x="-3" y="-4" width="7" height="8" rx="1.5" fill="#9fb3aa"/><circle cx="9" cy="-4" r="1.6" fill="#F5D33A"/><circle cx="9" cy="4" r="1.6" fill="#F5D33A"/></g></g></svg>
+    <h3>${tit}</h3><p>${txt}</p></div>`;
+  $("#hojaPie").innerHTML = `<button class="btn ver" data-cerrar>Hecho</button>`;
+  vueltaRotonda($("#okCoche"), $("#okArco"), 60, 1500).then(() => $("#okCheck").animate([{strokeDashoffset:50},{strokeDashoffset:0}], {duration:420, easing:"cubic-bezier(.6,0,.3,1)", fill:"forwards"}));
+  pintarClases(k); pintarOficina();
+}
+/* el coche da una vuelta a la rotonda mientras se dibuja el arco naranja */
+function vueltaRotonda(coche, arco, r, ms){
+  const L = 2*Math.PI*r;
+  return new Promise(res => {
+    const t0 = performance.now();
+    (function paso(t){
+      const k = Math.min(1, (t-t0)/ms), e = k<.5 ? 4*k*k*k : 1-Math.pow(-2*k+2,3)/2;
+      coche.setAttribute("transform", `rotate(${e*360})`);
+      arco.setAttribute("stroke-dasharray", `${e*L} ${L+10}`);
+      k < 1 ? requestAnimationFrame(paso) : res();
+    })(t0);
+  });
+}
+
+/* ---------- anular ---------- */
+function pedirAnular(k){
+  const [d,p,h] = k.split("|"), tarde = horasHasta(d,h) < 24;
+  abrirHoja(`<h3>¿Anular esta clase?</h3><p class="sub">${fCorta(d)} a las ${h} con ${profe(p).n}</p>${tarde?`<div class="aviso-24">Es en menos de 24 h: con la norma de ejemplo contaría como dada. Aquí te dejamos anularla igualmente para que lo pruebes.</div>`:""}<p style="font-size:.86rem;margin-top:12px">El hueco se ofrece solo a la lista de espera. Nadie tiene que llamar a nadie.</p>`,
+    `<button class="btn sec" data-cerrar>No, mantener</button><button class="btn pri" style="background:var(--rojo)" id="btnAnularSi" data-k="${k}" data-ev="autoescuela-anular-si">Sí, anular</button>`);
+}
+function anular(k){
+  const [d,p,h] = k.split("|");
+  const el = document.querySelector(`.clase[data-k="${k}"]`);
+  if(el) el.classList.add("sale");
+  delete S.occ[k];
+  cerrarHoja();
+  sumarCont({cam:1, msg:3});
+  evento("❌", `<b>${YO}</b> anuló su clase de <b>${fCorta(d)} ${h}</b> con ${profe(p).n}`, k);
+  setTimeout(() => { pintarClases(); pintarOficina(); }, 380);
+  setTimeout(() => rellenarHueco(k), 2600);
+}
+/* un hueco libre se ofrece a la lista de espera y alguien lo coge */
+function rellenarHueco(k){
+  const [d,p,h] = k.split("|");
+  if(S.occ[k] || pasado(d,h)) return;
+  evento("📣", `Hueco libre ${fCorta(d)} ${h}: aviso automático a 3 alumnos de la lista de espera`, k);
+  setTimeout(() => {
+    if(S.occ[k]) return;
+    const quien = ["Pablo G.","Claudia H.","Marina S.","Óscar L."][Math.floor(Math.random()*4)];
+    S.occ[k] = quien;
+    sumarCont({res:1, msg:2});
+    evento("✅", `<b>${quien}</b> cogió el hueco de ${fCorta(d)} ${h} con ${profe(p).n}. Clase aprovechada.`, k);
+  }, 3200);
+}
+
+/* ---------- lista de espera de Lucía ---------- */
+function apuntarEspera(){
+  const dia = F.dia, filtro = F.profe;
+  if(!S.espera.some(x => x.n===YO && x.dia===dia)) S.espera.push({n:YO, dia, nuevo:true});
+  sumarCont({msg:2});
+  evento("⏳", `<b>${YO}</b> se apuntó a la lista de espera del ${fCorta(dia)}`, null);
+  $("#hojaCuerpo").innerHTML = `<div class="ok"><svg viewBox="-80 -80 160 160"><circle r="60" fill="none" stroke="#EFEBE3" stroke-width="22"/><circle id="okArco" r="60" fill="none" stroke="#E8641E" stroke-width="5" stroke-linecap="round" stroke-dasharray="0 400" transform="rotate(-90)"/><circle r="36" fill="#F5A35C"/><text y="12" text-anchor="middle" font-size="34">⏳</text><g id="okCoche"><g transform="translate(0,-60)"><rect x="-10" y="-6" width="20" height="12" rx="4" fill="#2A302D"/><circle cx="9" cy="-4" r="1.6" fill="#F5D33A"/><circle cx="9" cy="4" r="1.6" fill="#F5D33A"/></g></g></svg><h3>Estás en la lista</h3><p>Si alguien anula su clase del ${fCorta(dia)}, te llega un aviso y la coges con un toque. <b>Espera unos segundos…</b></p></div>`;
+  $("#hojaPie").innerHTML = `<button class="btn ver" data-cerrar>Vale</button>`;
+  vueltaRotonda($("#okCoche"), $("#okArco"), 60, 1500);
+  pintarOficina();
+  // simulación: alguien anula ese día y a Lucía le llega el aviso
+  setTimeout(() => {
+    const cands = PROFES.filter(p => filtro==="any" || p.id===filtro).flatMap(p => SLOTS.filter(h=>!pasado(dia,h)).map(h => `${dia}|${p.id}|${h}`)).filter(k => S.occ[k] && S.occ[k]!==YO && !tengoEsaHora(dia,k.split("|")[2]));
+    if(!cands.length) return;
+    const k = cands[Math.floor(cands.length/2)], [,p,h] = k.split("|"), quien = S.occ[k];
+    delete S.occ[k];
+    sumarCont({cam:1, msg:3});
+    evento("❌", `<b>${quien}</b> anuló ${fCorta(dia)} ${h} con ${profe(p).n}`, k);
+    setTimeout(() => {
+      evento("📣", `Aviso automático a la lista de espera del ${fCorta(dia)}`, k);
+      notificar(`Se ha liberado un hueco el <b>${fCorta(dia)} a las ${h}</b> con ${profe(p).n}. ¿Lo quieres?`,
+        [{t:"No, gracias", c:"sec", f:()=>{ rellenarHueco(k); }}, {t:"¡Lo quiero!", c:"pri", ev:"autoescuela-coger-hueco", f:()=>{
+          cerrarHoja();
+          if(S.occ[k]) return;
+          S.occ[k] = YO; S.espera = S.espera.filter(x => !(x.n===YO && x.dia===dia));
+          sumarCont({res:1, msg:2});
+          evento("✅", `<b>${YO}</b> cogió el hueco de ${fCorta(dia)} ${h} desde la lista de espera`, k);
+          pintarClases(k); pintarOficina();
+          $("#appScroll").scrollTo({top:0, behavior:"smooth"});
+        }}]);
+    }, 1400);
+  }, 5200);
+}
+
+/* ---------- notificación tipo WhatsApp ---------- */
+let notiT;
+function notificar(html, botones){
+  const n = $("#noti");
+  n.innerHTML = `<div class="de"><i><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg></i>WhatsApp · Autoescuela Circular<span>ahora</span></div><p>${html}</p><div class="acc">${botones.map((b,i)=>`<button class="btn ${b.c}" data-b="${i}" ${b.ev?`data-ev="${b.ev}"`:""}>${b.t}</button>`).join("")}</div>`;
+  n.querySelectorAll("[data-b]").forEach(el => el.onclick = () => { n.classList.remove("on"); clearTimeout(notiT); botones[+el.dataset.b].f(); });
+  requestAnimationFrame(() => n.classList.add("on"));
+  clearTimeout(notiT); notiT = setTimeout(() => n.classList.remove("on"), 30000);
+}
+function recordatorio(){
+  const c = misClases()[0]; if(!c) return;
+  notificar(`Recuerda: ${fLarga(c.dia)} tienes clase a las <b>${c.h}</b> con ${profe(c.p).n}. ¿Te viene bien?`,
+    [{t:"Cambiar", c:"sec", f:()=>abrirReserva(c.k)}, {t:"Sí, allí estaré", c:"pri", ev:"autoescuela-recordatorio-si", f:()=>{ sumarCont({msg:1}); evento("👍", `<b>${YO}</b> confirmó su clase de ${fCorta(c.dia)} ${c.h}`, c.k); }}]);
+}
+
+/* =================== oficina =================== */
+function pintarOficina(){
+  const dia = S.oDia;
+  $("#oDia").textContent = fCorta(dia);
+  let html = `<div></div>${PROFES.map(p=>`<div class="th"><i style="background:${p.c}"></i>${p.n}</div>`).join("")}`;
+  SLOTS.forEach((h,i) => {
+    if(i===8) html += `<div class="sep"></div>`;
+    html += `<div class="hh">${h}</div>` + PROFES.map(p => { const k = `${dia}|${p.id}|${h}`, a = S.occ[k];
+      return `<div class="celda${a?" ocu":""}${a===YO?" mia":""}${S.flash===k?" flash":""}${pasado(dia,h)?" pas":""}" style="--c:${p.c}">${a ? a : "libre"}</div>`; }).join("");
+  });
+  $("#tabla").innerHTML = html;
+  $("#feed").innerHTML = S.feed.map(f => `<li class="${f.nuevo?"nuevo":""}"><span class="ic">${f.ic}</span><span>${f.t}<small>${f.h}</small></span></li>`).join("");
+  $("#espera").innerHTML = S.espera.length ? S.espera.map(x => `<li class="${x.nuevo?"nuevo":""}"><b>${x.n}</b><span>${fCorta(x.dia)}</span></li>`).join("") : `<li><span>Nadie esperando</span></li>`;
+  S.feed.forEach(f => f.nuevo = false); S.espera.forEach(x => x.nuevo = false);
+  S.flash = null;
+}
+$("#oPrev").onclick = () => { const i = S.DIAS.indexOf(S.oDia); if(i>0){ S.oDia = S.DIAS[i-1]; pintarOficina(); } };
+$("#oNext").onclick = () => { const i = S.DIAS.indexOf(S.oDia); if(i<S.DIAS.length-1){ S.oDia = S.DIAS[i+1]; pintarOficina(); } };
+
+let sinVer = 0;
+function evento(ic, t, k, silencioso){
+  S.feed.unshift({h:"ahora · "+ahora(), ic, t, nuevo:true});
+  S.feed = S.feed.slice(0, 30);
+  if(k){ S.oDia = k.split("|")[0]; S.flash = k; }
+  pintarOficina();
+  if(document.body.dataset.vista==="alumno" && innerWidth <= 980){
+    sinVer++; const b = $("#badge"); b.textContent = sinVer; b.classList.remove("oculto");
+    if(!silencioso) avisoOficina(t.replace(/<[^>]+>/g,""));
+  }
+}
+let toastT;
+function avisoOficina(txt){
+  $("#toastOTxt").textContent = "La oficina lo ha recibido";
+  const t = $("#toastO"); t.classList.add("on");
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 4200);
+}
+$("#toastOVer").onclick = () => { $("#toastO").classList.remove("on"); vista("oficina"); };
+
+/* contadores que suben */
+const mostrado = {res:0, cam:0, msg:0};
+function sumarCont(d){ for(const c in d) S.cont[c] += d[c]; animarCont(Object.keys(d)); }
+function animarCont(cuales){
+  const ids = {res:"#cfRes", cam:"#cfCam", msg:"#cfMsg"};
+  cuales.forEach(c => {
+    const el = $(ids[c]), b = el.querySelector("b"), de = mostrado[c], a = S.cont[c], t0 = performance.now(), ms = de===0 ? 1400 : 700;
+    el.classList.remove("pop"); void el.offsetWidth; if(de!==0) el.classList.add("pop");
+    (function paso(t){ const k = Math.min(1,(t-t0)/ms), e = 1-Math.pow(1-k,3); b.textContent = Math.round(de+(a-de)*e); k<1 ? requestAnimationFrame(paso) : (mostrado[c]=a); })(t0);
+  });
+}
+
+/* =================== vistas (móvil) =================== */
+function vista(v){
+  document.body.dataset.vista = v;
+  document.querySelectorAll(".pestanas button").forEach(b => b.classList.toggle("on", b.dataset.vista===v));
+  if(v==="oficina"){ sinVer = 0; $("#badge").classList.add("oculto"); }
+  scrollTo({top:0, behavior:"smooth"});
+}
+document.querySelectorAll(".pestanas button").forEach(b => b.onclick = () => vista(b.dataset.vista));
+$("#btnReservar").onclick = () => abrirReserva();
+$("#reini").onclick = () => { arrancar(); $("#appScroll").scrollTo({top:0}); };
+
+/* =================== arranque =================== */
+let recT;
+function arrancar(){
+  S = inicial(); mostrado.res = mostrado.cam = mostrado.msg = 0;
+  cerrarHoja(); $("#noti").classList.remove("on");
+  pintarChips(); $("#respuesta").innerHTML = "";
+  pintarClases(); pintarOficina(); animarCont(["res","cam","msg"]);
+  clearTimeout(recT); recT = setTimeout(recordatorio, 6500);
+}
+arrancar();
+const intro = $("#intro");
+vueltaRotonda($("#introCoche"), $("#introArco"), 92, 1900).then(() => {
+  intro.classList.add("txt");
+  setTimeout(() => { intro.classList.add("fuera"); arrancar(); }, 1500);
+});
+</script>
+<script defer src="../../m.js" data-site="engrana" data-api="https://script.google.com/macros/s/AKfycbxUQt_fUgS_BEP-gdpqzNt1EqRblhiBikMZr5ThNytjFnjY_kvcknVICwr1iis0NjyO/exec"></script>
+</body>
+</html>
