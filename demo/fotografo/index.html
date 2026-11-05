@@ -230,6 +230,8 @@ footer a{color:#9c9189}
 .caja.on{opacity:1;visibility:visible}
 .caja-top{flex:none;height:58px;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 var(--lado);color:var(--gris)}
 .caja-top b{color:var(--papel);font-weight:500}
+.caja-top>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.caja-top>span:nth-child(2),.caja-top button{flex:none;white-space:nowrap}
 .caja-top button{background:none;border:0;padding:10px 0;cursor:pointer;color:var(--papel)}
 .caja-escena{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;padding:6px clamp(10px,7vw,110px)}
 .caja-escena img{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100svh - 58px - 96px - 12px);object-fit:contain;box-shadow:0 30px 80px rgba(0,0,0,.6);transition:opacity .3s,transform .5s var(--ease)}
@@ -245,27 +247,29 @@ footer a{color:#9c9189}
 
 /* ===== ÁLBUMES: una carpeta por persona ===== */
 .albumes{padding:clamp(110px,18vh,190px) 0 clamp(90px,14vh,150px)}
-.carpetas{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:clamp(70px,9vw,110px) clamp(22px,3vw,44px);padding:clamp(90px,13vh,130px) var(--lado) 0;max-width:1500px;margin:0 auto}
-.carpeta{position:relative;display:block;width:100%;aspect-ratio:5/4.1;padding:0;border:0;background:none;color:inherit;cursor:pointer;text-align:left;perspective:1100px;-webkit-tap-highlight-color:transparent}
-.c-tras{position:absolute;inset:9% 0 0 0;border-radius:5px 12px 7px 7px;background:linear-gradient(170deg,#9f7647,#7d5a33);box-shadow:0 26px 50px -22px rgba(0,0,0,.9)}
-.c-pestana{position:absolute;left:0;bottom:100%;width:42%;height:12%;border-radius:10px 16px 0 0;background:#9f7647;display:flex;align-items:center;padding:0 14px;font:500 .62rem var(--mono);letter-spacing:.14em;color:#3b2a18}
-.c-fotos{position:absolute;inset:0;pointer-events:none}
-.c-fotos img{position:absolute;left:18%;top:-13%;width:64%;height:66%;object-fit:cover;border:5px solid #f4efe6;box-shadow:0 8px 20px rgba(0,0,0,.45);transition:transform .7s var(--ease)}
-.c-fotos img:nth-child(1){transform:rotate(-7deg) translateX(-6%)}
-.c-fotos img:nth-child(2){transform:rotate(5deg) translate(8%,3%)}
-.c-fotos img:nth-child(3){transform:rotate(-1deg) translateY(6%)}
-.c-frente{position:absolute;left:0;right:0;bottom:0;height:68%;border-radius:6px;background:linear-gradient(175deg,#c79c64,#a77b48 70%,#946b3c);transform-origin:50% 100%;transition:transform .7s var(--ease);box-shadow:0 -10px 24px -10px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.25)}
-.c-frente::before{content:"";position:absolute;inset:0;border-radius:inherit;background:repeating-linear-gradient(95deg,rgba(255,255,255,.035) 0 2px,transparent 2px 7px);pointer-events:none}
-.c-nombre{position:absolute;left:8%;top:15%;max-width:70%;padding:7px 14px 5px;background:#f4ecdc;color:#2a1c12;font:600 clamp(1.45rem,2.1vw,2.1rem)/.95 "Caveat",cursive;transform:rotate(-2.5deg);box-shadow:0 3px 8px rgba(0,0,0,.25)}
-.c-info{position:absolute;left:8%;right:8%;bottom:12%;display:flex;justify-content:space-between;gap:10px;color:#3b2a18;font:500 .62rem var(--mono);letter-spacing:.12em;text-transform:uppercase}
-.c-abrir{position:absolute;right:7%;top:20%;width:42px;height:42px;border-radius:50%;border:1px solid rgba(43,28,18,.4);display:grid;place-items:center;color:#2a1c12;font-size:1.1rem;transition:background .4s,color .4s,transform .5s var(--ease)}
-.carpeta:hover .c-frente,.carpeta:focus-visible .c-frente{transform:rotateX(-24deg)}
-.carpeta:hover .c-fotos img:nth-child(1){transform:rotate(-13deg) translate(-22%,-16%)}
-.carpeta:hover .c-fotos img:nth-child(2){transform:rotate(11deg) translate(22%,-12%)}
-.carpeta:hover .c-fotos img:nth-child(3){transform:rotate(-2deg) translateY(-20%)}
-.carpeta:hover .c-abrir{background:#2a1c12;color:#f4ecdc;transform:rotate(-45deg)}
-.carpeta.abriendo .c-frente{transform:rotateX(-78deg)}
-@media (pointer:coarse){.c-fotos img:nth-child(1){transform:rotate(-10deg) translate(-14%,-9%)}.c-fotos img:nth-child(2){transform:rotate(8deg) translate(14%,-6%)}.c-fotos img:nth-child(3){transform:rotate(-1deg) translateY(-8%)}}
+.carpetas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(40px,6vw,90px) clamp(24px,3.4vw,56px);padding:clamp(60px,10vh,110px) var(--lado) 0;max-width:1500px;margin:0 auto}
+.carpeta:nth-child(even){margin-top:clamp(40px,9vh,120px)}
+.carpeta{position:relative;display:block;width:100%;padding:0;border:0;background:none;color:inherit;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent}
+.c-forma{position:relative;display:block;aspect-ratio:4/3.15;background:var(--carbon);clip-path:polygon(0 0,34% 0,37.5% 7%,100% 7%,100% 100%,0 100%);transition:clip-path .8s var(--ease)}
+.c-pestana{position:absolute;left:0;top:0;width:34%;height:7%;display:flex;align-items:center;gap:10px;padding:0 16px;font:500 .62rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gris);background:#1f1a18;z-index:2}
+.c-pestana i{width:6px;height:6px;border-radius:50%;background:var(--rojo)}
+.c-fotos{position:absolute;inset:7% 0 0 0;overflow:hidden;background:#0b0908}
+.c-fotos img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.08);transition:opacity .9s var(--ease),transform 2.4s var(--ease)}
+.c-fotos img.on{opacity:1;transform:scale(1);z-index:2}
+.c-fotos img.antes{opacity:1;transform:scale(1);z-index:1;transition:none}
+.c-fotos::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,11,10,0) 45%,rgba(13,11,10,.82));pointer-events:none}
+.c-texto{position:absolute;left:clamp(16px,2.4vw,30px);right:clamp(16px,2.4vw,30px);bottom:clamp(14px,2.2vw,26px);z-index:2;display:flex;align-items:end;justify-content:space-between;gap:16px}
+.c-nombre{display:block;font:italic 400 clamp(2.1rem,4.2vw,4rem)/.95 var(--serif);letter-spacing:-.015em;color:var(--papel)}
+.c-info{display:block;margin-top:10px;font:500 .64rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#d8cfc4}
+.c-info b{color:var(--ambar);font-weight:500}
+.c-abrir{flex:none;width:54px;height:54px;border-radius:50%;border:1px solid rgba(239,232,221,.45);display:grid;place-items:center;color:var(--papel);font-size:1.15rem;transition:background .4s,color .4s,border-color .4s,transform .6s var(--ease)}
+.c-puntos{position:absolute;top:calc(7% + 14px);right:16px;z-index:2;display:flex;gap:5px}
+.c-puntos i{width:18px;height:2px;background:rgba(239,232,221,.3);transition:background .3s}
+.c-puntos i.on{background:var(--papel)}
+.carpeta:hover .c-forma,.carpeta:focus-visible .c-forma{clip-path:polygon(0 0,40% 0,43.5% 7%,100% 7%,100% 100%,0 100%)}
+.carpeta:hover .c-pestana{width:40%;color:var(--papel)}
+.c-pestana{transition:width .8s var(--ease),color .4s}
+.carpeta:hover .c-abrir{background:var(--ambar);border-color:var(--ambar);color:var(--negro);transform:rotate(-45deg)}
 
 .album{position:fixed;inset:0;z-index:90;background:#0b0908;overflow-y:auto;overscroll-behavior:contain;visibility:hidden;clip-path:circle(0px at 50% 50%)}
 .album.on{visibility:visible}
@@ -294,13 +298,15 @@ body.tapado img{filter:blur(30px) brightness(.4)!important}
 
 /* ===== móvil ===== */
 @media (max-width:760px){
-  .carpetas{grid-template-columns:1fr 1fr;gap:64px 14px}
-  .c-nombre{font-size:1.2rem;padding:4px 8px 3px;left:6%;max-width:80%}
-  .c-info{font-size:.5rem;bottom:9%;left:6%;right:6%}
-  .c-info span:last-child{display:none}
-  .c-abrir{width:30px;height:30px;font-size:.85rem;top:auto;bottom:24%;right:6%}
-  .c-pestana{font-size:.5rem;padding:0 8px;width:52%}
-  .c-fotos img{border-width:3px}
+  .carpetas{grid-template-columns:1fr;gap:46px}
+  .carpeta:nth-child(even){margin-top:0}
+  .c-pestana{width:46%;font-size:.55rem;padding:0 12px}
+  .c-forma{aspect-ratio:4/4.5;clip-path:polygon(0 0,46% 0,50% 6%,100% 6%,100% 100%,0 100%)}
+  .c-pestana{height:6%}
+  .c-fotos{top:6%}
+  .c-puntos{top:calc(6% + 12px)}
+  .c-nombre{font-size:2.5rem}
+  .c-abrir{display:none}
   .album-fotos{columns:2;column-gap:8px;padding-bottom:80px}
   .album-fotos figure{margin-bottom:8px}
   .nav ul{display:none}
@@ -516,12 +522,29 @@ const ALBUMES = [
 ];
 const carpetasEl = $("#carpetas");
 $("#albTotal").textContent = `Álbumes · ${ALBUMES.length} sesiones`;
-ALBUMES.forEach((a, i) => carpetasEl.insertAdjacentHTML("beforeend",
+ALBUMES.forEach((a, i) => {
+  const muestra = a.fotos.slice(0, 5);
+  carpetasEl.insertAdjacentHTML("beforeend",
   `<button class="carpeta" data-album="${i}" aria-label="Abrir el álbum de ${a.nombre}">
-    <span class="c-tras"><span class="c-pestana">Nº ${String(i + 1).padStart(2, "0")}</span></span>
-    <span class="c-fotos">${a.fotos.slice(0, 3).reverse().map(n => `<img src="${img(n, 1)}" alt="" loading="lazy">`).join("")}</span>
-    <span class="c-frente"><span class="c-nombre">${a.nombre}</span><span class="c-abrir" aria-hidden="true">↗</span><span class="c-info"><span>${String(a.fotos.length).padStart(2, "0")} ${a.fotos.length === 1 ? "foto" : "fotos"}</span><span>${a.sesion}</span></span></span>
-  </button>`));
+    <span class="c-forma">
+      <span class="c-pestana"><i></i>Nº ${String(i + 1).padStart(2, "0")} · ${String(a.fotos.length).padStart(2, "0")} ${a.fotos.length === 1 ? "foto" : "fotos"}</span>
+      <span class="c-fotos">${muestra.map((n, k) => `<img src="${img(n, 1)}" alt=""${k ? ' loading="lazy"' : ' class="on"'}>`).join("")}</span>
+      ${muestra.length > 1 ? `<span class="c-puntos">${muestra.map((n, k) => `<i${k ? "" : ' class="on"'}></i>`).join("")}</span>` : ""}
+      <span class="c-texto"><span><span class="c-nombre">${a.nombre}</span><span class="c-info">${a.sesion} · <b>Abrir álbum</b></span></span><span class="c-abrir" aria-hidden="true">↗</span></span>
+    </span>
+  </button>`);
+});
+// las fotos de cada carpeta van pasando: al pasar el ratón (ordenador) o solas cuando se ve (móvil)
+$$(".carpeta").forEach(c => {
+  const fotos = [...c.querySelectorAll(".c-fotos img")], puntos = [...c.querySelectorAll(".c-puntos i")];
+  if (fotos.length < 2) return;
+  let k = 0, t = null;
+  const paso = () => { fotos.forEach(f => f.classList.remove("antes")); fotos[k].classList.add("antes"); fotos[k].classList.remove("on"); puntos[k].classList.remove("on"); k = (k + 1) % fotos.length; fotos[k].classList.add("on"); puntos[k].classList.add("on"); };
+  const empezar = ms => { if (!t) { paso(); t = setInterval(paso, ms); } };
+  const parar = () => { clearInterval(t); t = null; };
+  if (fino) { c.addEventListener("mouseenter", () => empezar(1400)); c.addEventListener("mouseleave", parar); }
+  else new IntersectionObserver(([e]) => e.isIntersecting ? empezar(2200) : parar(), {threshold: .6}).observe(c);
+});
 
 const copiasEl = $("#copias");
 SERIES["Dentro del agua"].forEach(n => copiasEl.insertAdjacentHTML("beforeend",
@@ -720,10 +743,12 @@ if (ANIM) {
     scrollTrigger: {trigger: man, start: "top 78%", end: "bottom 45%", scrub: true}});
 
   // ÁLBUMES: las carpetas caen sobre la mesa una a una y las fotos asoman
-  gsap.from(".carpeta", {y: 160, rotation: (i) => [-9, 6, -4, 8][i % 4], opacity: 0, duration: 1.3, ease: "power3.out", stagger: .13,
-    scrollTrigger: {trigger: "#carpetas", start: "top 85%"}});
-  gsap.from(".c-fotos", {yPercent: 22, opacity: 0, duration: 1.1, ease: "power3.out", stagger: .13, delay: .45,
-    scrollTrigger: {trigger: "#carpetas", start: "top 85%"}});
+  $$(".carpeta").forEach(c => {
+    const tl = gsap.timeline({scrollTrigger: {trigger: c, start: "top 88%"}});
+    tl.from(c, {y: 90, opacity: 0, duration: 1.2, ease: "power3.out"})
+      .from(c.querySelector(".c-fotos"), {clipPath: "inset(100% 0 0 0)", duration: 1.3, ease: "power4.inOut"}, "<.05")
+      .from(c.querySelectorAll(".c-nombre, .c-info, .c-abrir"), {y: 24, opacity: 0, duration: .8, stagger: .08, ease: "power3.out"}, "-=.6");
+  });
 
   // SERIE II: las copias caen una a una sobre la mesa
   const copias = $$(".copia"), anum = $("#anum"), atxt = $("#atxt");
