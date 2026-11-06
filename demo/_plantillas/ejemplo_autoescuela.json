@@ -1,0 +1,22 @@
+{
+  "slug": "autoescuela-ejemplo",
+  "nombre": "Autoescuela Ejemplo",
+  "direccion": "C/ Mayor, 10",
+  "cp": "47001",
+  "logo": null,
+  "bono": 10,
+  "hechas": 4,
+  "profes": [
+    {"id": "ana", "n": "Ana", "coche": "Seat Ibiza", "c": "#E8641E"},
+    {"id": "luis", "n": "Luis", "coche": "VW Polo", "c": "#5FA21E"},
+    {"id": "eva", "n": "Eva", "coche": "Toyota Yaris", "c": "#2C7DA0"}
+  ],
+  "faq": [
+    {"q": "¿Cuánto cuesta el carnet?", "a": "PRECIOS REALES DE SU WEB: pack y bonos. Las tasas de Tráfico van aparte (94,05 €)."},
+    {"q": "¿Cuándo me puedo examinar?", "a": "<span class=\"ej\">Ejemplo, el texto lo escribís vosotros:</span> cuando tu profesor te vea preparado, pedimos fecha a Tráfico y te avisamos por aquí."},
+    {"q": "¿Hay lista de espera?", "a": "Si un día está lleno, pulsa «Apúntame a la lista de espera». En cuanto alguien anule te llega un aviso, y el primero que lo coge se lo queda."},
+    {"q": "¿Y si anulo tarde?", "a": "Puedes cambiar o anular gratis hasta 24 h antes. Después, la clase cuenta como dada. <span class=\"ej\">(Norma de ejemplo: la ponéis vosotros.)</span>"},
+    {"q": "¿Dónde salen las clases?", "a": "Desde la autoescuela: <b>C/ Mayor, 10</b> (47001 Valladolid). Ven 5 minutos antes."},
+    {"q": "Otra cosa", "a": "Si tu duda no está aquí, escribe a la oficina por WhatsApp y te contestan en horario de oficina. Todo lo de arriba ya no hace falta preguntarlo."}
+  ]
+}
