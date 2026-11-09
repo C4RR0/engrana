@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Página no encontrada · Engrana</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B1217;--card:#131F27;--card2:#182630;--line:#22323D;--line2:#2E4654;--ink:#EAF1F0;--muted:#93A4AA;--teal:#5EE0C4}
+*{box-sizing:border-box}
+body{margin:0;min-height:100svh;display:grid;place-items:center;background:var(--bg);color:var(--ink);font:400 17px/1.6 Inter,system-ui,sans-serif;padding:24px;text-align:center}
+.caja{max-width:560px}
+svg{width:180px;height:180px;margin:0 auto 10px;display:block}
+.g{animation:gira 14s linear infinite;transform-origin:0 0}
+.g2{animation:gira 9s linear infinite reverse;transform-origin:0 0}
+@keyframes gira{to{transform:rotate(360deg)}}
+.mono{font:500 .75rem "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+h1{font:800 clamp(2rem,6vw,2.8rem)/1.1 Manrope,sans-serif;letter-spacing:-.025em;margin:.4em 0 .4em}
+p{color:var(--muted);margin:0 0 1.6em}
+.links{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+a{color:var(--ink);text-decoration:none;border:1px solid var(--line2);border-radius:999px;padding:.6em 1.1em;font-weight:600;font-size:.95rem}
+a.p{background:linear-gradient(120deg,#5EE0C4,#A8C7A0 50%,#F2A26B);color:#0B1217;border:0}
+</style>
+</head>
+<body>
+<div class="caja">
+  <svg viewBox="-100 -100 200 200" aria-hidden="true">
+    <g transform="translate(-22 8)"><g class="g"><path id="r1" fill="#182630" stroke="#2E4654" stroke-width="2"/><circle r="34" fill="none" stroke="#5EE0C4" stroke-width="2" stroke-dasharray="4 5"/></g><circle r="18" fill="#0B1217" stroke="#2E4654" stroke-width="2"/></g>
+    <g transform="translate(58 -38)"><g class="g2"><path id="r2" fill="#182630" stroke="#2E4654" stroke-width="2"/></g><circle r="10" fill="#0B1217" stroke="#2E4654" stroke-width="2"/></g>
+  </svg>
+  <div class="mono">Error 404</div>
+  <h1>Esta pieza no encaja.</h1>
+  <p>La página que buscas no existe o ha cambiado de sitio. Prueba por aquí:</p>
+  <div class="links">
+    <a class="p" href="/">Ir a la portada</a>
+    <a href="/alojamientos-rurales/">Alojamientos rurales</a>
+    <a href="/autoescuelas/">Autoescuelas</a>
+    <a href="/comercios/">Comercios</a>
+    <a href="/#contacto">Contacto</a>
+  </div>
+</div>
+<script>
+function rueda(n,r,h){const p=[],s=Math.PI*2/n;for(let i=0;i<n;i++){const a=i*s;[[-.5,r-h],[-.28,r+h*.75],[.28,r+h*.75],[.5,r-h]].forEach(([f,rr])=>p.push([Math.cos(a+f*s)*rr,Math.sin(a+f*s)*rr]));}return "M"+p.map(q=>q[0].toFixed(1)+" "+q[1].toFixed(1)).join("L")+"Z";}
+document.getElementById("r1").setAttribute("d",rueda(16,50,6));
+document.getElementById("r2").setAttribute("d",rueda(9,26,5));
+</script>
+</body>
+</html>

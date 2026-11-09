@@ -180,7 +180,8 @@ section{padding:96px 0}.alt{background:var(--bg2);border-top:1px solid var(--lin
 header{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(11,18,23,.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;height:66px}.logo{display:flex;align-items:center;gap:.55em;text-decoration:none;color:var(--ink);font:800 1.35rem Manrope,sans-serif}.logo svg{width:32px;height:32px}
 .nav ul{display:flex;gap:1.6em;list-style:none;margin:0;padding:0}.nav ul a{color:var(--muted);text-decoration:none;font-weight:500;font-size:.94rem}.nav ul a:hover,.nav ul a[aria-current]{color:var(--ink)}
-.nav .btn{padding:.6em 1.1em;font-size:.92rem}
+.nav .btn{padding:.6em 1.1em;font-size:.92rem}.nav-r{display:flex;align-items:center;gap:10px}
+.menu-btn{display:none;width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:4px;padding:0}.menu-btn span{display:block;width:18px;height:2px;border-radius:2px;background:var(--ink)}
 .hero{padding:140px 0 80px;position:relative;overflow:hidden}.hero::before{content:"";position:absolute;right:-15%;top:-30%;width:760px;height:760px;background:radial-gradient(circle,rgba(94,224,196,.12),transparent 62%);pointer-events:none}
 .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;position:relative}.hero-grid>*{min-width:0}
 .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:1.6em}
@@ -225,7 +226,7 @@ form.pide label{display:grid;gap:6px;font-weight:600;font-size:.92rem}form.pide 
 form.pide textarea{min-height:90px;resize:vertical}form.pide .check{display:flex;gap:10px;align-items:flex-start;font-weight:500}form.pide .check input{width:20px;height:20px;flex:none;accent-color:var(--teal)}
 .otros{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.otros a{color:var(--ink);text-decoration:none;border:1px solid var(--line2);border-radius:999px;padding:.55em 1em;font-weight:600;font-size:.92rem}.otros a:hover{border-color:var(--teal)}
 footer{padding:40px 0 56px;color:var(--muted);font-size:.88rem}.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:28px}footer a{color:var(--muted)}
-@media (max-width:900px){.hero-grid,.herr,.caso,.contacto{grid-template-columns:1fr}.rueda-h{display:none}.dolores,.precios{grid-template-columns:1fr}.piezas{grid-template-columns:1fr}.nav ul{display:none}section{padding:70px 0}.hero{padding:110px 0 60px}}
+@media (max-width:900px){.hero-grid,.herr,.caso,.contacto{grid-template-columns:1fr}.rueda-h{display:none}.dolores,.precios{grid-template-columns:1fr}.piezas{grid-template-columns:1fr}.nav ul{display:none;position:absolute;top:66px;left:0;right:0;flex-direction:column;gap:0;background:#0B1217;border-bottom:1px solid var(--line);box-shadow:0 18px 40px rgba(0,0,0,.5);padding:8px 20px 18px}.nav ul.abierto{display:flex}.nav ul a{display:block;padding:12px 0;font-size:1.05rem;color:var(--ink)}.menu-btn{display:flex}section{padding:70px 0}.hero{padding:110px 0 60px}}
 @media (max-width:600px){.sim{grid-template-columns:1fr;justify-items:center}.wa{width:100%}.nav .btn{padding:.5em .8em;font-size:.85rem}}
 '''
 
@@ -240,6 +241,9 @@ PLANTILLA = '''<!doctype html>
 <meta property="og:description" content="%%DESC%%">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://engranaia.com/%%SLUG%%/">
+<meta property="og:image" content="https://engranaia.com/img/og/%%SLUG%%.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://engranaia.com/%%SLUG%%/">
 <meta name="theme-color" content="#0B1217">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
@@ -253,7 +257,7 @@ PLANTILLA = '''<!doctype html>
 <header><div class="wrap nav">
   <a class="logo" href="../" aria-label="Engrana, inicio"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#engrana-logo"/></svg>Engrana</a>
   <ul>%%MENU%%</ul>
-  <a class="btn btn-primary" href="#contacto" data-ev="cab-revision">Revisión gratis</a>
+  <div class="nav-r"><a class="btn btn-primary" href="#contacto" data-ev="cab-revision">Revisión gratis</a><button class="menu-btn" type="button" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button></div>
 </div></header>
 <main>
 <section class="hero"><div class="wrap hero-grid">
@@ -327,6 +331,7 @@ PLANTILLA = '''<!doctype html>
 <script>
 (() => {
 const $=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>[...c.querySelectorAll(s)];
+const mb=$(".menu-btn"),mu=$(".nav ul");mb.addEventListener("click",()=>{const a=mu.classList.toggle("abierto");mb.setAttribute("aria-expanded",a);});
 function cuenta(el,de,a,suf,dec=0){const f=v=>(dec?v.toFixed(dec).replace(".",","):Math.round(v).toLocaleString("es-ES"))+suf;if(!window.gsap){el.textContent=f(a);return;}const o={v:de};gsap.to(o,{v:a,duration:.6,ease:"power2.out",onUpdate:()=>el.textContent=f(o.v)});}
 // rueda del hero
 const NS="http://www.w3.org/2000/svg",rh=$("#rh");
