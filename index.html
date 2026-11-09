@@ -186,6 +186,12 @@ section[id]{scroll-margin-top:70px}
 .pieza-p .precio b{font:800 1.7rem Manrope,sans-serif}
 .pieza-p .precio span{display:block;font-size:.8rem;color:var(--muted)}
 
+.extra-p{display:grid;grid-template-columns:.8fr 1.2fr;gap:16px;margin-top:16px}
+.extra-p>div{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px 24px}
+.portf{display:flex;flex-direction:column;border-color:var(--line2)!important}.portf p{color:var(--muted);font-size:.93rem}.portf .precio{margin-top:auto;padding-top:14px;border-top:1px dashed var(--line)}.portf .precio b{font:800 1.7rem Manrope,sans-serif}
+.etiq-p{align-self:flex-start;font:500 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:.35em .7em;border-radius:999px;background:rgba(168,199,160,.14);color:var(--sage);margin-bottom:12px}
+.cuota ul{list-style:none;padding:0;margin:0 0 14px;display:grid;gap:8px}.cuota li{font-size:.93rem;color:var(--muted);padding-left:1.4em;position:relative}.cuota li::before{content:"✓";position:absolute;left:0;color:var(--teal);font-weight:700}.cuota li b{color:var(--ink);font-weight:600}
+@media (max-width:760px){.extra-p{grid-template-columns:1fr}}
 /* ---------- Sobre mí ---------- */
 .yo-card{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,#12303A,#1B2A33 60%,#2E2622);border:1px solid var(--line);border-radius:26px;padding:40px}
 .avatar{width:120px;height:120px;border-radius:50%;object-fit:cover;background:var(--bg);border:3px solid var(--teal);box-shadow:0 0 0 6px rgba(94,224,196,.1)}
@@ -438,6 +444,20 @@ footer a{color:var(--muted)}
         <article class="pieza-p" style="--c:var(--sage)"><h3>Asistente con IA</h3><p>Contesta en tu web a cualquier hora con la información que tú apruebas y te pasa los contactos. <a href="demo/estetica/" data-ev="demo-asistente">Pruébalo →</a></p><div class="precio"><b>39 €</b>/mes<span>Después: 49 €/mes</span></div></article>
         <article class="pieza-p" style="--c:var(--orange)"><h3>Reseñas al día</h3><p>Contesto cada reseña nueva en 48 h con tu tono. Sin tu contraseña: con acceso de gestor.</p><div class="precio"><b>29 €</b>/mes<span>Después: 39 €/mes</span></div></article>
       </div>
+      <div class="extra-p">
+        <div class="portf"><span class="etiq-p">Para autónomos y artistas</span><h3>Portfolio de una página</h3><p>Tus trabajos, fotos, audios o vídeos y un contacto claro, en una sola página hecha a medida. Retoque de hasta 10 fotos incluido.</p><div class="precio"><b>250 €</b> + 10 €/mes</div></div>
+        <div class="cuota"><h3>Qué incluye la cuota mensual</h3>
+          <ul>
+            <li><b>Tu dominio</b> (.com o .es) a tu nombre, con la renovación pagada</li>
+            <li><b>La web online</b>, rápida y segura (https), y copias de seguridad</li>
+            <li><b>Correo con tu dominio</b> (tu@tunegocio.es) que te llega a tu Gmail</li>
+            <li><b>Cambios pequeños</b>: textos, precios, horarios, fotos o un trabajo nuevo. Hasta 2 al mes con 10 €/mes y hasta 4 con 15 €/mes</li>
+            <li><b>Arreglos sin coste</b> si algo deja de funcionar, y respuesta en 2 días laborables</li>
+            <li><b>Visitas de tu web</b> cada mes, sin cookies</li>
+          </ul>
+          <p class="small" style="margin:0">No incluye rediseños, secciones o funciones nuevas (reservas, tienda…): eso va con presupuesto aparte. Sin permanencia: si lo dejas, el dominio sigue siendo tuyo y te doy los archivos de tu web.</p>
+        </div>
+      </div>
       <p class="small" style="margin-top:18px">Precios de lanzamiento para los 5 primeros clientes, que los mantienen mientras sigan conmigo. Antes de empezar te doy siempre un precio cerrado.</p>
     </div>
   </section>
@@ -467,7 +487,7 @@ footer a{color:var(--muted)}
         <details><summary>¿Tengo que cambiar los programas que ya uso?</summary><p>Casi nunca. Siempre que se puede, conecto lo que ya tienes: tu correo, Google Calendar, WhatsApp, hojas de cálculo o tu programa de gestión.</p></details>
         <details><summary>¿Cuánto tarda?</summary><p>Una web, unas dos semanas desde que tengo tus fotos y textos. Una automatización sencilla, unos días. Te doy la fecha antes de empezar.</p></details>
         <details><summary>¿Hay permanencia? ¿La web es mía?</summary><p>No hay permanencia. La web y las automatizaciones son tuyas una vez pagadas, y el dominio va a tu nombre. Los servicios mensuales se pagan mes a mes y los dejas cuando quieras.</p></details>
-        <details><summary>¿Qué incluye la cuota mensual de la web?</summary><p>El alojamiento, el dominio, las copias de seguridad y los cambios pequeños (precios, horarios, fotos). Si algo deja de funcionar, lo arreglo sin coste.</p></details>
+        <details><summary>¿Qué incluye la cuota mensual de la web?</summary><p>Tu dominio a tu nombre con la renovación pagada, la web online con copias de seguridad, un correo con tu dominio que te llega a tu Gmail, los arreglos si algo falla y cambios pequeños (textos, precios, horarios, fotos o un trabajo nuevo): hasta 2 al mes con la cuota de 10 € y hasta 4 con la de 15 €. Los cambios que no uses no se acumulan. Rediseños y funciones nuevas van con presupuesto aparte.</p></details>
         <details><summary>¿Qué pasa con los datos de mis clientes?</summary><p>Uso solo los datos imprescindibles para cada tarea y te explico dónde se guardan. Nunca te pido tus contraseñas: para la ficha de Google, por ejemplo, basta con un acceso de gestor que tú quitas cuando quieras.</p></details>
         <details><summary>¿Y si el asistente se equivoca?</summary><p>Solo responde con la información que tú apruebas. Si le preguntan algo que no sabe, no se lo inventa: recoge el contacto y te lo pasa. Lo revisamos juntos antes de activarlo.</p></details>
         <details><summary>¿Y si algo falla?</summary><p>Me avisas y lo arreglo. Las automatizaciones avisan si algo no sale, para que nada se quede a medias sin que nadie se entere.</p></details>
