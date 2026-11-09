@@ -89,21 +89,6 @@ h2.titulo em{font-family:var(--serif);font-weight:400;color:var(--violeta)}
 .p-txt .mono{display:block;margin-top:18px}
 @media (max-width:820px){.parada{grid-template-columns:1fr}.parada:nth-child(even) .p-foto{order:0}.p-txt .num{font-size:4.5rem}}
 
-/* ===== del calco a la piel ===== */
-.calco{padding:clamp(90px,14vh,160px) var(--lado);display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(30px,6vw,90px);align-items:center;border-top:1px solid #1d1d20}
-.calco p.sub{color:var(--gris);margin:18px 0 28px;max-width:440px}
-.pestanas{display:flex;gap:8px;flex-wrap:wrap}
-.pestanas button{border:1px solid #2e2d31;border-radius:999px;padding:9px 16px;font-size:.88rem;color:var(--gris);transition:all .25s}
-.pestanas button.on{background:var(--violeta);border-color:var(--violeta);color:#fff}
-.comparar{position:relative;justify-self:center;width:min(100%,560px);aspect-ratio:3/4;border-radius:6px;overflow:hidden;background:var(--tinta);user-select:none;touch-action:pan-y;--p:50%}
-.comparar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
-.comparar .sten{clip-path:inset(0 0 0 var(--p))}
-.tirador{position:absolute;top:0;bottom:0;left:var(--p);width:44px;margin-left:-22px;cursor:ew-resize;display:flex;justify-content:center;touch-action:none}
-.tirador::before{content:"";width:2px;height:100%;background:var(--violeta);box-shadow:0 0 16px rgba(123,92,255,.8)}
-.tirador i{position:absolute;top:50%;width:44px;height:44px;margin-top:-22px;border-radius:50%;background:var(--hueso);color:var(--negro);display:grid;place-items:center;font-style:normal;font-weight:700;box-shadow:0 6px 24px rgba(0,0,0,.5)}
-.comparar .et{position:absolute;top:14px;z-index:2;background:rgba(9,9,10,.75);padding:6px 10px;border-radius:3px}
-.comparar .et.izq{left:14px}.comparar .et.der{right:14px;color:var(--violeta)}
-@media (max-width:820px){.calco{grid-template-columns:1fr}}
 
 /* ===== el book: tablero infinito ===== */
 .book{padding:clamp(90px,14vh,160px) 0 40px;border-top:1px solid #1d1d20}
@@ -232,21 +217,6 @@ h2.titulo em{font-family:var(--serif);font-weight:400;color:var(--violeta)}
     <div class="paradas" id="paradas"></div>
   </section>
 
-  <section class="calco" id="calco">
-    <div>
-      <span class="mono vi">— Del calco a la piel</span>
-      <h2 class="titulo" style="margin-top:14px">Primero <em>el stencil</em>, luego la tinta</h2>
-      <p class="sub">Cada pieza se dibuja a medida y se calca en violeta sobre la piel antes de empezar. Arrastra la aguja para ver el antes y el después.</p>
-      <div class="pestanas" id="pestanas"></div>
-    </div>
-    <div class="comparar" id="comparar">
-      <img id="cmpReal" alt="Tatuaje terminado">
-      <img id="cmpSten" class="sten" alt="">
-      <span class="et izq mono">Piel</span><span class="et der mono">Stencil</span>
-      <div class="tirador" id="tirador" role="slider" aria-label="Comparar stencil y tatuaje" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0"><i>⇆</i></div>
-    </div>
-  </section>
-
   <section class="book" id="book">
     <div class="book-cab">
       <div><span class="mono vi">— El book</span><h2 class="titulo" style="margin-top:14px">Todo el <em>trabajo</em></h2></div>
@@ -343,7 +313,6 @@ const PARADAS = [
   ["w20", "ilustrativo", "Ilustrativo / cartoon", "Dibujos con línea limpia y, cuando toca, color."],
   ["08", "dark", "Dark & sigilism", "Espinas, neotribal, hannyas y lettering con un punto oscuro."]
 ];
-const CALCOS = [["14", "Vegeta"], ["05", "Guts (Berserk)"], ["07", "Hannya"]];
 
 /* ================= scroll suave ================= */
 let lenis = null;
@@ -478,28 +447,6 @@ if (ANIM) {
     ScrollTrigger.refresh();
   });
 }
-
-/* ================= DEL CALCO A LA PIEL: deslizador ================= */
-const cmp = $("#comparar"), tir = $("#tirador");
-$("#pestanas").innerHTML = CALCOS.map(([n, t], i) => `<button data-i="${i}"${i ? "" : ' class="on"'}>${t}</button>`).join("");
-function ponCalco(i) {
-  const [n, t] = CALCOS[i];
-  $("#cmpReal").src = img(n); $("#cmpSten").src = `fotos/${n}-stencil.jpg`; $("#cmpReal").alt = "Tatuaje terminado · " + t;
-  $$("#pestanas button").forEach((b, j) => b.classList.toggle("on", j === i));
-}
-ponCalco(0);
-const ponP = p => { p = Math.max(0, Math.min(100, p)); cmp.style.setProperty("--p", p + "%"); tir.setAttribute("aria-valuenow", Math.round(p)); };
-$("#pestanas").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; ponCalco(+b.dataset.i); barrido(); });
-let arrastra = false;
-const desdeX = x => { const r = cmp.getBoundingClientRect(); ponP((x - r.left) / r.width * 100); };
-tir.addEventListener("pointerdown", e => { arrastra = true; tir.setPointerCapture(e.pointerId); });
-tir.addEventListener("pointermove", e => { if (arrastra) desdeX(e.clientX); });
-tir.addEventListener("pointerup", () => arrastra = false);
-cmp.addEventListener("click", e => { if (e.target !== tir && !tir.contains(e.target)) desdeX(e.clientX); });
-tir.addEventListener("keydown", e => { const v = parseFloat(getComputedStyle(cmp).getPropertyValue("--p")) || 50; if (e.key === "ArrowLeft") ponP(v - 5); if (e.key === "ArrowRight") ponP(v + 5); });
-function barrido() { if (!ANIM) return; const o = {p: 100}; gsap.fromTo(o, {p: 100}, {p: 50, duration: 1.6, ease: "power3.inOut", onUpdate: () => ponP(o.p)}); }
-ponP(ANIM ? 100 : 50);
-if (ANIM) ScrollTrigger.create({trigger: cmp, start: "top 70%", once: true, onEnter: () => { const o = {p: 100}; gsap.timeline().to(o, {p: 0, duration: 1.4, ease: "power2.inOut", onUpdate: () => ponP(o.p)}).to(o, {p: 50, duration: 1, ease: "power2.out", onUpdate: () => ponP(o.p)}); }});
 
 /* ================= EL BOOK: tablero infinito que se arrastra ================= */
 const tab = $("#tablero");
