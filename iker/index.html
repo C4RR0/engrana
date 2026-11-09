@@ -177,6 +177,8 @@ h2.titulo em{font-family:var(--serif);font-weight:400;color:var(--violeta)}
 /* ===== sin GSAP ===== */
 .estatico .entra{opacity:1;transform:none}
 .estatico .p-foto{-webkit-mask-image:none;mask-image:none}
+/* proteger fotos: sin menú de guardar al mantener pulsado (iOS/Android), sin arrastrar ni seleccionar */
+img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
 </style>
 </head>
 <body>
@@ -622,6 +624,15 @@ if (fino) {
 
 document.addEventListener("contextmenu", e => { if (e.target.tagName === "IMG" || e.target.id === "trama") e.preventDefault(); });
 document.addEventListener("dragstart", e => { if (e.target.tagName === "IMG") e.preventDefault(); });
+
+/* ================= PROTECCIÓN DE LAS FOTOS =================
+   Bloquea el menú «Guardar imagen» (clic derecho y pulsación larga en el móvil) y arrastrar fotos.
+   No impide capturas de pantalla: eso no se puede bloquear en ninguna web. */
+document.addEventListener("contextmenu", e => { if (e.target.closest("img, canvas, .p-foto, #tablero, .caja-centro")) e.preventDefault(); });
+document.addEventListener("dragstart", e => { if (e.target.tagName === "IMG") e.preventDefault(); });
+new MutationObserver(() => document.querySelectorAll("img:not([draggable=false])").forEach(i => i.setAttribute("draggable", "false")))
+  .observe(document.body, {childList: true, subtree: true});
+document.querySelectorAll("img").forEach(i => i.setAttribute("draggable", "false"));
 </script>
 </body>
 </html>
