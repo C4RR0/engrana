@@ -188,7 +188,7 @@ section[id]{scroll-margin-top:70px}
 
 /* ---------- Sobre mí ---------- */
 .yo-card{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,#12303A,#1B2A33 60%,#2E2622);border:1px solid var(--line);border-radius:26px;padding:40px}
-.avatar{width:110px;height:110px;border-radius:50%;display:grid;place-items:center;background:var(--bg);border:2px solid var(--teal);font:800 2.2rem Manrope,sans-serif}
+.avatar{width:120px;height:120px;border-radius:50%;object-fit:cover;background:var(--bg);border:3px solid var(--teal);box-shadow:0 0 0 6px rgba(94,224,196,.1)}
 .yo-card p{color:#C4D2D5}
 
 /* ---------- FAQ ---------- */
@@ -248,7 +248,7 @@ footer a{color:var(--muted)}
   .eslabon .lado.yo{grid-column:2}
   .cadena .linea{left:21px}
   .yo-card{grid-template-columns:1fr;padding:28px;text-align:left}
-  .avatar{width:80px;height:80px;font-size:1.6rem}
+  .avatar{width:96px;height:96px}
 }
 @media (max-width:560px){
   .riel{grid-template-columns:1fr}
@@ -446,7 +446,7 @@ footer a{color:var(--muted)}
   <section>
     <div class="wrap">
       <div class="yo-card">
-        <div class="avatar" aria-hidden="true">SC</div>
+        <img class="avatar" src="img/sergio.jpg" alt="Sergio Carro, de Engrana" width="110" height="110" loading="lazy">
         <div>
           <span class="eyebrow">Quién hay detrás</span>
           <h2 style="font-size:clamp(1.6rem,3vw,2.2rem)">Soy Sergio, de Valladolid.</h2>
