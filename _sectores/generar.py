@@ -1,0 +1,399 @@
+"""Genera las páginas por sector de engranaia.com (alojamientos-rurales, autoescuelas, comercios).
+
+Uso:  python _sectores/generar.py      (desde la carpeta engrana)
+Cada página: texto propio (SEO), herramienta interactiva, caso real, precio, FAQ (con schema) y formulario mailto.
+La carpeta _sectores empieza por «_» y GitHub Pages no la publica.
+"""
+import json, html, pathlib
+
+RAIZ = pathlib.Path(__file__).resolve().parent.parent
+
+SECTORES = [
+ {
+  "slug": "alojamientos-rurales",
+  "menu": "Alojamientos rurales",
+  "title": "Reservas directas para casas rurales en Valladolid · Engrana",
+  "desc": "Web propia, ficha de Google bien configurada y respuestas automáticas para casas rurales y hoteles pequeños de Valladolid. Menos comisión a Booking, más reservas directas.",
+  "eyebrow": "Casas rurales y hoteles pequeños · Valladolid",
+  "h1": "Más reservas directas.<br><span class=\"grad\">Menos comisión a Booking.</span>",
+  "lead": "Booking te trae clientes, pero se queda entre un 15 y un 18 % de cada reserva. Y muchas veces también de la gente que ya te conocía y solo buscó tu nombre en Google. Eso se puede arreglar sin dejar Booking.",
+  "tipo": "Alojamiento rural u hotel",
+  "dolores": [
+    ("«Casi todo nos entra por Booking.»", "Y con cada reserva se va la comisión, aunque el huésped venga de una recomendación o repita."),
+    ("«En Google, el botón lleva a Booking.»", "En muchas fichas, el enlace «Sitio web» manda a Booking. Quien te busca por tu nombre acaba reservando allí."),
+    ("«Contestamos lo mismo todo el día.»", "Cómo llegar, a qué hora se entra, si admitís perros, si hay cuna. Mensajes a cualquier hora, también en temporada alta."),
+  ],
+  "piezas": [
+    ("Ficha de Google que trabaja para ti", "Categoría, fotos, horario y, sobre todo, el botón «Sitio web» llevando a tu web o a tu WhatsApp, no a un intermediario."),
+    ("Web propia con reserva directa", "Fotos que venden la casa, qué incluye, cómo llegar y un botón claro para reservar contigo. Puedes premiar la reserva directa con el descuento que hoy te quita la comisión."),
+    ("Respuestas que se contestan solas", "Un asistente en la web que responde las preguntas de siempre con tu información y te deja el contacto de quien quiere reservar."),
+    ("Antes y después de la estancia", "Un mensaje antes de la llegada con la ubicación y la hora de entrada, y otro después pidiendo una reseña con el enlace directo."),
+  ],
+  "widget_titulo": "¿Cuánto te cuesta la comisión?",
+  "widget_lead": "Mueve los valores. Es una estimación sencilla: cuánto pagas al año en comisión por las noches que podrían reservarse directamente contigo.",
+  "widget": "calc_aloj",
+  "caso_et": "Visto en una casa rural de la provincia",
+  "caso_h": "«El 95 % entra por Booking.»",
+  "caso_p": "Hablando con una casa rural de la provincia de Valladolid, nos contaron que casi todas sus reservas llegaban por Booking. Al mirar su ficha de Google vimos por qué: el botón «Sitio web» llevaba directamente a Booking. Quien les buscaba por su nombre, aunque viniera recomendado, pagaba la reserva con comisión. Cambiar ese enlace es gratis y se hace en diez minutos.",
+  "caso_link": ("#contacto", "Que revisen gratis mi ficha →"),
+  "precio": [("Revisión de tu ficha de Google", "Gratis", "3 cambios concretos, por escrito"), ("Web propia con reserva directa", "390 € + 15 €/mes", "Precio de lanzamiento · después 490 € + 19 €/mes"), ("Asistente que responde dudas", "39 €/mes", "Precio de lanzamiento · después 49 €/mes")],
+  "faq": [
+    ("¿Tengo que dejar Booking?", "No. Booking sigue siendo útil para que te descubran. La idea es que quien ya te conoce, repite o te busca por tu nombre pueda reservar directamente contigo, sin comisión."),
+    ("¿Puedo poner un botón «Reservar» en Google?", "Sí, pero Google solo lo muestra si usas un programa de reservas conectado con Google (los llamados «channel manager»). Muchos tienen coste mensual, así que antes miramos si te compensa. Mientras tanto, el botón «Sitio web» y el de WhatsApp ya son gratis."),
+    ("¿Y el registro de viajeros?", "Desde diciembre de 2024 hay que comunicar los datos de los huéspedes en SES.Hospedajes. Te podemos ayudar a pedir los datos antes de la llegada con un formulario, para no tener que copiarlos a mano en recepción."),
+    ("No tengo tiempo de hacer fotos ni textos.", "Con lo que tengas basta: fotos del móvil, tu descripción de Booking y lo que nos cuentes en una charla. Lo que falte, lo preparo yo."),
+  ],
+ },
+ {
+  "slug": "autoescuelas",
+  "menu": "Autoescuelas",
+  "title": "Reservas de clases prácticas para autoescuelas · Engrana Valladolid",
+  "desc": "Tus alumnos reservan, cambian o anulan sus clases prácticas desde el móvil, los huecos libres avisan a la lista de espera y la oficina deja de cuadrar cambios por WhatsApp. Autoescuelas de Valladolid.",
+  "eyebrow": "Autoescuelas y academias · Valladolid",
+  "h1": "Que tus alumnos muevan sus clases<br><span class=\"grad\">sin tener que llamarte.</span>",
+  "lead": "Cada cambio de clase práctica es un WhatsApp, una llamada, mirar la agenda del profesor y apuntarlo. Multiplicado por todos los alumnos, se lleva media mañana de la oficina.",
+  "tipo": "Autoescuela o academia",
+  "dolores": [
+    ("«Mover una clase nos da guerra.»", "El alumno escribe, la oficina mira huecos, llama al profesor, contesta y lo apunta. Para una sola clase."),
+    ("«Cuando alguien anula, el hueco se pierde.»", "Siempre hay alumnos que querrían esa hora, pero avisarles uno a uno no compensa."),
+    ("«Nos preguntan lo mismo cada día.»", "Precio del bono, cuándo hay examen, qué documentación hace falta, a qué hora sale el coche."),
+  ],
+  "piezas": [
+    ("Reservas desde el móvil", "El alumno ve los huecos libres de su profesor y reserva, cambia o anula con las normas que pongáis vosotros (por ejemplo, cambios gratis hasta 24 h antes)."),
+    ("Lista de espera automática", "Cuando alguien anula, el hueco avisa solo a la lista de espera y el primero que lo coge se lo queda."),
+    ("Pantalla de la oficina", "La agenda de prácticas de cada profesor, en el ordenador o el móvil, con todo lo que ha pasado sin que nadie tenga que apuntarlo."),
+    ("Recordatorios y dudas", "Recordatorio el día antes de cada clase y respuestas automáticas a las preguntas de siempre."),
+  ],
+  "widget_titulo": "¿Cuánto tiempo se os va en cambios?",
+  "widget_lead": "Una cuenta rápida con vuestros números. Solo cuenta el tiempo de la oficina; no el de los profesores ni las clases que se quedan vacías.",
+  "widget": "calc_auto",
+  "caso_et": "Demo que puedes probar",
+  "caso_h": "Pruébalo como si fueras un alumno.",
+  "caso_p": "Hicimos esta demo después de hablar con una autoescuela de Valladolid que nos dijo que los cambios de clase «nos dan guerra». En el móvil de la izquierda reservas, cambias o anulas una clase; a la derecha ves cómo le llega a la oficina al momento. Los datos son de ejemplo.",
+  "caso_link": ("../demo/autoescuela/", "Probar la demo →"),
+  "caso_img": "../img/trabajos/autoescuela.jpg",
+  "precio": [("Charla y propuesta", "Gratis", "Vemos cómo trabajáis y si os encaja"), ("Automatizaciones sueltas", "190 € cada una", "Recordatorios, avisos, preguntas · precio de lanzamiento"), ("Reservas completas", "Precio cerrado", "Depende de profesores y alumnos; os lo damos antes de empezar")],
+  "faq": [
+    ("¿Los alumnos tienen que instalar una app?", "No. Es una web que se abre desde un enlace y se puede guardar en la pantalla de inicio del móvil como si fuera una app."),
+    ("¿Quién pone las normas de cambios y anulaciones?", "Vosotros: con cuánta antelación se puede cambiar, cuántas clases se pueden reservar a la vez o qué pasa si alguien no se presenta."),
+    ("¿Y si un alumno no tiene móvil o prefiere llamar?", "La oficina puede seguir reservando por él desde su pantalla. Lo importante es que todo quede en el mismo sitio."),
+    ("¿Sirve si ya usamos un programa de gestión?", "Depende del programa. Lo miramos en la primera charla: si se puede conectar, lo conectamos; si no, buscamos la forma de no tener que apuntar las cosas dos veces."),
+  ],
+ },
+ {
+  "slug": "comercios",
+  "menu": "Comercios",
+  "title": "Catálogo con reserva para comercios de Valladolid · Engrana",
+  "desc": "Tu tienda en el móvil: tus clientes ven lo que vendes, lo reservan sin pagar y pasan a recogerlo. Te llega por WhatsApp. Para ferreterías, tiendas y comercios de barrio de Valladolid.",
+  "eyebrow": "Comercios de barrio · Valladolid",
+  "h1": "Tu tienda,<br><span class=\"grad\">abierta también en el móvil.</span>",
+  "lead": "No hace falta montar una tienda online con pagos, envíos y devoluciones. Basta con que la gente vea lo que tienes, lo reserve y pase a recogerlo.",
+  "tipo": "Comercio o tienda",
+  "dolores": [
+    ("«Nos llaman para preguntar si tenemos algo.»", "Y mientras atiendes el teléfono, hay alguien esperando en el mostrador."),
+    ("«La gente no sabe todo lo que vendemos.»", "Quien pasa por delante ve el escaparate, pero no las mil cosas que hay dentro."),
+    ("«En Google solo salimos con una foto.»", "Sin web, tu ficha de Google es un teléfono y un horario. Las grandes superficies salen con todo su catálogo."),
+  ],
+  "piezas": [
+    ("Catálogo con buscador", "Tus productos por secciones, con foto y precio orientativo. Los mantienes tú o nos los mandas y los subimos nosotros."),
+    ("Reserva sin pagar", "El cliente añade lo que necesita y lo reserva. No paga nada por adelantado: pasa a recogerlo y paga en tienda, como siempre."),
+    ("Te llega por WhatsApp", "La reserva te llega con el nombre y lo que quiere. Compruebas que lo tienes y confirmas con un toque."),
+    ("QR en el mostrador y en Google", "Un código en el mostrador y el enlace en tu ficha de Google llevan directamente a tu catálogo."),
+  ],
+  "widget_titulo": "Así reserva un cliente",
+  "widget_lead": "Prueba el recorrido completo. Es un ejemplo: en tu web saldrían tus productos.",
+  "widget": "sim_tienda",
+  "caso_et": "Cliente real · Tudela de Duero",
+  "caso_h": "Ferretería Fersaman",
+  "caso_p": "Una ferretería de toda la vida en Tudela de Duero. Su web enseña 157 productos por secciones; los clientes los reservan sin pagar y Fersaman confirma por WhatsApp que lo tiene y se lo guarda 48 horas. También cuenta lo que no cabe en el escaparate: copia de llaves y mandos, ropa de trabajo personalizada y suministros para empresas.",
+  "caso_link": ("../fersaman/", "Ver la web de Fersaman →"),
+  "caso_img": "../img/trabajos/fersaman.jpg",
+  "precio": [("Revisión de tu ficha de Google", "Gratis", "3 cambios concretos, por escrito"), ("Web con catálogo y reservas", "390 € + 15 €/mes", "Precio de lanzamiento · después 490 € + 19 €/mes"), ("Carga de productos", "Incluida", "Nos mandas fotos y precios y los subimos nosotros")],
+  "faq": [
+    ("¿Tengo que tener el stock actualizado al día?", "No. Como el cliente reserva y tú confirmas por WhatsApp, siempre compruebas antes que lo tienes. Si no, le ofreces otra cosa o se lo pides."),
+    ("¿Y si quiero vender online con pago y envío?", "Se puede, pero tiene más costes y trabajo (pasarela de pago, envíos, devoluciones). Para un comercio de barrio, la reserva para recoger suele ser lo que más compensa al principio."),
+    ("¿Cuántos productos hacen falta?", "Con 50 o 100 de los que más se venden ya se nota. Luego se van añadiendo."),
+    ("¿Puedo cambiar los precios yo?", "Sí. Te enseñamos a hacerlo o nos lo mandas por WhatsApp y lo cambiamos dentro de la cuota mensual."),
+  ],
+ },
+]
+
+GEAR_LOGO = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="eg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5EE0C4"/><stop offset="1" stop-color="#F2A26B"/></linearGradient><symbol id="engrana-logo" viewBox="0 0 64 64"><path d="M52.2 28.4 L57.8 29.2 L57.8 34.8 L52.2 35.6 L49.8 42.2 L53.6 46.5 L50.0 50.8 L45.2 47.7 L39.0 51.3 L39.3 57.0 L33.7 57.9 L32.0 52.5 L25.0 51.3 L21.5 55.8 L16.6 53.0 L18.8 47.7 L14.2 42.2 L8.7 43.5 L6.8 38.2 L11.8 35.6 L11.8 28.4 L6.8 25.8 L8.7 20.5 L14.2 21.8 L18.8 16.3 L16.6 11.0 L21.5 8.2 L25.0 12.7 L32.0 11.5 L33.7 6.1 L39.3 7.0 L39.0 12.7 L45.2 16.3 L50.0 13.2 L53.6 17.5 L49.8 21.7 Z" fill="none" stroke="url(#eg)" stroke-width="3" stroke-linejoin="round"/><path d="M22 38 L32 26 L42 36" fill="none" stroke="url(#eg)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="38" r="3.6" fill="#5EE0C4"/><circle cx="32" cy="26" r="3.6" fill="#A8C7A0"/><circle cx="42" cy="36" r="3.6" fill="#F2A26B"/></symbol></defs></svg>'''
+
+WIDGETS = {
+ "calc_aloj": ('''
+<div class="calc">
+  <label>Precio medio por noche <output id="o1">90 €</output><input type="range" id="i1" min="40" max="250" step="5" value="90"></label>
+  <label>Noches al mes que podrían reservar contigo <output id="o2">4</output><input type="range" id="i2" min="1" max="30" value="4"></label>
+  <label>Comisión de Booking <output id="o3">15 %</output><input type="range" id="i3" min="10" max="25" value="15"></label>
+  <div class="res"><span>Comisión al año por esas noches</span><b id="res">0 €</b><small>Precio × noches × 12 meses × comisión. Una estimación, no una promesa.</small></div>
+</div>''', '''
+const i1=$("#i1"),i2=$("#i2"),i3=$("#i3"),res=$("#res");let ultimo=0;
+function calc(){const v=+i1.value*+i2.value*12*(+i3.value/100);$("#o1").textContent=i1.value+" €";$("#o2").textContent=i2.value;$("#o3").textContent=i3.value+" %";cuenta(res,ultimo,v," €");ultimo=v;}
+[i1,i2,i3].forEach(i=>i.addEventListener("input",calc));calc();'''),
+ "calc_auto": ('''
+<div class="calc">
+  <label>Cambios o anulaciones de clase al día <output id="o1">8</output><input type="range" id="i1" min="1" max="40" value="8"></label>
+  <label>Minutos que lleva cada uno <output id="o2">4 min</output><input type="range" id="i2" min="1" max="10" value="4"></label>
+  <label>Días de oficina al mes <output id="o3">22</output><input type="range" id="i3" min="15" max="26" value="22"></label>
+  <div class="res"><span>Horas al mes cuadrando cambios</span><b id="res">0 h</b><small>Cambios × minutos × días. Sin contar los huecos que se quedan vacíos.</small></div>
+</div>''', '''
+const i1=$("#i1"),i2=$("#i2"),i3=$("#i3"),res=$("#res");let ultimo=0;
+function calc(){const v=+i1.value*+i2.value*+i3.value/60;$("#o1").textContent=i1.value;$("#o2").textContent=i2.value+" min";$("#o3").textContent=i3.value;cuenta(res,ultimo,v," h",1);ultimo=v;}
+[i1,i2,i3].forEach(i=>i.addEventListener("input",calc));calc();'''),
+ "sim_tienda": ('''
+<div class="sim">
+  <div class="movil">
+    <div class="pantalla" id="pantalla">
+      <div class="paso activo" data-p="1"><div class="buscar">🔍 Buscar en la tienda</div>
+        <div class="prod" data-n="Taladro percutor 600 W"><i>🛠️</i><span>Taladro percutor 600 W<small>Herramienta eléctrica</small></span><button type="button">Reservar</button></div>
+        <div class="prod" data-n="Juego de llaves Allen"><i>🔧</i><span>Juego de llaves Allen<small>Herramienta manual</small></span><button type="button">Reservar</button></div>
+        <div class="prod" data-n="Bombilla LED E27"><i>💡</i><span>Bombilla LED E27<small>Iluminación</small></span><button type="button">Reservar</button></div>
+        <div class="prod" data-n="Silicona transparente"><i>🧴</i><span>Silicona transparente<small>Fontanería</small></span><button type="button">Reservar</button></div>
+      </div>
+      <div class="paso" data-p="2"><b>Tu reserva</b><div class="linea" id="lin"></div><label>Tu nombre<input value="Marta" readonly></label><p class="mini">No pagas nada ahora. Te confirmamos por WhatsApp.</p><button type="button" class="ok" id="enviar">Enviar reserva</button></div>
+      <div class="paso" data-p="3"><b>¡Reserva enviada!</b><p class="mini">La tienda comprueba que lo tiene y te lo guarda 48 horas.</p><button type="button" class="otra" id="otra">Probar otra vez</button></div>
+    </div>
+  </div>
+  <div class="wa" aria-live="polite"><div class="wa-cab">WhatsApp de la tienda</div><div id="chat"><p class="vacio">Aquí verás lo que le llega a la tienda.</p></div></div>
+</div>''', '''
+let elegido="";const pasos=$$("#pantalla .paso");const ir=n=>pasos.forEach(p=>p.classList.toggle("activo",p.dataset.p==n));
+$$("#pantalla .prod button").forEach(b=>b.addEventListener("click",()=>{elegido=b.closest(".prod").dataset.n;$("#lin").textContent="1 × "+elegido;ir(2);}));
+$("#enviar").addEventListener("click",()=>{ir(3);const c=$("#chat");c.innerHTML="";
+ const m1=document.createElement("div");m1.className="msg in";m1.innerHTML="<b>Nueva reserva · Marta</b>1 × "+elegido+"<br>Pasa a recogerlo hoy";c.appendChild(m1);
+ setTimeout(()=>{const m2=document.createElement("div");m2.className="msg out";m2.textContent="¡Hola Marta! Lo tenemos, te lo guardamos 48 h ✓";c.appendChild(m2);if(window.gsap)gsap.from(m2,{y:14,opacity:0,duration:.4});},1300);
+ if(window.gsap)gsap.from(m1,{y:14,opacity:0,duration:.4});});
+$("#otra").addEventListener("click",()=>{ir(1);$("#chat").innerHTML='<p class="vacio">Aquí verás lo que le llega a la tienda.</p>';});'''),
+}
+
+CSS = r'''
+:root{--bg:#0B1217;--bg2:#0F1A21;--card:#131F27;--card2:#182630;--line:#22323D;--line2:#2E4654;--ink:#EAF1F0;--muted:#93A4AA;--teal:#5EE0C4;--sage:#A8C7A0;--orange:#F2A26B;--red:#F08A7E;--grad:linear-gradient(120deg,#5EE0C4 0%,#A8C7A0 50%,#F2A26B 100%);--r:18px;--mono:"JetBrains Mono",ui-monospace,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
+h1,h2,h3{font-family:Manrope,Inter,sans-serif;font-weight:800;line-height:1.08;margin:0 0 .5em;letter-spacing:-.025em}h1{font-size:clamp(2.3rem,5.6vw,4.2rem)}h2{font-size:clamp(1.8rem,3.8vw,2.7rem)}h3{font-size:1.15rem;font-weight:700}
+p{margin:0 0 1em}a{color:var(--teal)}img{max-width:100%;display:block}.wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{display:inline-flex;align-items:center;gap:.6em;font:500 .74rem/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:1.2em}.eyebrow::before{content:"";width:18px;height:2px;background:var(--grad);flex:none}
+.lead{font-size:1.13rem;color:var(--muted);max-width:40em}.small{font-size:.86rem;color:var(--muted)}
+section{padding:96px 0}.alt{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.btn{display:inline-flex;align-items:center;gap:.5em;padding:.95em 1.5em;border-radius:12px;font-weight:600;text-decoration:none;border:0;cursor:pointer;font-size:1rem;font-family:inherit;transition:transform .15s}.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--grad);color:#0B1217;box-shadow:0 8px 30px rgba(94,224,196,.18)}.btn-ghost{color:var(--ink);border:1px solid var(--line2);background:rgba(255,255,255,.02)}
+header{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(11,18,23,.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:66px}.logo{display:flex;align-items:center;gap:.55em;text-decoration:none;color:var(--ink);font:800 1.35rem Manrope,sans-serif}.logo svg{width:32px;height:32px}
+.nav ul{display:flex;gap:1.6em;list-style:none;margin:0;padding:0}.nav ul a{color:var(--muted);text-decoration:none;font-weight:500;font-size:.94rem}.nav ul a:hover,.nav ul a[aria-current]{color:var(--ink)}
+.nav .btn{padding:.6em 1.1em;font-size:.92rem}
+.hero{padding:140px 0 80px;position:relative;overflow:hidden}.hero::before{content:"";position:absolute;right:-15%;top:-30%;width:760px;height:760px;background:radial-gradient(circle,rgba(94,224,196,.12),transparent 62%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;position:relative}.hero-grid>*{min-width:0}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:1.6em}
+.rueda-h{width:100%;max-width:300px;margin-left:auto;aspect-ratio:1}.rueda-h svg{width:100%;height:100%;overflow:visible}
+.rueda-h path{fill:var(--card2);stroke:var(--line2);stroke-width:2}.rueda-h .eje{fill:var(--bg);stroke:var(--line2);stroke-width:2}.rueda-h text{font:700 15px Manrope,sans-serif;fill:var(--ink);text-anchor:middle}
+.miga{font:500 .78rem var(--mono);color:var(--muted);margin-bottom:1.4em}.miga a{color:var(--muted)}
+.dolores{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+.dolor{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px}.dolor .q{font:700 1.12rem/1.3 Manrope,sans-serif;margin-bottom:.5em}.dolor p{color:var(--muted);margin:0;font-size:.96rem}
+.piezas{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px;counter-reset:p}
+.pieza{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px 26px 22px 80px;position:relative}
+.pieza::before{counter-increment:p;content:"0" counter(p);position:absolute;left:24px;top:24px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--teal);font:800 .9rem Manrope,sans-serif;color:var(--teal)}
+.pieza p{color:var(--muted);margin:0;font-size:.96rem}
+.herr{display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:center}.herr>*{min-width:0}
+.calc{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px;display:grid;gap:20px}
+.calc label{display:grid;grid-template-columns:1fr auto;gap:8px 12px;font-weight:600;font-size:.95rem}.calc output{font:500 .95rem var(--mono);color:var(--teal)}
+.calc input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--teal);height:28px}
+.res{border-top:1px dashed var(--line2);padding-top:18px}.res span{display:block;color:var(--muted);font-size:.92rem}.res b{display:block;font:800 clamp(2.4rem,6vw,3.4rem)/1.1 Manrope,sans-serif;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin:.1em 0}.res small{color:var(--muted)}
+.sim{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start}
+.movil{width:250px;border-radius:30px;border:8px solid #1d2a33;background:#F7F4EE;color:#1a1a1a;min-height:400px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.pantalla{padding:16px 12px}.paso{display:none}.paso.activo{display:block}
+.buscar{background:#fff;border:1px solid #e3ded4;border-radius:10px;padding:8px 10px;font-size:.8rem;color:#777;margin-bottom:10px}
+.prod{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #ece7dd;border-radius:10px;padding:8px;margin-bottom:8px;font-size:.8rem;line-height:1.25}
+.prod i{font-style:normal;font-size:1.2rem}.prod span{flex:1}.prod small{display:block;color:#888;font-size:.68rem}
+.prod button,.paso .ok,.paso .otra{font:600 .74rem Inter,sans-serif;border:0;border-radius:8px;padding:.5em .7em;background:#1F2A8C;color:#fff;cursor:pointer}
+.paso b{display:block;font:800 1rem Manrope,sans-serif;margin:6px 0 10px}.paso .linea{background:#fff;border-radius:10px;padding:10px;font-size:.85rem;margin-bottom:10px;border:1px solid #ece7dd}
+.paso label{display:grid;gap:4px;font-size:.75rem;font-weight:600}.paso input{font:inherit;border:1px solid #ddd;border-radius:8px;padding:6px 8px}
+.paso .mini{font-size:.74rem;color:#666;margin:10px 0}.paso .ok{width:100%;padding:.8em;font-size:.82rem}
+.wa{background:#0E1A14;border:1px solid #1f3a2c;border-radius:var(--r);overflow:hidden;min-height:220px}.wa-cab{background:#132a1f;padding:12px 16px;font-weight:600;font-size:.9rem}
+#chat{padding:16px;display:grid;gap:10px}.vacio{color:var(--muted);font-size:.9rem}.msg{max-width:85%;padding:10px 12px;border-radius:12px;font-size:.9rem;line-height:1.4}.msg b{display:block;font-size:.8rem;color:var(--teal)}
+.msg.in{background:#1d2b25}.msg.out{background:#1f5f4a;justify-self:end}
+.caso{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}.caso>*{min-width:0}
+.caso img{border-radius:14px;border:1px solid var(--line2);box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.etiq{display:inline-block;font:500 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:.35em .7em;border-radius:999px;margin-bottom:1em;background:rgba(94,224,196,.12);color:var(--teal)}
+.precios{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}.pr{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.pr h3{font-size:1.02rem;margin-bottom:.6em}.pr b{display:block;font:800 1.55rem Manrope,sans-serif;margin-bottom:.2em}.pr span{font-size:.84rem;color:var(--muted)}
+.faq{max-width:820px;margin-top:30px}details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 22px;margin-bottom:12px}
+summary{cursor:pointer;list-style:none;padding:18px 0;font-weight:600;display:flex;justify-content:space-between;gap:16px}summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.4rem;line-height:1;color:var(--teal);transition:transform .2s}details[open] summary::after{transform:rotate(45deg)}details p{color:var(--muted);padding-bottom:18px;margin:0}
+.contacto{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:start}.contacto>*{min-width:0}
+form.pide{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:28px;display:grid;gap:16px}
+form.pide label{display:grid;gap:6px;font-weight:600;font-size:.92rem}form.pide input,form.pide textarea{font:400 1rem Inter,sans-serif;color:var(--ink);background:var(--bg2);border:1px solid var(--line2);border-radius:10px;padding:.8em .9em;width:100%}
+form.pide textarea{min-height:90px;resize:vertical}form.pide .check{display:flex;gap:10px;align-items:flex-start;font-weight:500}form.pide .check input{width:20px;height:20px;flex:none;accent-color:var(--teal)}
+.otros{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.otros a{color:var(--ink);text-decoration:none;border:1px solid var(--line2);border-radius:999px;padding:.55em 1em;font-weight:600;font-size:.92rem}.otros a:hover{border-color:var(--teal)}
+footer{padding:40px 0 56px;color:var(--muted);font-size:.88rem}.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:28px}footer a{color:var(--muted)}
+@media (max-width:900px){.hero-grid,.herr,.caso,.contacto{grid-template-columns:1fr}.rueda-h{display:none}.dolores,.precios{grid-template-columns:1fr}.piezas{grid-template-columns:1fr}.nav ul{display:none}section{padding:70px 0}.hero{padding:110px 0 60px}}
+@media (max-width:600px){.sim{grid-template-columns:1fr;justify-items:center}.wa{width:100%}.nav .btn{padding:.5em .8em;font-size:.85rem}}
+'''
+
+PLANTILLA = '''<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>%%TITLE%%</title>
+<meta name="description" content="%%DESC%%">
+<meta property="og:title" content="%%TITLE%%">
+<meta property="og:description" content="%%DESC%%">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://engranaia.com/%%SLUG%%/">
+<link rel="canonical" href="https://engranaia.com/%%SLUG%%/">
+<meta name="theme-color" content="#0B1217">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script type="application/ld+json">%%LD%%</script>
+<style>%%CSS%%</style>
+</head>
+<body>
+%%LOGO%%
+<header><div class="wrap nav">
+  <a class="logo" href="../" aria-label="Engrana, inicio"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#engrana-logo"/></svg>Engrana</a>
+  <ul>%%MENU%%</ul>
+  <a class="btn btn-primary" href="#contacto" data-ev="cab-revision">Revisión gratis</a>
+</div></header>
+<main>
+<section class="hero"><div class="wrap hero-grid">
+  <div>
+    <div class="miga"><a href="../">Engrana</a> / %%MENUNAME%%</div>
+    <span class="eyebrow">%%EYEBROW%%</span>
+    <h1 class="tit">%%H1%%</h1>
+    <p class="lead">%%LEAD%%</p>
+    <div class="actions"><a class="btn btn-primary" href="#contacto" data-ev="hero-contacto">Revisa gratis mi ficha de Google</a><a class="btn btn-ghost" href="#herramienta" data-ev="hero-herramienta">%%WTIT%%</a></div>
+  </div>
+  <div class="rueda-h" aria-hidden="true"><svg id="rh" viewBox="-170 -170 340 340"></svg></div>
+</div></section>
+
+<section class="alt"><div class="wrap">
+  <span class="eyebrow">¿Te suena?</span>
+  <h2>Lo que nos cuentan una y otra vez.</h2>
+  <div class="dolores">%%DOLORES%%</div>
+</div></section>
+
+<section><div class="wrap">
+  <span class="eyebrow">Lo que dejo funcionando</span>
+  <h2>Cuatro piezas, una sola idea:<br>que tú no tengas que estar.</h2>
+  <div class="piezas">%%PIEZAS%%</div>
+</div></section>
+
+<section id="herramienta" class="alt"><div class="wrap herr">
+  <div><span class="eyebrow">Haz la prueba</span><h2>%%WTIT%%</h2><p class="lead">%%WLEAD%%</p></div>
+  <div>%%WHTML%%</div>
+</div></section>
+
+<section><div class="wrap caso">
+  <div><span class="etiq">%%CASOET%%</span><h2>%%CASOH%%</h2><p class="lead">%%CASOP%%</p><a class="btn btn-ghost" href="%%CASOHREF%%" data-ev="caso">%%CASOTXT%%</a></div>
+  <div>%%CASOIMG%%</div>
+</div></section>
+
+<section class="alt"><div class="wrap">
+  <span class="eyebrow">Precios claros</span>
+  <h2>Lo que cuesta, antes de empezar.</h2>
+  <div class="precios">%%PRECIOS%%</div>
+  <p class="small" style="margin-top:16px">Precios de lanzamiento para los 5 primeros clientes, que los mantienen mientras sigan conmigo. Sin permanencia. <a href="../#precios">Ver todos los precios →</a></p>
+</div></section>
+
+<section><div class="wrap">
+  <span class="eyebrow">Preguntas frecuentes</span>
+  <h2>Lo que suelen preguntarme.</h2>
+  <div class="faq">%%FAQ%%</div>
+</div></section>
+
+<section id="contacto" class="alt"><div class="wrap contacto">
+  <div>
+    <span class="eyebrow">Gratis y sin compromiso</span>
+    <h2>Te reviso tu ficha de Google.</h2>
+    <p class="lead">Me dices el nombre de tu negocio y en uno o dos días te mando, por escrito, las 3 cosas que yo cambiaría. No te llamo ni te insisto.</p>
+    <p>Soy Sergio, de Valladolid. Hablas siempre conmigo. <a href="mailto:sergio@engranaia.com">sergio@engranaia.com</a> · <a href="https://www.instagram.com/engrana.ia/">@engrana.ia</a></p>
+    <div class="otros">%%OTROS%%</div>
+  </div>
+  <form class="pide" id="pide" novalidate>
+    <label>Tu nombre<input name="nombre" autocomplete="name"></label>
+    <label>Nombre de tu negocio<input name="negocio" placeholder="Para buscar tu ficha de Google"></label>
+    <label>¿Qué te quita más tiempo?<textarea name="tarea"></textarea></label>
+    <label class="check"><input type="checkbox" name="revision" checked> Quiero la revisión gratis de mi ficha de Google</label>
+    <button class="btn btn-primary" type="submit" data-ev="contacto">Escribir a Sergio</button>
+    <p class="small" style="margin:0">Se abre tu correo con el mensaje escrito. Esta web no guarda nada.</p>
+  </form>
+</div></section>
+</main>
+<footer><div class="wrap foot"><span>© 2026 Engrana · Sergio Carro Vadillo · Valladolid</span><span>Sin cookies · <a href="../aviso-legal/">Aviso legal y privacidad</a></span></div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(() => {
+const $=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>[...c.querySelectorAll(s)];
+function cuenta(el,de,a,suf,dec=0){const f=v=>(dec?v.toFixed(dec).replace(".",","):Math.round(v).toLocaleString("es-ES"))+suf;if(!window.gsap){el.textContent=f(a);return;}const o={v:de};gsap.to(o,{v:a,duration:.6,ease:"power2.out",onUpdate:()=>el.textContent=f(o.v)});}
+// rueda del hero
+const NS="http://www.w3.org/2000/svg",rh=$("#rh");
+function rueda(n,r,h){const p=[],s=Math.PI*2/n;for(let i=0;i<n;i++){const a=i*s;[[-.5,r-h],[-.28,r+h*.75],[.28,r+h*.75],[.5,r-h]].forEach(([f,rr])=>p.push([Math.cos(a+f*s)*rr,Math.sin(a+f*s)*rr]));}return "M"+p.map(q=>q[0].toFixed(1)+" "+q[1].toFixed(1)).join("L")+"Z";}
+const g=document.createElementNS(NS,"g");rh.appendChild(g);const pa=document.createElementNS(NS,"path");pa.setAttribute("d",rueda(22,140,10));g.appendChild(pa);
+const ar=document.createElementNS(NS,"circle");ar.setAttribute("r",112);ar.setAttribute("fill","none");ar.setAttribute("stroke","#5EE0C4");ar.setAttribute("stroke-width","2.5");ar.setAttribute("stroke-dasharray","6 7");g.appendChild(ar);
+const ej=document.createElementNS(NS,"circle");ej.setAttribute("class","eje");ej.setAttribute("r",62);rh.appendChild(ej);
+const tx=document.createElementNS(NS,"text");tx.setAttribute("y",6);tx.textContent="%%RUEDATXT%%";rh.appendChild(tx);
+%%WJS%%
+if(window.gsap){
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.to(g,{rotation:360,transformOrigin:"0 0",duration:40,ease:"none",repeat:-1});
+  gsap.to(g,{rotation:"+=180",ease:"none",scrollTrigger:{trigger:"body",start:"top top",end:"bottom bottom",scrub:1}});
+  gsap.from(".hero .miga,.hero .eyebrow,.hero .tit,.hero .lead,.hero .actions",{y:24,opacity:0,duration:.8,stagger:.1,ease:"power3.out"});
+  gsap.from(".rueda-h",{scale:.6,rotation:-60,opacity:0,duration:1.2,ease:"back.out(1.4)"});
+  [".dolor",".pieza",".pr"].forEach(s=>gsap.utils.toArray(s).forEach((e,i)=>gsap.from(e,{y:40,opacity:0,duration:.7,delay:(i%4)*.08,ease:"power3.out",scrollTrigger:{trigger:e,start:"top 88%"}})));
+  gsap.utils.toArray("section:not(.hero) h2").forEach(h=>gsap.from(h,{y:28,opacity:0,duration:.7,ease:"power3.out",scrollTrigger:{trigger:h,start:"top 88%"}}));
+}
+$("#pide").addEventListener("submit",e=>{e.preventDefault();const f=new FormData(e.target),v=k=>(f.get(k)||"").toString().trim();
+  const asunto=`Engrana: ${v("negocio")||"consulta"}${f.get("revision")?" (revisión de ficha)":""}`;
+  const cuerpo=`Hola Sergio,\\n\\nSoy ${v("nombre")}. Mi negocio: ${v("negocio")} (%%TIPO%%).\\n\\nLo que más tiempo me quita:\\n${v("tarea")||"-"}\\n\\n${f.get("revision")?"Me gustaría la revisión gratis de mi ficha de Google.\\n":""}`;
+  location.href=`mailto:sergio@engranaia.com?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;});
+})();
+</script>
+<script defer src="../m.js" data-site="engrana" data-api="https://script.google.com/macros/s/AKfycbxUQt_fUgS_BEP-gdpqzNt1EqRblhiBikMZr5ThNytjFnjY_kvcknVICwr1iis0NjyO/exec"></script>
+</body>
+</html>
+'''
+
+RUEDA_TXT = {"alojamientos-rurales": "Reserva directa", "autoescuelas": "Clases en el móvil", "comercios": "Reserva y recoge"}
+
+def e(t):
+    return html.escape(t, quote=False)
+
+def generar(s):
+    menu = "".join(f'<li><a href="../{o["slug"]}/"{" aria-current=\"page\"" if o is s else ""}>{o["menu"]}</a></li>' for o in SECTORES)
+    menu += '<li><a href="../#trabajos">Trabajos</a></li>'
+    dol = "".join(f'<div class="dolor"><div class="q">{e(q)}</div><p>{e(p)}</p></div>' for q, p in s["dolores"])
+    pie = "".join(f'<div class="pieza"><h3>{e(h)}</h3><p>{e(p)}</p></div>' for h, p in s["piezas"])
+    pre = "".join(f'<div class="pr"><h3>{e(h)}</h3><b>{e(b)}</b><span>{e(t)}</span></div>' for h, b, t in s["precio"])
+    faq = "".join(f'<details><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in s["faq"])
+    otros = "".join(f'<a href="../{o["slug"]}/">{o["menu"]}</a>' for o in SECTORES if o is not s) + '<a href="../">Toda Engrana</a>'
+    caso_img = f'<img src="{s["caso_img"]}" alt="{e(s["caso_h"])}" loading="lazy">' if s.get("caso_img") else '<div class="calc" style="text-align:center"><p class="small" style="margin:0">Lo primero que miro es tu ficha de Google: el botón «Sitio web», la categoría, las fotos y las reseñas.</p></div>'
+    whtml, wjs = WIDGETS[s["widget"]]
+    ld = [
+        {"@context": "https://schema.org", "@type": "Service", "name": s["menu"] + " · Engrana", "serviceType": s["menu"], "description": s["desc"],
+         "provider": {"@type": "ProfessionalService", "name": "Engrana", "url": "https://engranaia.com/", "email": "sergio@engranaia.com"},
+         "areaServed": {"@type": "City", "name": "Valladolid"}, "url": f"https://engranaia.com/{s['slug']}/"},
+        {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in s["faq"]]},
+    ]
+    rep = {
+        "%%TITLE%%": e(s["title"]), "%%DESC%%": html.escape(s["desc"]), "%%SLUG%%": s["slug"], "%%LD%%": json.dumps(ld, ensure_ascii=False),
+        "%%CSS%%": CSS, "%%LOGO%%": GEAR_LOGO, "%%MENU%%": menu, "%%MENUNAME%%": s["menu"], "%%EYEBROW%%": s["eyebrow"], "%%H1%%": s["h1"],
+        "%%LEAD%%": e(s["lead"]), "%%WTIT%%": s["widget_titulo"], "%%WLEAD%%": e(s["widget_lead"]), "%%WHTML%%": whtml, "%%WJS%%": wjs,
+        "%%DOLORES%%": dol, "%%PIEZAS%%": pie, "%%CASOET%%": e(s["caso_et"]), "%%CASOH%%": e(s["caso_h"]), "%%CASOP%%": e(s["caso_p"]),
+        "%%CASOHREF%%": s["caso_link"][0], "%%CASOTXT%%": s["caso_link"][1], "%%CASOIMG%%": caso_img, "%%PRECIOS%%": pre, "%%FAQ%%": faq,
+        "%%OTROS%%": otros, "%%TIPO%%": s["tipo"], "%%RUEDATXT%%": RUEDA_TXT[s["slug"]],
+    }
+    out = PLANTILLA
+    for k, v in rep.items():
+        out = out.replace(k, v)
+    assert "%%" not in out, s["slug"]
+    d = RAIZ / s["slug"]
+    d.mkdir(exist_ok=True)
+    (d / "index.html").write_text(out, encoding="utf-8")
+    print("ok", s["slug"], len(out))
+
+if __name__ == "__main__":
+    for s in SECTORES:
+        generar(s)
