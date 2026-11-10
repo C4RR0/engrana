@@ -38,7 +38,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(11,18,23,.
 .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;position:relative}.hero-grid>*{min-width:0}
 .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:1.6em}
 .rueda-h{width:100%;max-width:300px;margin-left:auto;aspect-ratio:1}.rueda-h svg{width:100%;height:100%;overflow:visible}
-.rueda-h path{fill:var(--card2);stroke:var(--line2);stroke-width:2}.rueda-h .eje{fill:var(--bg);stroke:var(--line2);stroke-width:2}.rueda-h text{font:700 15px Manrope,sans-serif;fill:var(--ink);text-anchor:middle}
+.rueda-h path{fill:var(--card2);stroke:var(--line2);stroke-width:2}.rueda-h .eje{fill:var(--bg);stroke:url(#eg);stroke-width:3}.rueda-h text{font:700 15px Manrope,sans-serif;fill:var(--ink);text-anchor:middle}
 .miga{font:500 .78rem var(--mono);color:var(--muted);margin-bottom:1.4em}.miga a{color:var(--muted)}
 .dolores{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
 .dolor{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px}.dolor .q{font:700 1.12rem/1.3 Manrope,sans-serif;margin-bottom:.5em}.dolor p{color:var(--muted);margin:0;font-size:.96rem}
@@ -184,7 +184,7 @@ function rueda(n,r,h){const p=[],s=Math.PI*2/n;for(let i=0;i<n;i++){const a=i*s;
 const g=document.createElementNS(NS,"g");rh.appendChild(g);const pa=document.createElementNS(NS,"path");pa.setAttribute("d",rueda(22,140,10));g.appendChild(pa);
 const ar=document.createElementNS(NS,"circle");ar.setAttribute("r",112);ar.setAttribute("fill","none");ar.setAttribute("stroke","#5EE0C4");ar.setAttribute("stroke-width","2.5");ar.setAttribute("stroke-dasharray","6 7");g.appendChild(ar);
 const ej=document.createElementNS(NS,"circle");ej.setAttribute("class","eje");ej.setAttribute("r",62);rh.appendChild(ej);
-const tx=document.createElementNS(NS,"text");tx.setAttribute("y",6);tx.textContent="Reserva y recoge";rh.appendChild(tx);
+const tx=document.createElementNS(NS,"text");{const t="Reserva y recoge",w=t.split(" "),m=Math.ceil(w.length/2),ls=t.length>15?[w.slice(0,m).join(" "),w.slice(m).join(" ")]:[t];ls.forEach((l,i)=>{const s=document.createElementNS(NS,"tspan");s.setAttribute("x",0);s.setAttribute("y",6+(i-(ls.length-1)/2)*18);s.textContent=l;tx.appendChild(s);});}rh.appendChild(tx);
 
 let elegido="";const pasos=$$("#pantalla .paso");const ir=n=>pasos.forEach(p=>p.classList.toggle("activo",p.dataset.p==n));
 $$("#pantalla .prod button").forEach(b=>b.addEventListener("click",()=>{elegido=b.closest(".prod").dataset.n;$("#lin").textContent="1 × "+elegido;ir(2);}));
@@ -195,8 +195,8 @@ $("#enviar").addEventListener("click",()=>{ir(3);const c=$("#chat");c.innerHTML=
 $("#otra").addEventListener("click",()=>{ir(1);$("#chat").innerHTML='<p class="vacio">Aquí verás lo que le llega a la tienda.</p>';});
 if(window.gsap){
   gsap.registerPlugin(ScrollTrigger);
-  gsap.to(g,{rotation:360,transformOrigin:"0 0",duration:40,ease:"none",repeat:-1});
-  gsap.to(g,{rotation:"+=180",ease:"none",scrollTrigger:{trigger:"body",start:"top top",end:"bottom bottom",scrub:1}});
+  gsap.to(g,{rotation:360,svgOrigin:"0 0",duration:40,ease:"none",repeat:-1});
+  gsap.to(g,{rotation:"+=180",svgOrigin:"0 0",ease:"none",scrollTrigger:{trigger:"body",start:"top top",end:"bottom bottom",scrub:1}});
   gsap.from(".hero .miga,.hero .eyebrow,.hero .tit,.hero .lead,.hero .actions",{y:24,opacity:0,duration:.8,stagger:.1,ease:"power3.out"});
   gsap.from(".rueda-h",{scale:.6,rotation:-60,opacity:0,duration:1.2,ease:"back.out(1.4)"});
   [".dolor",".pieza",".pr"].forEach(s=>gsap.utils.toArray(s).forEach((e,i)=>gsap.from(e,{y:40,opacity:0,duration:.7,delay:(i%4)*.08,ease:"power3.out",scrollTrigger:{trigger:e,start:"top 88%"}})));
