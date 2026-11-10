@@ -1,7 +1,7 @@
 """Prepara las fotos del tío (José Luis Vadillo) para la web, sin pérdida visible de calidad.
 
 Origen: C:\\Users\\Sergio\\Desktop\\web\\<Carpeta>\\*.jpg  (originales, NO se tocan)
-Destino: engrana/demo/fotografo/fotos/<slug>-NN.webp (2560 px lado largo, calidad 90, sRGB)
+Destino: fotografo-web/fotos/<slug>-NN.webp (2560 px lado largo, calidad 90, sRGB)
          y <slug>-NN-m.webp (900 px, calidad 82) para miniaturas.
 Escribe _albumes_tio.json con nombre, sesión, ids, orientación y color medio.
 Uso: python -I fotos_tio.py
@@ -11,8 +11,8 @@ from PIL import Image, ImageCms, ImageOps
 
 Image.MAX_IMAGE_PIXELS = None
 ORIGEN = r"C:\Users\Sergio\Desktop\web"
-DEST = r"C:\Users\Sergio\AgenciaIA-PyMES\engrana\demo\fotografo\fotos"
-SALIDA_JSON = r"C:\Users\Sergio\AgenciaIA-PyMES\engrana\demo\fotografo\_albumes_tio.json"
+DEST = r"C:\Users\Sergio\AgenciaIA-PyMES\fotografo-web\fotos"
+SALIDA_JSON = r"C:\Users\Sergio\AgenciaIA-PyMES\fotografo-web\_albumes_tio.json"
 GRANDE, MINI = 2560, 900
 SRGB = ImageCms.createProfile("sRGB")
 

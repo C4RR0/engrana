@@ -8,7 +8,7 @@ import json, os, sys
 import numpy as np
 from PIL import Image, ImageFilter, ImageDraw
 
-BASE = r"C:\Users\Sergio\AgenciaIA-PyMES\engrana\demo\fotografo"
+BASE = r"C:\Users\Sergio\AgenciaIA-PyMES\fotografo-web"
 SCR = r"C:\Users\Sergio\AppData\Local\Temp\claude\0e3a8c2cd5986872\f8b70721-6b86-41a1-8180-16858e48c5f8\scratchpad\tio"
 MAX = {"default": 9999}  # el tío quiere TODAS las fotos (9/11)
 PERSONAS = [("Alba", ["alba-acequia", "alba-estudio", "alba-vias", "alba-y-jessi"]),
