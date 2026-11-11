@@ -7,6 +7,12 @@
   var api = s && s.getAttribute('data-api');
   if (!site || !api || navigator.webdriver || location.protocol === 'file:') return;
   if (/bot|crawl|spider|slurp|headless|lighthouse|preview/i.test(navigator.userAgent)) return;
+  // Visitas propias: abrir cualquier página con ?nocontar una vez y ese navegador deja de contar (?contar lo deshace).
+  try {
+    if (/[?&]nocontar\b/.test(location.search)) localStorage.setItem('engrana-nocontar', '1');
+    if (/[?&]contar\b/.test(location.search)) localStorage.removeItem('engrana-nocontar');
+    if (localStorage.getItem('engrana-nocontar')) return;
+  } catch (e) {}
   // Google Apps Script recibe en la propia URL (/exec); el Worker de Cloudflare, en /h.
   var destino = /\/exec$/.test(api) ? api : api + '/h';
   var movil = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 1 : 0;
