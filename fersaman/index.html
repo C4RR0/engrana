@@ -106,7 +106,7 @@
   .thumb svg { width: 56px; height: 56px; }
   .thumb.foto { background: #fff; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
   .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .price small { display: block; font: 600 .7rem Inter; color: #B3261E; text-transform: uppercase; letter-spacing: .04em; }
+  .price small { display: block; font: 600 .7rem Inter; color: var(--muted); letter-spacing: .02em; }
   .svc .fotos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin: 4px 0; }
   .svc .fotos img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; }
   .card .body { padding: 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
@@ -313,7 +313,7 @@ const ICONOS = {
 };
 
 const CATS = [
-  ['todo','Todo'], ['ofertas','Ofertas'], ['estufas','Estufas y deshollinado'], ['electricidad','Electricidad'], ['iluminacion','Iluminación'], ['herramienta','Herramienta manual'],
+  ['todo','Todo'], ['estufas','Estufas y deshollinado'], ['electricidad','Electricidad'], ['iluminacion','Iluminación'], ['herramienta','Herramienta manual'],
   ['electrica','Máquinas y accesorios'], ['fontaneria','Fontanería'], ['tornilleria','Tornillería y cerrajería'],
   ['pintura','Pintura y adhesivos'], ['limpieza','Limpieza y droguería'], ['coche','Coche, moto y lubricantes'], ['vestuario','Ropa de trabajo y protección'], ['electro','Pequeño electrodoméstico'],
   ['hogar','Hogar y menaje'], ['jardin','Jardín'], ['pilas','Pilas y electrónica']
@@ -426,7 +426,7 @@ const PRODUCTOS = [
   ['electrica','Disco de sierra circular 185 mm','Workpro, 48 dientes, para madera.',null,'t73'],
   ['electrica','Disco de diamante turbo 230 mm','Mota, para radial grande.',null,'t74'],
   ['electrica','Discos y ruedas de láminas','Wolfpack, para lijar y desbastar.',null,'t10'],
-  ['electrica','Cepillos de nylon abrasivo','Wolfcraft, de disco y de vaso, para taladro.',null,'t11'],
+  ['electrica','Cepillos de nylon abrasivo','Wolfcraft, de disco y de copa, para taladro. 8,95 € cada uno.',8.95,'t11'],
   ['electrica','Plato de lijar con 10 lijas','Wolfcraft, 125 mm, grano 120, para taladro.',null,'t12'],
   ['electrica','Plato de velcro de 125 mm','Para discos de lija con velcro.',null,'t13'],
   ['electrica','Plato de goma de 125 mm','Wolfcraft, para lijar y pulir.',null,'t14'],
@@ -441,7 +441,7 @@ const PRODUCTOS = [
   ['pintura','Adhesivo en spray','Cofan, 400 ml.',null,'t39'],
   ['pintura','Imprimación antióxido gris en spray','Cofan. Protege el metal antes de pintar.',null,'t33'],
   ['pintura','Quitagrafitis en spray','Cofan y Pinty Plus Tech.',null,'t36'],
-  ['limpieza','Desatascador gel ultra potente','Paso, 1 l. Para atascos severos, no daña las tuberías.',null,'t00'],
+  ['limpieza','Desatascador gel ultra potente','Paso, 1 l. Para atascos severos, no daña las tuberías.',10.95,'t00'],
   ['limpieza','Tratamiento para fosas sépticas','Paso, 16 pastillas con enzimas: quita olores y previene atascos.',null,'t41'],
   ['limpieza','Elimina moho','Paso, con cloro activo. Adiós a las juntas negras.',null,'t46'],
   ['limpieza','Limpiador de juntas','Paso, para suelos y paredes.',null,'t45'],
@@ -449,7 +449,7 @@ const PRODUCTOS = [
   ['limpieza','Limpiador de mármol','Paso, 1 l, de uso diario. Realza el brillo.',null,'t42'],
   ['limpieza','Protector abrillantador para terracota','Paso, 1 l. Suelos porosos de interior y exterior.',null,'t43'],
   ['limpieza','Pulimento líquido Titanlux','Limpia, pule y abrillanta.',null,'t17'],
-  ['coche','WD-40','Multiusos, 200 ml y 500 ml de doble acción.',null,'t01'],
+  ['coche','WD-40','Multiusos. 200 ml: 6,95 € · 400 ml doble acción: 12,50 €.',6.95,'t01',true],
   ['coche','Grasa de litio Lubekrafft','Krafft, para engrase general.',null,'t40'],
   ['coche','Lubricante multiusos con grafito','CB, en spray.',null,'t32'],
   ['coche','Aceite sintético 10W40 4T','Cofan, 1 l.',null,'t65'],
@@ -504,6 +504,7 @@ const PRODUCTOS = [
   ['hogar','Olla exprés Vassary 6 L','Olla rápida de 6 litros.',null,'r15'],
   ['electro','Batidora de mano EDM 800 W','2 velocidades, con vaso de 700 ml.',null,'r16'],
   ['tornilleria','Copia de llaves','Te hacemos la copia al momento: trae tu llave.',null,'r17'],
+  ['tornilleria','Copia de llaves de seguridad','De puntos y de seguridad: trae tu llave y te decimos si se puede copiar.',7.5,null,true],
   ['tornilleria','Copia de mandos de garaje','Trae tu mando y te decimos si se puede copiar.',null,'r54'],
   ['hogar','Termómetro interior/exterior sin cable','Con sensor exterior inalámbrico.',null,'r20'],
   ['hogar','Termómetros de pared','Para interior y exterior, también con higrómetro. Sin mercurio.',null,'r21'],
@@ -543,7 +544,7 @@ const PRODUCTOS = [
   ['pintura','Montack: cinta y cuelga cuadros','Cinta de doble cara y kit para colgar cuadros sin taladrar.',null,'r84'],
   ['pintura','Silicona Ceys Stop Moho','Para baños y cocinas. 50 ml.',null,'r85'],
   ['pintura','Adhesivo Ceys para poliestireno','Especial para corcho blanco: no lo ataca.',null,'r86']
-].map((p, i) => ({ id: i + 1, cat: p[0], nombre: p[1], desc: p[2], precio: p[3], foto: p[4] == null ? null : typeof p[4] === 'string' ? `fotos/${p[4]}.jpg` : `fotos/p${String(p[4]).padStart(2, '0')}.jpg` }));
+].map((p, i) => ({ id: i + 1, cat: p[0], nombre: p[1], desc: p[2], precio: p[3], desde: !!p[5], foto: p[4] == null ? null : typeof p[4] === 'string' ? `fotos/${p[4]}.jpg` : `fotos/p${String(p[4]).padStart(2, '0')}.jpg` }));
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -575,7 +576,7 @@ function pintarHorario() {
 // ---- Catálogo ----
 let filtro = 'todo';
 function pintarChips() {
-  // Sin categorías vacías; «Ofertas» solo si algún producto tiene precio (3/11: la tienda prefiere «Precio en tienda» en todo).
+  // Sin categorías vacías. 16/11: la tienda manda precios de algunos productos → se ven como precio normal (no «Oferta»); el resto, «Precio en tienda».
   $('#chips').innerHTML = CATS.filter(([k]) => k === 'todo' || (k === 'ofertas' ? PRODUCTOS.some(p => p.precio != null) : PRODUCTOS.some(p => p.cat === k))).map(([k, n]) => `<button class="chip${k === filtro ? ' on' : ''}" data-c="${k}">${n}</button>`).join('');
 }
 function pintarGrid() {
@@ -593,7 +594,7 @@ function pintarGrid() {
         <h3>${esc(p.nombre)}</h3>
         <p>${esc(p.desc)}</p>
         <div class="row">
-          ${p.precio != null ? `<span class="price">${p.precio.toFixed(2).replace('.', ',')} €<small>Oferta</small></span>` : `<span class="ask">Precio en tienda</span>`}
+          ${p.precio != null ? `<span class="price">${p.desde ? '<small>desde</small>' : ''}${p.precio.toFixed(2).replace('.', ',')} €</span>` : `<span class="ask">Precio en tienda</span>`}
           <button class="btn btn-brand add${carrito[p.id] ? ' done' : ''}" data-id="${p.id}">${carrito[p.id] ? 'Añadido ✓' : 'Reservar'}</button>
         </div>
       </div>
