@@ -548,7 +548,8 @@ const PRODUCTOS = [
   ['pintura','Reparador Ceys de lona y caucho','Adhesivo y parches para lona, goma y caucho.',null,'r83'],
   ['pintura','Montack: cinta y cuelga cuadros','Cinta de doble cara y kit para colgar cuadros sin taladrar.',null,'r84'],
   ['pintura','Silicona Ceys Stop Moho','Para baños y cocinas. 50 ml.',null,'r85'],
-  ['pintura','Adhesivo Ceys para poliestireno','Especial para corcho blanco: no lo ataca.',null,'r86']
+  ['pintura','Adhesivo Ceys para poliestireno','Especial para corcho blanco: no lo ataca.',null,'r86'],
+  ['iluminacion','Foco LED solar EDM','Foco de trabajo plegable con placa solar para recargarlo al sol e indicador de carga. Para el taller, el campo o un corte de luz.',25.23,'y06']
 ].map((p, i) => ({ id: i + 1, cat: p[0], nombre: p[1], desc: p[2], precio: p[3], desde: !!p[5], foto: p[4] == null ? null : typeof p[4] === 'string' ? `fotos/${p[4]}.jpg` : `fotos/p${String(p[4]).padStart(2, '0')}.jpg` }));
 
 const $ = s => document.querySelector(s);
