@@ -67,6 +67,7 @@
   .logo span { text-shadow: 2px 2px 0 var(--yellow); }
   .pill { display: inline-flex; align-items: center; gap: 8px; font: 600 .86rem Inter; padding: 6px 12px; border-radius: 999px; background: #fff; border: 1px solid var(--line); white-space: nowrap; }
   .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ko); flex: none; }
+  .txt-corto { display: none; }
   .open .dot { background: var(--ok); box-shadow: 0 0 0 4px rgba(30,142,78,.16); animation: latido 2s infinite; }
   @keyframes latido { 50% { box-shadow: 0 0 0 7px rgba(30,142,78,.05); } }
   .top-actions { display: flex; gap: 8px; align-items: center; }
@@ -277,6 +278,16 @@
     .ficha { padding-bottom: env(safe-area-inset-bottom); }
   }
   @media (max-width: 520px) { .par-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 400px) {
+    .top .wrap { gap: 6px; }
+    .logo { font-size: 1rem; gap: 7px; }
+    .logo img { width: 26px; height: 38px; }
+    .top .pill { font-size: .74rem; padding: 4px 10px 4px 8px; gap: 6px; border-radius: 12px; }
+    #statusTxt { line-height: 1.15; font-weight: 800; }
+    .top .pill #statusTxt .txt-corto { display: block; font-size: .66rem; font-weight: 500; color: var(--muted); }
+    .top .pill #statusTxt .txt-corto::before { content: none; }
+    .top .pill .dot { width: 8px; height: 8px; }
+  }
   @media (max-width: 859px) {
     .hero { padding-top: 26px; }
     .hero-grid, .como-grid, .info-grid { grid-template-columns: 1fr; }
@@ -286,6 +297,9 @@
     .ficha .foto { min-height: 0; aspect-ratio: 1.2; }
     .notfound { grid-template-columns: 1fr; text-align: center; justify-items: center; }
     .top .pill .txt-largo, .top .call-txt { display: none; }
+    .top .pill .txt-corto { display: inline; }
+    .top .pill .txt-corto::before { content: ' · '; }
+    .top-actions .btn { display: none; } /* en móvil, Llamar y Mi reserva van en la barra de abajo */
   }
   @media (max-width: 520px) {
     .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -298,7 +312,7 @@
     .svc-grid { grid-template-columns: 1fr; }
     .cajones { gap: 7px; }
     .cajonera { padding: 10px; }
-    .top .pill { display: none; }
+    .top .pill { font-size: .74rem; padding: 5px 9px; gap: 6px; }
     .logo { font-size: 1.15rem; }
   }
 </style>
@@ -767,12 +781,12 @@ function pintarHorario() {
   document.querySelectorAll('#hours tr').forEach(tr => tr.classList.toggle('today', +tr.dataset.d === d));
   const st = $('#status'), tx = $('#statusTxt');
   const tramo = HORARIO[d].find(([a, b]) => m >= a && m < b);
-  if (tramo) { st.classList.add('open'); tx.innerHTML = `Abierto<span class="txt-largo"> · hasta las ${hhmm(tramo[1])}</span>`; return; }
+  if (tramo) { st.classList.add('open'); tx.innerHTML = `Abierto<span class="txt-largo"> · hasta las ${hhmm(tramo[1])}</span><span class="txt-corto">hasta ${hhmm(tramo[1])}</span>`; return; }
   st.classList.remove('open');
   const hoy = HORARIO[d].find(([a]) => a > m);
-  if (hoy) { tx.innerHTML = `Cerrado<span class="txt-largo"> · abrimos a las ${hhmm(hoy[0])}</span>`; return; }
+  if (hoy) { tx.innerHTML = `Cerrado<span class="txt-largo"> · abrimos a las ${hhmm(hoy[0])}</span><span class="txt-corto">abre a las ${hhmm(hoy[0])}</span>`; return; }
   const nombres = ['el domingo','el lunes','el martes','el miércoles','el jueves','el viernes','el sábado'];
-  for (let i = 1; i <= 7; i++) { const dd = (d + i) % 7; if (HORARIO[dd].length) { tx.innerHTML = `Cerrado<span class="txt-largo"> · abrimos ${i === 1 ? 'mañana' : nombres[dd]} a las ${hhmm(HORARIO[dd][0][0])}</span>`; return; } }
+  for (let i = 1; i <= 7; i++) { const dd = (d + i) % 7; if (HORARIO[dd].length) { tx.innerHTML = `Cerrado<span class="txt-largo"> · abrimos ${i === 1 ? 'mañana' : nombres[dd]} a las ${hhmm(HORARIO[dd][0][0])}</span><span class="txt-corto">abre ${i === 1 ? 'mañana' : ['dom','lun','mar','mié','jue','vie','sáb'][dd]} ${hhmm(HORARIO[dd][0][0])}</span>`; return; } }
 }
 
 // ---------- Cajonera ----------
