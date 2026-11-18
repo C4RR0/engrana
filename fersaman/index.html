@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ferretería Fersaman · Tudela de Duero</title>
-<meta name="description" content="Ferretería Fersaman en Tudela de Duero (Valladolid): mira lo que tenemos, resérvalo y pasa a recogerlo. Electricidad, herramienta, iluminación, hogar y mucho más.">
-<meta name="theme-color" content="#ffffff">
+<meta name="description" content="Ferretería Fersaman en Tudela de Duero: más de 200 productos con foto. Resérvalo sin pagar y pásate a recogerlo. Copia de llaves y mandos, ropa de trabajo y estufas.">
 <link rel="canonical" href="https://engranaia.com/fersaman/">
+<meta name="theme-color" content="#1B1A86">
 <link rel="icon" href="logo-mascota.png" type="image/png">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_ES">
-<meta property="og:url" content="https://engranaia.com/fersaman/">
 <meta property="og:title" content="Ferretería Fersaman · Tudela de Duero">
-<meta property="og:description" content="Mira lo que tenemos, resérvalo sin pagar y pasa a recogerlo. Ferretería, herramienta, ropa de trabajo, estufas y mucho más.">
+<meta property="og:description" content="Mira lo que tenemos, resérvalo sin pagar y pasa a recogerlo.">
+<meta property="og:url" content="https://engranaia.com/fersaman/">
 <meta property="og:image" content="https://engranaia.com/fersaman/fachada.jpg">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"HardwareStore","name":"Ferretería Fersaman","legalName":"FERSAMAN S.L.","sameAs":["https://www.instagram.com/fersamansl/","https://www.facebook.com/fersaman.tudela.1/"],"hasMap":"https://www.google.com/maps/search/?api=1&query=Fersaman+Tudela+de+Duero","priceRange":"€","areaServed":["Tudela de Duero","Valladolid"],
@@ -25,155 +25,281 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #F5F5F0; --card: #FFFFFF; --line: #E2E2DA; --ink: #15163A; --muted: #626478;
-    --brand: #1B1A86; --brand-dark: #0F0E5E; --brand-soft: #FFF7B8; --yellow: #F4E31A; --orange: #EE8F2E;
-    --dark: #15163A; --ok: #1E8E4E; --ko: #B3261E;
+    --navy: #1B1A86; --navy-2: #12115E; --ink: #15163A; --muted: #5E6075;
+    --yellow: #F4E31A; --yellow-soft: #FFF7B8; --orange: #EE8F2E;
+    --wood: #C98B4F; --wood-dark: #8C5A2B; --steel: #D9DCE3; --brass: #C9A43A;
+    --paper: #F6F2E8; --card: #FFFFFF; --line: #E4DFD2; --ok: #1E8E4E; --ko: #B3261E;
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { margin: 0; background: #fff url(acuarela.svg) center top / 100% auto repeat-y; color: var(--ink); font: 400 16px/1.5 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-  h1, h2, h3 { font-family: Archivo, sans-serif; letter-spacing: -.01em; line-height: 1.1; margin: 0 0 .4em; }
-  h1 { font-size: clamp(2rem, 6vw, 3.4rem); font-weight: 800; }
-  h2 { font-size: clamp(1.4rem, 3.5vw, 2rem); font-weight: 800; }
-  h3 { font-size: 1.02rem; font-weight: 700; }
+  html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 16px/1.5 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  h1, h2, h3 { font-family: Archivo, sans-serif; letter-spacing: -.015em; line-height: 1.05; margin: 0 0 .4em; }
+  h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); font-weight: 900; }
+  h3 { font-size: 1.02rem; font-weight: 800; }
   p { margin: 0 0 1em; }
-  a { color: var(--brand-dark); }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  a { color: var(--navy); }
+  img { max-width: 100%; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 16px; }
   .muted { color: var(--muted); }
   .small { font-size: .85rem; color: var(--muted); }
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 12px; padding: 12px 18px; font: 600 .98rem Inter, sans-serif; cursor: pointer; text-decoration: none; transition: transform .1s, background .2s; }
-  .btn:active { transform: scale(.98); }
-  .btn-brand { background: var(--brand); color: #fff; }
-  .btn-brand:hover { background: var(--brand-dark); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  :focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; border-radius: 6px; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 12px; padding: 12px 18px; font: 700 .97rem Inter, sans-serif; cursor: pointer; text-decoration: none; transition: transform .12s, background .2s, box-shadow .2s; }
+  .btn:active { transform: translateY(2px); }
+  .btn svg { width: 18px; height: 18px; flex: none; }
+  .btn-navy { background: var(--navy); color: #fff; box-shadow: 0 4px 0 var(--navy-2); }
+  .btn-navy:hover { background: #2422A0; }
+  .btn-yellow { background: var(--yellow); color: var(--navy-2); box-shadow: 0 4px 0 #BFAF0C; }
   .btn-light { background: #fff; color: var(--ink); border: 1px solid var(--line); }
-  .btn-dark { background: var(--dark); color: #fff; }
-  .btn svg { width: 18px; height: 18px; }
+  .btn-wa { background: #1FA855; color: #fff; box-shadow: 0 4px 0 #157A3D; }
 
-
-  header.top { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
-  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 64px; }
-  .logo { display: flex; align-items: center; gap: 10px; font: 800 1.25rem Archivo, sans-serif; color: var(--ink); text-decoration: none; }
-  .logo img { width: 40px; height: 52px; object-fit: contain; }
-  .logo span { color: var(--brand); letter-spacing: .04em; text-shadow: 2px 2px 0 var(--yellow); }
+  /* ---------- cabecera ---------- */
+  header.top { position: sticky; top: 0; z-index: 30; background: rgba(246,242,232,.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 10px; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 10px; font: 900 1.3rem Archivo, sans-serif; color: var(--navy); text-decoration: none; letter-spacing: .04em; }
+  .logo img { width: 34px; height: 50px; object-fit: contain; }
+  .logo span { text-shadow: 2px 2px 0 var(--yellow); }
+  .pill { display: inline-flex; align-items: center; gap: 8px; font: 600 .86rem Inter; padding: 6px 12px; border-radius: 999px; background: #fff; border: 1px solid var(--line); white-space: nowrap; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ko); flex: none; }
+  .open .dot { background: var(--ok); box-shadow: 0 0 0 4px rgba(30,142,78,.16); animation: latido 2s infinite; }
+  @keyframes latido { 50% { box-shadow: 0 0 0 7px rgba(30,142,78,.05); } }
+  .top-actions { display: flex; gap: 8px; align-items: center; }
   .cart-btn { position: relative; }
-  .cart-count { position: absolute; top: -6px; right: -6px; min-width: 22px; height: 22px; border-radius: 11px; background: var(--dark); color: #fff; font: 700 .75rem Inter; display: grid; place-items: center; padding: 0 5px; }
+  .cart-count { position: absolute; top: -7px; right: -7px; min-width: 22px; height: 22px; border-radius: 11px; background: var(--orange); color: #fff; font: 800 .75rem Inter; display: grid; place-items: center; padding: 0 5px; }
   .cart-count[hidden] { display: none; }
 
-  .hero { padding: 40px 0 28px; }
-  .hero-grid > div:first-child { background: rgba(255,255,255,.88); border-radius: 18px; padding: 18px 20px; box-shadow: 0 0 40px 20px rgba(255,255,255,.85); }
-  .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; align-items: center; }
-  .photo { border-radius: 18px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(21,22,58,.12); }
-  .photo img { display: block; width: 100%; height: auto; }
-  .steps-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 26px; }
-  .steps-row .step { padding: 14px 16px; }
-  .steps-row .step + .step { border-top: 0; border-left: 1px dashed var(--line); }
-  .services { padding: 10px 0 30px; }
-  .svc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-  .svc { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 6px; }
-  .svc .ic { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; color: var(--brand); background: var(--brand-soft); margin-bottom: 4px; }
-  .svc .ic svg { width: 26px; height: 26px; }
-  .svc p { font-size: .9rem; color: var(--muted); margin: 0; flex: 1; }
-  .svc a { font-weight: 600; font-size: .92rem; text-decoration: none; margin-top: 6px; }
-  .eyebrow { display: inline-block; background: var(--yellow); color: var(--brand-dark); font-weight: 600; font-size: .85rem; padding: 5px 12px; border-radius: 999px; margin-bottom: 14px; }
-  .hero p.lead { font-size: 1.12rem; color: #3d4248; max-width: 34em; }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
-  .steps { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px; }
-  .step { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; }
-  .step + .step { border-top: 1px dashed var(--line); }
-  .step b.n { flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font-family: Archivo; }
-  .step span { display: block; color: var(--muted); font-size: .9rem; }
+  /* ---------- portada: la cajonera ---------- */
+  .hero { position: relative; padding: 46px 0 70px; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: 40px; align-items: center; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--navy); color: #fff; font: 700 .82rem Inter; letter-spacing: .06em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; }
+  .hero h1 { font-size: clamp(2.5rem, 6vw, 4.3rem); font-weight: 900; margin: 18px 0 16px; color: var(--navy-2); }
+  .hero h1 .linea { display: block; overflow: hidden; padding-bottom: .06em; }
+  .hero h1 .linea > span { display: inline-block; }
+  .hero h1 em { font-style: normal; background: linear-gradient(transparent 58%, var(--yellow) 58%); padding: 0 .08em; }
+  .hero .lead { font-size: 1.15rem; color: #3E4058; max-width: 31em; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 26px; font-size: .92rem; color: var(--muted); }
+  .hero-meta b { display: block; font: 900 1.6rem Archivo; color: var(--navy); }
 
-  .status { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: .92rem; }
-  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ko); }
-  .status.open .dot { background: var(--ok); box-shadow: 0 0 0 4px rgba(30,142,78,.15); }
+  .cajonera { position: relative; background: linear-gradient(180deg, #A9713C, #8C5A2B); padding: 14px; border-radius: 14px; box-shadow: 0 24px 50px -18px rgba(60,35,10,.55), inset 0 0 0 3px rgba(255,255,255,.08); perspective: 900px; }
+  .cajonera::before { content: "FERSAMAN · DESDE TUDELA"; position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--yellow); color: var(--navy-2); font: 900 .72rem Archivo; letter-spacing: .14em; padding: 5px 12px; border-radius: 6px; white-space: nowrap; }
+  .cajones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .cajon { position: relative; border: 0; padding: 0; cursor: pointer; background: transparent; aspect-ratio: 1.45; transform-style: preserve-3d; font: inherit; color: inherit; text-align: left; }
+  .cajon .frente { position: absolute; inset: 0; z-index: 2; border-radius: 7px; background: linear-gradient(180deg, #EBD9BC, #D8BF97); box-shadow: inset 0 -5px 0 rgba(0,0,0,.12), inset 0 2px 0 rgba(255,255,255,.5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; padding: 8px; transition: transform .35s cubic-bezier(.3,1.4,.5,1), box-shadow .3s; }
+  .cajon .etiqueta { background: #fff; border: 1.5px solid #B9A27C; border-radius: 3px; padding: 3px 8px; font: 800 clamp(.62rem, 1.35vw, .8rem)/1.15 Archivo, sans-serif; color: var(--ink); text-align: center; max-width: 100%; }
+  .cajon .etiqueta small { display: block; font: 600 .66rem Inter; color: var(--muted); }
+  .cajon .tirador { width: 42%; height: 9px; border-radius: 9px; background: linear-gradient(180deg, #F3D97A, var(--brass) 55%, #8E6F1A); box-shadow: 0 2px 2px rgba(0,0,0,.3); }
+  .cajon .dentro { position: absolute; inset: 6px; z-index: 1; border-radius: 6px; overflow: hidden; background: #3A2412; }
+  .cajon .dentro img { width: 100%; height: 100%; object-fit: cover; opacity: .95; }
+  .cajon:hover .frente, .cajon:focus-visible .frente, .cajon.asoma .frente { transform: translateY(46%) scale(1.04); box-shadow: 0 14px 18px -6px rgba(0,0,0,.45), inset 0 -5px 0 rgba(0,0,0,.12); }
+  .cajon.especial .frente { background: linear-gradient(180deg, var(--yellow), #E2CF10); }
+  .cajon.especial .etiqueta { border-color: var(--navy); }
+  .pista { margin-top: 14px; text-align: center; color: var(--muted); font: 600 .85rem Inter; }
 
-  .catalog { padding: 18px 0 40px; }
-  .tools { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 64px; z-index: 10; background: rgba(255,255,255,.92); backdrop-filter: blur(8px); padding: 12px; margin: 0 -12px; border-radius: 0 0 14px 14px; }
-  .search { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0 14px; }
+  .viruta { position: absolute; pointer-events: none; opacity: .5; }
+
+  /* ---------- novedades ---------- */
+  .novedades { background: var(--navy); color: #fff; padding: 64px 0 0; overflow: hidden; }
+  .novedades h2 { color: #fff; }
+  .novedades h2 span { color: var(--yellow); }
+  .nov-head { display: flex; align-items: end; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+  .nov-head p { color: #C9CBF2; max-width: 30em; }
+  .pista-h { padding: 26px 0 64px; }
+  .tira { display: flex; gap: 18px; width: max-content; padding: 0 max(16px, calc((100vw - 1160px) / 2 + 16px)); }
+  .nov { width: 250px; flex: none; background: #fff; color: var(--ink); border-radius: 16px; overflow: hidden; position: relative; transform: rotate(var(--r, 0deg)); box-shadow: 0 16px 30px -14px rgba(0,0,0,.6); cursor: pointer; border: 0; padding: 0; text-align: left; font: inherit; }
+  .nov img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: #eee; }
+  .nov .b { padding: 12px 14px 16px; }
+  .nov h3 { font-size: 1rem; margin: 0 0 4px; }
+  .nov .b span { font-size: .85rem; color: var(--muted); }
+  .nov .nuevo { position: absolute; top: 10px; left: 10px; background: var(--orange); color: #fff; font: 800 .72rem Archivo; letter-spacing: .08em; padding: 4px 9px; border-radius: 6px; }
+  @media (min-width: 860px) {
+    .novedades { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 80px; }
+  }
+  @media (max-width: 859px) {
+    .pista-h { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .pista-h::-webkit-scrollbar { display: none; }
+    .nov { scroll-snap-align: center; width: 72vw; max-width: 280px; }
+  }
+
+  /* ---------- cómo funciona: el ticket ---------- */
+  .como { padding: 80px 0; overflow: hidden; }
+  .como-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+  .pasos { list-style: none; margin: 26px 0 0; padding: 0; counter-reset: p; }
+  .pasos li { position: relative; padding: 0 0 22px 62px; counter-increment: p; }
+  .pasos li::before { content: counter(p); position: absolute; left: 0; top: -4px; width: 44px; height: 44px; border-radius: 12px; background: var(--yellow); color: var(--navy-2); font: 900 1.3rem Archivo; display: grid; place-items: center; box-shadow: 0 4px 0 #BFAF0C; }
+  .pasos li b { display: block; font: 800 1.12rem Archivo; }
+  .pasos li span { color: var(--muted); }
+  .ticket-zona { display: grid; place-items: center; }
+  .ticket { width: min(340px, 100%); background: #fff; padding: 26px 24px 30px; font: 500 .9rem/1.6 "Courier New", monospace; color: #222; box-shadow: 0 30px 50px -24px rgba(0,0,0,.35); position: relative;
+    -webkit-mask: radial-gradient(circle 7px at 50% 100%, transparent 98%, #000) 0 100% / 18px 100% repeat-x; mask: radial-gradient(circle 7px at 50% 100%, transparent 98%, #000) 0 100% / 18px 100% repeat-x; }
+  .ticket .cab { text-align: center; border-bottom: 1px dashed #999; padding-bottom: 10px; margin-bottom: 10px; }
+  .ticket .cab b { font: 900 1.25rem Archivo; letter-spacing: .12em; color: var(--navy); }
+  .ticket .fila { display: flex; justify-content: space-between; gap: 10px; }
+  .ticket .tot { border-top: 1px dashed #999; margin-top: 10px; padding-top: 10px; font-weight: 700; }
+  .ticket { padding-bottom: 84px; }
+  .ticket .sello { position: absolute; right: 22px; bottom: 26px; border: 3px solid var(--ok); color: var(--ok); font: 900 .95rem Archivo; letter-spacing: .06em; padding: 6px 10px; border-radius: 8px; transform: rotate(-12deg); text-align: center; line-height: 1.1; background: rgba(255,255,255,.85); }
+
+  /* ---------- catálogo ---------- */
+  .catalog { padding: 30px 0 70px; }
+  .cat-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .tools { position: sticky; top: 64px; z-index: 20; background: rgba(246,242,232,.94); backdrop-filter: blur(10px); padding: 12px 16px; margin: 10px -16px 6px; border-bottom: 1px solid var(--line); }
+  .search { display: flex; align-items: center; gap: 10px; background: #fff; border: 2px solid var(--ink); border-radius: 14px; padding: 0 14px; box-shadow: 0 4px 0 var(--ink); }
   .search svg { width: 20px; height: 20px; color: var(--muted); flex: none; }
-  .search input { border: 0; outline: 0; font: 400 1rem Inter; padding: 13px 0; width: 100%; background: transparent; color: var(--ink); }
-  .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .search input { border: 0; outline: 0; font: 500 1rem Inter; padding: 13px 0; width: 100%; background: transparent; color: var(--ink); }
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0 2px; scrollbar-width: none; }
   .chips::-webkit-scrollbar { display: none; }
-  .chip { flex: none; border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 8px 14px; font: 500 .9rem Inter; cursor: pointer; color: var(--ink); }
-  .chip.on { background: var(--dark); color: #fff; border-color: var(--dark); }
-
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-top: 8px; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
-  .thumb { aspect-ratio: 4/3; display: grid; place-items: center; background: var(--brand-soft); color: var(--brand-dark); }
-  .thumb svg { width: 56px; height: 56px; }
-  .thumb.foto { background: #fff; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
-  .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .price small { display: block; font: 600 .7rem Inter; color: var(--muted); letter-spacing: .02em; }
-  .svc .fotos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin: 4px 0; }
-  .svc .fotos img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; }
-  .card .body { padding: 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
-  .card .cat { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
-  .card p { font-size: .88rem; color: var(--muted); margin: 0; flex: 1; }
+  .chip { flex: none; border: 1.5px solid var(--line); background: #fff; border-radius: 999px; padding: 7px 13px; font: 600 .88rem Inter; cursor: pointer; color: var(--ink); }
+  .chip.on { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .chip.dest { border-color: var(--orange); }
+  .chip.dest.on { background: var(--orange); border-color: var(--orange); }
+  .resumen { font-size: .9rem; color: var(--muted); margin: 10px 0 0; min-height: 1.4em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 16px; margin-top: 10px; }
+  .card { background: var(--card); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--line); transition: transform .2s, box-shadow .2s; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 16px 28px -16px rgba(21,22,58,.35); }
+  .thumb { position: relative; aspect-ratio: 1; background: #fff; border: 0; padding: 0; cursor: zoom-in; display: block; width: 100%; overflow: hidden; border-bottom: 1px solid var(--line); }
+  .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+  .card:hover .thumb img { transform: scale(1.05); }
+  .thumb .ic { position: absolute; inset: 0; display: grid; place-items: center; color: var(--navy); background: var(--yellow-soft); }
+  .thumb .ic svg { width: 56px; height: 56px; }
+  .precio { position: absolute; right: 10px; bottom: 10px; background: var(--yellow); color: var(--navy-2); font: 900 1.05rem Archivo; padding: 5px 10px 5px 14px; border-radius: 4px 8px 8px 4px; transform: rotate(-4deg); box-shadow: 0 3px 0 rgba(0,0,0,.18); clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%); }
+  .precio small { font: 700 .62rem Inter; display: block; margin-bottom: -2px; }
+  .badge-nuevo { position: absolute; left: 10px; top: 10px; background: var(--orange); color: #fff; font: 800 .68rem Archivo; letter-spacing: .08em; padding: 3px 8px; border-radius: 6px; }
+  .card .body { padding: 13px 14px 14px; display: flex; flex-direction: column; gap: 5px; flex: 1; }
+  .card .cat { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; }
+  .card h3 { margin: 0; }
+  .card p { font-size: .87rem; color: var(--muted); margin: 0; flex: 1; }
   .card .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
-  .price { font: 800 1.1rem Archivo; }
-  .ask { font-size: .82rem; color: var(--muted); }
-  .add { padding: 9px 12px; font-size: .9rem; }
-  .add.done { background: var(--ok); }
-  .empty { text-align: center; padding: 30px 10px; background: #fff; border: 1px dashed var(--line); border-radius: 16px; }
+  .ask { font-size: .8rem; color: var(--muted); }
+  .add { padding: 9px 13px; font-size: .9rem; box-shadow: 0 3px 0 var(--navy-2); }
+  .add.done { background: var(--ok); box-shadow: 0 3px 0 #146536; }
+  .mas { display: flex; justify-content: center; margin-top: 22px; }
+  .empty { grid-column: 1/-1; text-align: center; padding: 34px 14px; background: #fff; border: 2px dashed var(--line); border-radius: 16px; }
+  .notfound { margin-top: 32px; background: var(--ink); color: #fff; border-radius: 20px; padding: 26px; display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; }
+  .notfound img { width: 54px; height: 78px; object-fit: contain; filter: drop-shadow(0 4px 0 rgba(0,0,0,.3)); }
+  .notfound p { color: #C9CDD9; margin: 0; }
 
-  .notfound { margin-top: 26px; background: var(--dark); color: #fff; border-radius: 18px; padding: 24px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; }
-  .notfound p { color: #C9CDD2; margin: 0; }
+  /* ---------- servicios ---------- */
+  .servicios { padding: 70px 0; background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .svc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 22px; }
+  .svc { border: 1.5px solid var(--line); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 8px; background: var(--paper); }
+  .svc .ic { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; color: var(--navy); background: var(--yellow); }
+  .svc .ic svg { width: 28px; height: 28px; }
+  .svc p { font-size: .92rem; color: var(--muted); margin: 0; flex: 1; }
+  .svc a { font-weight: 700; text-decoration: none; }
 
-  .info { padding: 40px 0; }
-  .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  .box { border: 1px solid var(--line); border-radius: 16px; padding: 20px; background: #fff; }
-  .hours { width: 100%; border-collapse: collapse; font-size: .95rem; }
-  .hours td { padding: 6px 0; border-bottom: 1px dashed var(--line); }
+  /* ---------- info ---------- */
+  .info { padding: 70px 0; }
+  .info-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; }
+  .box { border-radius: 18px; padding: 22px; background: #fff; border: 1px solid var(--line); }
+  .hours { width: 100%; border-collapse: collapse; font-size: .97rem; }
+  .hours td { padding: 8px 0; border-bottom: 1px dashed var(--line); }
   .hours td:last-child { text-align: right; font-weight: 600; }
-  .hours tr.today td { color: var(--brand-dark); }
-  footer { padding: 22px 0 90px; font-size: .85rem; color: var(--muted); text-align: center; }
+  .hours tr.today td { color: var(--navy); font-weight: 800; }
+  .hours tr.today td:first-child::after { content: " · hoy"; color: var(--orange); }
+  .mapa { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 16/10; background: url(fachada.jpg) center/cover; margin: 12px 0; }
+  .mapa iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .contacto { display: flex; gap: 10px; flex-wrap: wrap; }
+  footer { padding: 26px 0 100px; font-size: .85rem; color: var(--muted); text-align: center; }
 
-  /* panel de reserva */
-  .overlay { position: fixed; inset: 0; background: rgba(20,22,25,.5); z-index: 40; display: none; }
-  .overlay.show { display: block; }
-  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100%); background: #fff; z-index: 50; transform: translateX(100%); transition: transform .25s ease; display: flex; flex-direction: column; }
+  /* ---------- reserva y ficha ---------- */
+  .overlay { position: fixed; inset: 0; background: rgba(21,22,58,.55); z-index: 40; opacity: 0; pointer-events: none; transition: opacity .25s; }
+  .overlay.show { opacity: 1; pointer-events: auto; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100%); background: #fff; z-index: 50; transform: translateX(105%); transition: transform .3s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; }
   .drawer.show { transform: none; }
   .drawer header { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid var(--line); }
   .drawer .content { padding: 16px 18px; overflow-y: auto; flex: 1; }
-  .x { background: none; border: 0; font-size: 1.6rem; cursor: pointer; color: var(--muted); line-height: 1; }
+  .x { background: none; border: 0; font-size: 1.8rem; cursor: pointer; color: var(--muted); line-height: 1; padding: 4px 8px; }
   .line { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px dashed var(--line); }
-  .line .nm { flex: 1; font-weight: 500; font-size: .95rem; }
+  .line img { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; }
+  .line .nm { flex: 1; font-weight: 600; font-size: .93rem; }
   .qty { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 10px; }
-  .qty button { width: 32px; height: 32px; border: 0; background: none; font-size: 1.1rem; cursor: pointer; }
-  .qty span { min-width: 22px; text-align: center; font-weight: 600; }
-  label { display: block; font-weight: 600; font-size: .9rem; margin: 14px 0 6px; }
-  input[type=text], input[type=tel], input[type=date], select, textarea { width: 100%; font: 400 1rem Inter; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); }
+  .qty button { width: 34px; height: 34px; border: 0; background: none; font-size: 1.1rem; cursor: pointer; }
+  .qty span { min-width: 22px; text-align: center; font-weight: 700; }
+  label { display: block; font-weight: 700; font-size: .9rem; margin: 14px 0 6px; }
+  input[type=text], input[type=tel], select, textarea { width: 100%; font: 400 1rem Inter; padding: 11px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); }
   textarea { min-height: 70px; resize: vertical; }
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .drawer footer { padding: 14px 18px; border-top: 1px solid var(--line); text-align: left; }
   .err { color: var(--ko); font-size: .88rem; margin-top: 8px; min-height: 1.2em; }
   .ok-box { text-align: center; padding: 30px 10px; }
-  .ok-box .big { width: 64px; height: 64px; border-radius: 50%; background: #E3F4EA; color: var(--ok); display: grid; place-items: center; margin: 0 auto 14px; font-size: 2rem; }
+  .ok-box .big { width: 70px; height: 70px; border-radius: 50%; background: #E3F4EA; color: var(--ok); display: grid; place-items: center; margin: 0 auto 14px; font-size: 2rem; }
 
-  .fab { position: fixed; right: 16px; bottom: 16px; z-index: 30; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+  .ficha { position: fixed; z-index: 55; left: 50%; top: 50%; width: min(760px, calc(100% - 24px)); max-height: calc(100% - 24px); overflow: auto; background: #fff; border-radius: 22px; transform: translate(-50%, -46%) scale(.96); opacity: 0; pointer-events: none; transition: transform .3s cubic-bezier(.2,.9,.3,1.1), opacity .25s; display: grid; grid-template-columns: 1fr 1fr; }
+  .ficha.show { transform: translate(-50%, -50%); opacity: 1; pointer-events: auto; }
+  .ficha .foto { position: relative; background: #f4f4f4; min-height: 300px; }
+  .ficha .foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #fff; }
+  .ficha .txt { padding: 26px 24px; display: flex; flex-direction: column; gap: 10px; }
+  .ficha .txt h3 { font-size: 1.5rem; margin: 0; }
+  .ficha .x { position: absolute; right: 8px; top: 6px; z-index: 2; background: #fff; border-radius: 50%; width: 42px; height: 42px; padding: 0; }
+  .ficha .pr { font: 900 1.7rem Archivo; color: var(--navy); }
+  .ficha .acc { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+
+  .fab { position: fixed; right: 16px; bottom: 16px; z-index: 35; box-shadow: 0 10px 26px rgba(0,0,0,.25), 0 4px 0 var(--navy-2); }
   .fab[hidden] { display: none; }
+  .toast { position: fixed; left: 50%; bottom: 84px; z-index: 60; transform: translate(-50%, 20px); opacity: 0; background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 12px; font: 600 .92rem Inter; transition: .25s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-  @media (max-width: 860px) {
-    .hero-grid, .info-grid, .steps-row { grid-template-columns: 1fr; }
-    .steps-row .step + .step { border-left: 0; border-top: 1px dashed var(--line); }
+  /* ---------- mejoras v2.1 ---------- */
+  .cajon.abierto .frente { transform: translateY(80%) scale(1.06); box-shadow: 0 18px 22px -6px rgba(0,0,0,.5), inset 0 -5px 0 rgba(0,0,0,.12); }
+  .cajon .dentro img { transition: transform .5s; }
+  .cajon.abierto .dentro img { transform: scale(1.15); }
+  .vuela { position: fixed; z-index: 70; border-radius: 14px; object-fit: cover; pointer-events: none; box-shadow: 0 12px 26px rgba(0,0,0,.3); background: #fff; }
+  .ficha .parecidos { grid-column: 1 / -1; padding: 16px 24px 22px; border-top: 1px solid var(--line); background: var(--paper); }
+  .par-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
+  .par { border: 1px solid var(--line); background: #fff; border-radius: 12px; padding: 0; overflow: hidden; cursor: pointer; text-align: left; font: 600 .78rem/1.25 Inter, sans-serif; color: var(--ink); }
+  .par img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+  .par span { display: block; padding: 6px 8px 8px; }
+  .par:hover { border-color: var(--navy); }
+  .compartir { background: none; border: 0; color: var(--navy); font: 700 .9rem Inter, sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 6px 0; align-self: flex-start; }
+  .compartir svg { width: 17px; height: 17px; }
+  .bienvenida { display: flex; align-items: center; gap: 14px; background: var(--yellow); color: var(--navy-2); border-radius: 16px; padding: 12px 14px; margin-bottom: 20px; box-shadow: 0 4px 0 #BFAF0C; }
+  .bienvenida img { width: 34px; height: 50px; object-fit: contain; flex: none; }
+  .bienvenida b { display: block; font: 900 1.05rem Archivo, sans-serif; }
+  .bienvenida span { font-size: .9rem; }
+  .bienvenida .x { margin-left: auto; color: var(--navy-2); }
+  .bienvenida[hidden] { display: none; }
+  .barra { display: none; }
+
+  @media (max-width: 960px) {
     .svc-grid { grid-template-columns: 1fr 1fr; }
-    body { background-size: 1250px auto; background-position: -40px -20px; }
-    .hero { padding-top: 110px; }
-    .notfound { grid-template-columns: 1fr; }
-    .top .call-txt { display: none; }
   }
-  @media (max-width: 480px) {
+  @media (max-width: 859px) {
+    .barra { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 35; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: rgba(246,242,232,.96); backdrop-filter: blur(10px); border-top: 1px solid var(--line); }
+    .barra .btn { padding: 11px 6px; font-size: .9rem; }
+    .fab { display: none !important; }
+    .toast { bottom: 92px; }
+    .ficha { padding-bottom: env(safe-area-inset-bottom); }
+  }
+  @media (max-width: 520px) { .par-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 859px) {
+    .hero { padding-top: 26px; }
+    .hero-grid, .como-grid, .info-grid { grid-template-columns: 1fr; }
+    .cajonera { margin-top: 10px; }
+    .ficha { grid-template-columns: 1fr; top: auto; bottom: 0; left: 0; width: 100%; transform: translateY(100%); border-radius: 22px 22px 0 0; max-height: 92%; }
+    .ficha.show { transform: none; }
+    .ficha .foto { min-height: 0; aspect-ratio: 1.2; }
+    .notfound { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+    .top .pill .txt-largo, .top .call-txt { display: none; }
+  }
+  @media (max-width: 520px) {
     .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .thumb svg { width: 40px; height: 40px; }
     .card .body { padding: 10px; }
     .card .row { flex-direction: column; align-items: stretch; }
+    .card p { display: none; }
     h3 { font-size: .95rem; }
+    .precio { font-size: .92rem; }
     .two { grid-template-columns: 1fr; gap: 0; }
     .svc-grid { grid-template-columns: 1fr; }
-    .logo span { font-size: 1.1rem; }
+    .cajones { gap: 7px; }
+    .cajonera { padding: 10px; }
+    .top .pill { display: none; }
+    .logo { font-size: 1.15rem; }
   }
 </style>
 </head>
@@ -181,64 +307,108 @@
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#">
-      <img src="logo-mascota.png" alt="" width="40" height="52">
+    <a class="logo" href="#inicio" aria-label="Fersaman, inicio">
+      <img src="logo-mascota.png" alt="" width="34" height="50">
       <span>FERSAMAN</span>
     </a>
-    <div style="display:flex;gap:8px">
-      <a class="btn btn-light" href="tel:+34647784536" aria-label="Llamar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span class="call-txt">647 78 45 36</span></a>
-      <button class="btn btn-brand cart-btn" id="openCart" aria-label="Ver mi reserva"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg><span class="call-txt">Mi reserva</span><span class="cart-count" id="cartCount" hidden>0</span></button>
+    <div class="top-actions">
+      <span class="pill status" id="status"><span class="dot"></span><span id="statusTxt">Comprobando horario…</span></span>
+      <a class="btn btn-light" href="tel:+34647784536" aria-label="Llamar al 647 78 45 36"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span class="call-txt">647 78 45 36</span></a>
+      <button class="btn btn-navy cart-btn" id="openCart" aria-label="Ver mi reserva"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg><span class="call-txt">Mi reserva</span><span class="cart-count" id="cartCount" hidden>0</span></button>
     </div>
   </div>
 </header>
 
-<main>
+<main id="inicio">
 <section class="hero">
+  <div class="wrap"><div class="bienvenida" id="bienvenida" hidden>
+    <img src="logo-mascota.png" alt="" width="34" height="50">
+    <div><b>¡Hola! Vienes del cartel del escaparate</b><span>Mira lo que tenemos, resérvalo sin pagar y pásate a recogerlo.</span></div>
+    <button class="x" id="cerrarBienvenida" aria-label="Cerrar">×</button>
+  </div></div>
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow">Ferretería en Tudela de Duero</span>
-      <h1>Míralo aquí, resérvalo y pasa a recogerlo</h1>
-      <p class="lead">Ferretería, herramientas, ropa de trabajo, menaje y copia de llaves y mandos. Si no lo ves, pregúntanos: lo buscamos y te lo traemos.</p>
-      <div class="status" id="status"><span class="dot"></span><span id="statusTxt">Comprobando horario…</span></div>
+      <h1><span class="linea"><span>Lo que buscas</span></span><span class="linea"><span>está en su <em>cajón</em>.</span></span></h1>
+      <p class="lead">Abre un cajón y mira lo que tenemos en la tienda. Resérvalo sin pagar nada y pásate a recogerlo: te lo guardamos 48 horas.</p>
       <div class="hero-actions">
-        <a class="btn btn-brand" href="#catalogo" data-ev="fersaman-ver-productos">Ver productos</a>
-        <a class="btn btn-light" id="waTop" href="#" data-ev="fersaman-whatsapp">Escribir por WhatsApp</a>
+        <a class="btn btn-navy" href="#catalogo" data-ev="fersaman-ver-productos">Ver todos los productos</a>
+        <a class="btn btn-wa" id="waTop" href="#" data-ev="fersaman-whatsapp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.2 1.4 2.5 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.2.1.6-.1 1.2z"/></svg>Pregúntanos</a>
+      </div>
+      <div class="hero-meta">
+        <div><b id="nProductos">200+</b>productos en la web</div>
+        <div><b>0 €</b>por reservar</div>
+        <div><b>48 h</b>te lo guardamos</div>
       </div>
     </div>
-    <div class="photo"><img src="fachada.jpg" alt="Fachada de la ferretería Fersaman en Tudela de Duero" width="1290" height="671"></div>
-  </div>
-  <div class="wrap">
-    <div class="steps steps-row">
-      <div class="step"><b class="n">1</b><div><b>Busca lo que necesitas</b><span>Por nombre o por sección.</span></div></div>
-      <div class="step"><b class="n">2</b><div><b>Añádelo a tu reserva</b><span>Sin pagar nada por adelantado.</span></div></div>
-      <div class="step"><b class="n">3</b><div><b>Te confirmamos por WhatsApp</b><span>Comprobamos que lo tenemos y te lo guardamos 48 horas.</span></div></div>
+    <div>
+      <div class="cajonera" id="cajonera">
+        <div class="cajones" id="cajones"></div>
+      </div>
+      <p class="pista">Toca un cajón para ver lo que hay dentro</p>
     </div>
   </div>
 </section>
 
-<section class="services">
-  <div class="wrap">
-    <h2>También en tienda</h2>
-    <div class="svc-grid">
-      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.8-9.8M17 6l3 3M15 8l2 2"/></svg></div><h3>Copia de llaves y mandos</h3><p>Llaves serreta, de seguridad y de puntos, magnéticas, y mandos de garaje y puertas correderas.</p><a class="wa-svc" data-t="Hola, ¿me podéis hacer una copia de una llave/mando? Es de tipo: ">Consultar →</a></div>
-      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 6v5h3v10h10V11h3V6l-4-3c0 2-1.8 3-4 3S8 5 8 3z"/></svg></div><h3>Vestuario laboral personalizado</h3><p>Ropa de trabajo con el logo de tu empresa, alta visibilidad y calzado de seguridad.</p><a class="wa-svc" data-t="Hola, quería información sobre ropa de trabajo personalizada para ">Pedir presupuesto →</a></div>
-      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a9 9 0 0 1 18 0zM2 15h20v3H2zM12 6V3"/></svg></div><h3>Material de protección</h3><p>Cascos, guantes, gafas, mascarillas y chalecos para obra, taller o campo.</p><a class="wa-svc" data-t="Hola, ¿tenéis este material de protección?: ">Consultar →</a></div>
-      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l6 4V9l6 4V5h6v16zM7 17h2M12 17h2M17 17h2"/></svg></div><h3>Suministros industriales</h3><p>Para empresas, talleres y profesionales: te preparamos los pedidos y te los tenemos listos.</p><a class="wa-svc" data-t="Hola, soy de una empresa y quería consultar un pedido de: ">Hablar con nosotros →</a></div>
+<section class="novedades" id="novedades" aria-labelledby="t-nov">
+  <div class="wrap nov-head">
+    <h2 id="t-nov">Recién <span>llegado</span> a la tienda</h2>
+    <p>Lo último que hemos puesto en la web. Toca uno para verlo en grande y reservarlo.</p>
+  </div>
+  <div class="pista-h" id="pistaH"><div class="tira" id="tira"></div></div>
+</section>
+
+<section class="como">
+  <div class="wrap como-grid">
+    <div>
+      <h2>Reservar es así de fácil</h2>
+      <ol class="pasos">
+        <li><b>Elige lo que necesitas</b><span>Búscalo por nombre o abre su cajón.</span></li>
+        <li><b>Envía tu reserva</b><span>Solo tu nombre, tu teléfono y cuándo te viene bien pasar. Sin pagar.</span></li>
+        <li><b>Te confirmamos por WhatsApp</b><span>Comprobamos que lo tenemos y te lo apartamos 48 horas. Pagas al recogerlo.</span></li>
+      </ol>
+    </div>
+    <div class="ticket-zona">
+      <div class="ticket" id="ticket" aria-hidden="true">
+        <div class="cab"><b>FERSAMAN</b><br>Reserva nº 0147<br>C. Aquilino Sánchez, 2</div>
+        <div class="fila tl"><span>1 × WD-40 200 ml</span><span>6,95</span></div>
+        <div class="fila tl"><span>2 × Bombilla LED E27</span><span>tienda</span></div>
+        <div class="fila tl"><span>1 × Copia de llave</span><span>tienda</span></div>
+        <div class="fila tl tot"><span>A pagar ahora</span><span>0,00 €</span></div>
+        <div class="fila tl"><span>Recogida</span><span>jueves, tarde</span></div>
+        <div class="sello" id="sello">GUARDADO<br>48 H</div>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="catalog" id="catalogo">
   <div class="wrap">
-    <h2>Nuestros productos</h2>
+    <div class="cat-head"><h2>Todos los productos</h2></div>
     <div class="tools">
-      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Busca: bombilla, taladro, silicona…" autocomplete="off"></div>
-      <div class="chips" id="chips"></div>
+      <label class="sr" for="q">Buscar productos</label>
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Busca: bombilla, candado, silicona…" autocomplete="off"></div>
+      <div class="chips" id="chips" role="toolbar" aria-label="Secciones"></div>
     </div>
+    <p class="resumen" id="resumen" aria-live="polite"></p>
     <div class="grid" id="grid"></div>
+    <div class="mas"><button class="btn btn-light" id="verMas" hidden>Ver más productos</button></div>
     <div class="notfound">
-      <div><h3 style="font-size:1.25rem">¿No encuentras lo que buscas?</h3><p>Tenemos mucho más en tienda de lo que cabe aquí. Pregúntanos y te decimos si lo tenemos o te lo pedimos.</p></div>
-      <a class="btn btn-brand" id="waAsk" href="#">Preguntar por WhatsApp</a>
+      <img src="logo-mascota.png" alt="" width="54" height="78">
+      <div><h3 style="font-size:1.3rem">¿No lo encuentras?</h3><p>En la tienda hay mucho más de lo que cabe aquí. Pregúntanos: si no lo tenemos, te lo pedimos.</p></div>
+      <a class="btn btn-yellow" id="waAsk" href="#" data-ev="fersaman-preguntar">Preguntar por WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<section class="servicios" aria-labelledby="t-svc">
+  <div class="wrap">
+    <h2 id="t-svc">También en tienda</h2>
+    <div class="svc-grid">
+      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.8-9.8M17 6l3 3M15 8l2 2"/></svg></div><h3>Copia de llaves y mandos</h3><p>Serreta, de seguridad, de puntos y magnéticas. También mandos de garaje.</p><a class="wa-svc" data-t="Hola, ¿me podéis hacer una copia de una llave/mando? Es de tipo: ">Consultar →</a></div>
+      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 6v5h3v10h10V11h3V6l-4-3c0 2-1.8 3-4 3S8 5 8 3z"/></svg></div><h3>Ropa de trabajo con tu logo</h3><p>Vestuario laboral, alta visibilidad y calzado de seguridad para tu empresa.</p><a class="wa-svc" data-t="Hola, quería información sobre ropa de trabajo personalizada para ">Pedir presupuesto →</a></div>
+      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a9 9 0 0 1 18 0zM2 15h20v3H2zM12 6V3"/></svg></div><h3>Material de protección</h3><p>Cascos, guantes, gafas, mascarillas y chalecos para obra, taller o campo.</p><a class="wa-svc" data-t="Hola, ¿tenéis este material de protección?: ">Consultar →</a></div>
+      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l6 4V9l6 4V5h6v16zM7 17h2M12 17h2M17 17h2"/></svg></div><h3>Pedidos para empresas</h3><p>Talleres, obras y profesionales: te preparamos el pedido y lo tienes listo.</p><a class="wa-svc" data-t="Hola, soy de una empresa y quería consultar un pedido de: ">Hablar con nosotros →</a></div>
     </div>
   </div>
 </section>
@@ -246,7 +416,17 @@
 <section class="info" id="info">
   <div class="wrap info-grid">
     <div class="box">
-      <h3>Horario</h3>
+      <h2 style="font-size:1.6rem">Dónde estamos</h2>
+      <p style="margin:0">C. Aquilino Sánchez, 2 · 47320 Tudela de Duero (Valladolid)</p>
+      <div class="mapa" id="mapa"><button class="btn btn-navy" id="verMapa" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)">Ver el mapa</button></div>
+      <div class="contacto">
+        <a class="btn btn-navy" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Ferreter%C3%ADa%20Fersaman%2C%20C.%20Aquilino%20S%C3%A1nchez%202%2C%2047320%20Tudela%20de%20Duero" data-ev="fersaman-como-llegar">Cómo llegar</a>
+        <a class="btn btn-light" href="tel:+34647784536">647 78 45 36</a>
+        <a class="btn btn-wa" id="waInfo" href="#">WhatsApp</a>
+      </div>
+    </div>
+    <div class="box">
+      <h2 style="font-size:1.6rem">Horario</h2>
       <table class="hours" id="hours">
         <tr data-d="1"><td>Lunes</td><td>9:30–14:00 · 17:00–20:00</td></tr>
         <tr data-d="2"><td>Martes</td><td>9:30–14:00 · 17:00–20:00</td></tr>
@@ -256,42 +436,39 @@
         <tr data-d="6"><td>Sábado</td><td>10:00–14:00</td></tr>
         <tr data-d="0"><td>Domingo</td><td>Cerrado</td></tr>
       </table>
-    </div>
-    <div class="box">
-      <h3>Dónde estamos</h3>
-      <p>C. Aquilino Sánchez, 2<br>47320 Tudela de Duero (Valladolid)</p>
-      <a class="btn btn-dark" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Ferreter%C3%ADa%20Fersaman%2C%20C.%20Aquilino%20S%C3%A1nchez%202%2C%2047320%20Tudela%20de%20Duero">Cómo llegar</a>
-    </div>
-    <div class="box">
-      <h3>Contacto</h3>
-      <p>Llámanos o escríbenos por WhatsApp y te atendemos en horario de tienda.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <a class="btn btn-light" href="tel:+34647784536">647 78 45 36</a>
-        <a class="btn btn-brand" id="waInfo" href="#">WhatsApp</a>
-      </div>
+      <p class="small" style="margin-top:12px">Síguenos: <a href="https://www.instagram.com/fersamansl/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/fersaman.tudela.1/" target="_blank" rel="noopener">Facebook</a></p>
     </div>
   </div>
 </section>
-
 </main>
+
 <footer>
-  <div class="wrap">Ferretería Fersaman · C. Aquilino Sánchez, 2 · 47320 Tudela de Duero (Valladolid) · Las reservas no son una compra: pagas en tienda al recoger.<br><a href="legal.html">Aviso legal y privacidad</a> · Web hecha por <a href="https://engranaia.com/">Engrana</a></div>
+  <div class="wrap">Ferretería Fersaman · FERSAMAN S.L. · C. Aquilino Sánchez, 2 · 47320 Tudela de Duero (Valladolid)<br>Las reservas no son una compra: pagas en tienda al recoger. <a href="legal.html">Aviso legal y privacidad</a> · Web hecha por <a href="https://engranaia.com/">Engrana</a></div>
 </footer>
 
-<button class="btn btn-brand fab" id="fab" hidden>Ver mi reserva (<span id="fabN">0</span>)</button>
+<button class="btn btn-navy fab" id="fab" hidden>Ver mi reserva (<span id="fabN">0</span>)</button>
+<nav class="barra" aria-label="Accesos rápidos">
+  <a class="btn btn-light" href="tel:+34647784536" data-ev="fersaman-llamar-barra">Llamar</a>
+  <a class="btn btn-wa" id="waBarra" href="#" data-ev="fersaman-whatsapp-barra">WhatsApp</a>
+  <button class="btn btn-navy cart-btn" id="barraRes">Mi reserva<span class="cart-count" id="barraN" hidden>0</span></button>
+</nav>
+<div class="toast" id="toast" role="status"></div>
 
 <div class="overlay" id="overlay"></div>
-<aside class="drawer" id="drawer" aria-label="Mi reserva">
-  <header><h2 style="margin:0;font-size:1.3rem">Mi reserva</h2><button class="x" id="close" aria-label="Cerrar">×</button></header>
-  <div class="content" id="drawerContent"></div>
+<aside class="drawer" id="drawer" aria-label="Mi reserva" aria-hidden="true">
+  <header><h2 style="margin:0;font-size:1.35rem">Mi reserva</h2><button class="x" id="close" aria-label="Cerrar">×</button></header>
+  <div class="content" id="drawerContent" data-lenis-prevent></div>
   <footer id="drawerFoot"></footer>
 </aside>
+<div class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="fichaT" data-lenis-prevent></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
-// Configuración de la tienda. API: URL /exec de Google Apps Script (reservas.gs). Vacía = la reserva se envía por WhatsApp.
+// Web publicada de la tienda. OJO: las reservas de prueba llegan a la tienda.
 const TIENDA = { nombre: 'Fersaman', tel: '34647784536', API: 'https://script.google.com/macros/s/AKfycbx2Gus88SgPk3mgTTm9S3Nt7nZLkFLbRDpEosiY5hrIvoiLRUdKZLcewU74mBP21W0/exec' };
-
-// Horario: [día (0=domingo)] -> tramos [inicio, fin] en minutos
+const BASE = '';
 const HORARIO = {1:[[570,840],[1020,1200]],2:[[570,840],[1020,1200]],3:[[570,840],[1020,1200]],4:[[570,840],[1020,1200]],5:[[570,840],[1020,1200]],6:[[600,840]],0:[]};
 
 const ICONOS = {
@@ -311,16 +488,15 @@ const ICONOS = {
   limpieza: '<path d="M8 9h7v12H8zM10 9V5h4M14 5l3-2M14 5h3"/>',
   coche: '<path d="M3 16v-4l2-5h14l2 5v4zM3 16v3h3v-3M18 16v3h3v-3M7 13h.01M17 13h.01"/>'
 };
-
+// Nombre largo (chips) y corto (etiqueta del cajón)
 const CATS = [
-  ['todo','Todo'], ['estufas','Estufas y deshollinado'], ['electricidad','Electricidad'], ['iluminacion','Iluminación'], ['herramienta','Herramienta manual'],
-  ['electrica','Máquinas y accesorios'], ['fontaneria','Fontanería'], ['tornilleria','Tornillería y cerrajería'],
-  ['pintura','Pintura y adhesivos'], ['limpieza','Limpieza y droguería'], ['coche','Coche, moto y lubricantes'], ['vestuario','Ropa de trabajo y protección'], ['electro','Pequeño electrodoméstico'],
-  ['hogar','Hogar y menaje'], ['jardin','Jardín'], ['pilas','Pilas y electrónica']
+  ['estufas','Estufas y deshollinado','Estufas'], ['electricidad','Electricidad','Electricidad'], ['iluminacion','Iluminación','Luz'],
+  ['herramienta','Herramienta manual','Herramienta'], ['electrica','Máquinas y accesorios','Máquinas'], ['fontaneria','Fontanería','Fontanería'],
+  ['tornilleria','Tornillería y cerrajería','Cerrajería'], ['pintura','Pintura y adhesivos','Pintura y pegamentos'], ['limpieza','Limpieza y droguería','Limpieza'],
+  ['coche','Coche, moto y lubricantes','Coche y moto'], ['vestuario','Ropa de trabajo y protección','Ropa y calzado'], ['electro','Pequeño electrodoméstico','Electro'],
+  ['hogar','Hogar y menaje','Hogar'], ['jardin','Jardín','Jardín'], ['pilas','Pilas y electrónica','Pilas']
 ];
 
-// Productos reales de su Instagram (@fersamansl, 25/10/2026). foto: número → fotos/pNN.jpg; texto → fotos/<texto>.jpg. precio: null = "Precio en tienda".
-// Fotos tNN: las que hizo la tienda el 27/10/2026; nNN: las del 3/11/2026 (NN = orden de las fotos de WhatsApp).
 const PRODUCTOS = [
   ['fontaneria','Grifo de fregadero','Caño giratorio.',null,22],
   ['fontaneria','Grifo de baño-ducha','Mezclador de pared.',null,23],
@@ -550,16 +726,35 @@ const PRODUCTOS = [
   ['pintura','Silicona Ceys Stop Moho','Para baños y cocinas. 50 ml.',null,'r85'],
   ['pintura','Adhesivo Ceys para poliestireno','Especial para corcho blanco: no lo ataca.',null,'r86'],
   ['iluminacion','Foco LED solar EDM','Foco de trabajo plegable con placa solar para recargarlo al sol e indicador de carga. Para el taller, el campo o un corte de luz.',25.23,'y06']
-].map((p, i) => ({ id: i + 1, cat: p[0], nombre: p[1], desc: p[2], precio: p[3], desde: !!p[5], foto: p[4] == null ? null : typeof p[4] === 'string' ? `fotos/${p[4]}.jpg` : `fotos/p${String(p[4]).padStart(2, '0')}.jpg` }));
+].map((p, i) => ({ id: i + 1, cat: p[0], nombre: p[1], desc: p[2], precio: p[3], desde: !!p[5],
+  foto: p[4] == null ? null : BASE + (typeof p[4] === 'string' ? `fotos/${p[4]}.jpg` : `fotos/p${String(p[4]).padStart(2, '0')}.jpg`) }));
+// Lo último que se añadió (el listado va en orden de llegada)
+const NUEVOS = new Set(PRODUCTOS.slice(-14).map(p => p.id));
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const icono = c => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICONOS[c]}</svg>`;
+const icono = c => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICONOS[c] || ''}</svg>`;
 const nombreCat = c => (CATS.find(x => x[0] === c) || [, ''])[1];
 const wa = txt => `https://wa.me/${TIENDA.tel}?text=${encodeURIComponent(txt)}`;
-const sinTildes = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const euros = n => n.toFixed(2).replace('.', ',') + ' €';
+const precioHTML = p => p.precio != null ? `<span class="precio">${p.desde ? '<small>desde</small>' : ''}${euros(p.precio)}</span>` : '';
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2200); }
 
-// ---- Horario ----
+// Búsqueda tolerante: sin tildes, plurales y sinónimos de mostrador
+const SINONIMOS = { bombilla: 'led luz', foco: 'linterna luz', llave: 'copia bombin cerradura', pegamento: 'adhesivo cola silicona nural ceys', cola: 'pegamento adhesivo', silicona: 'sellador', taladro: 'broca percutor', radial: 'amoladora disco', lija: 'lijar', estufa: 'chimenea deshollinador leña', candado: 'cerrojo', raton: 'ratones ratas trampa', grifo: 'monomando', cable: 'regleta', bateria: 'pila', pila: 'bateria' };
+function coincide(p, q) {
+  if (!q) return true;
+  const texto = norm(`${p.nombre} ${p.desc} ${nombreCat(p.cat)}`);
+  return q.split(/\s+/).every(w => {
+    const base = w.length > 4 ? w.replace(/(es|s)$/, '') : w;
+    if (texto.includes(base)) return true;
+    const extra = SINONIMOS[base] || SINONIMOS[w];
+    return extra ? extra.split(' ').some(s => texto.includes(s)) : false;
+  });
+}
+
+// ---------- Horario ----------
 function ahoraMadrid() {
   const p = new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date());
   const dias = { 'dom': 0, 'lun': 1, 'mar': 2, 'mié': 3, 'jue': 4, 'vie': 5, 'sáb': 6 };
@@ -570,58 +765,166 @@ const hhmm = m => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
 function pintarHorario() {
   const { d, m } = ahoraMadrid();
   document.querySelectorAll('#hours tr').forEach(tr => tr.classList.toggle('today', +tr.dataset.d === d));
+  const st = $('#status'), tx = $('#statusTxt');
   const tramo = HORARIO[d].find(([a, b]) => m >= a && m < b);
-  if (tramo) { $('#status').classList.add('open'); $('#statusTxt').textContent = `Abierto ahora · hasta las ${hhmm(tramo[1])}`; return; }
-  $('#status').classList.remove('open');
+  if (tramo) { st.classList.add('open'); tx.innerHTML = `Abierto<span class="txt-largo"> · hasta las ${hhmm(tramo[1])}</span>`; return; }
+  st.classList.remove('open');
   const hoy = HORARIO[d].find(([a]) => a > m);
-  if (hoy) { $('#statusTxt').textContent = `Cerrado ahora · abrimos hoy a las ${hhmm(hoy[0])}`; return; }
+  if (hoy) { tx.innerHTML = `Cerrado<span class="txt-largo"> · abrimos a las ${hhmm(hoy[0])}</span>`; return; }
   const nombres = ['el domingo','el lunes','el martes','el miércoles','el jueves','el viernes','el sábado'];
-  for (let i = 1; i <= 7; i++) { const dd = (d + i) % 7; if (HORARIO[dd].length) { $('#statusTxt').textContent = `Cerrado ahora · abrimos ${i === 1 ? 'mañana' : nombres[dd]} a las ${hhmm(HORARIO[dd][0][0])}`; return; } }
+  for (let i = 1; i <= 7; i++) { const dd = (d + i) % 7; if (HORARIO[dd].length) { tx.innerHTML = `Cerrado<span class="txt-largo"> · abrimos ${i === 1 ? 'mañana' : nombres[dd]} a las ${hhmm(HORARIO[dd][0][0])}</span>`; return; } }
 }
 
-// ---- Catálogo ----
-let filtro = 'todo';
-function pintarChips() {
-  // Sin categorías vacías. 16/11: la tienda manda precios de algunos productos → se ven como precio normal (no «Oferta»); el resto, «Precio en tienda».
-  $('#chips').innerHTML = CATS.filter(([k]) => k === 'todo' || (k === 'ofertas' ? PRODUCTOS.some(p => p.precio != null) : PRODUCTOS.some(p => p.cat === k))).map(([k, n]) => `<button class="chip${k === filtro ? ' on' : ''}" data-c="${k}">${n}</button>`).join('');
+// ---------- Cajonera ----------
+function pintarCajones() {
+  const cats = CATS.map(c => ({ k: c[0], corto: c[2], n: PRODUCTOS.filter(p => p.cat === c[0]).length, foto: (PRODUCTOS.find(p => p.cat === c[0] && p.foto) || {}).foto }))
+    .filter(c => c.n).sort((a, b) => b.n - a.n).slice(0, 11);
+  const nConPrecio = PRODUCTOS.filter(p => p.precio != null).length;
+  const cajon = (k, titulo, sub, foto, extra = '') => `<button class="cajon${extra}" data-c="${k}" aria-label="${esc(titulo)}: ${esc(sub)}">
+      <span class="dentro">${foto ? `<img src="${foto}" alt="" loading="lazy">` : ''}</span>
+      <span class="frente"><span class="etiqueta">${esc(titulo)}<small>${esc(sub)}</small></span><span class="tirador"></span></span></button>`;
+  $('#cajones').innerHTML = cats.map(c => cajon(c.k, c.corto, `${c.n} productos`, c.foto)).join('') +
+    cajon('precio', 'Con precio', `${nConPrecio} productos`, (PRODUCTOS.find(p => p.precio != null && p.foto) || {}).foto, ' especial');
+  $('#nProductos').textContent = PRODUCTOS.length;
 }
-function pintarGrid() {
-  const q = sinTildes($('#q').value.trim());
-  const lista = PRODUCTOS.filter(p => (filtro === 'todo' || p.cat === filtro || (filtro === 'ofertas' && p.precio != null)) && (!q || sinTildes(p.nombre + ' ' + p.desc + ' ' + nombreCat(p.cat)).includes(q)));
+
+// ---------- Novedades ----------
+function pintarNovedades() {
+  const lista = PRODUCTOS.filter(p => NUEVOS.has(p.id) && p.foto).reverse();
+  $('#tira').innerHTML = lista.map((p, i) => `<button class="nov" data-id="${p.id}" style="--r:${[-2, 1.5, -1, 2, -1.5][i % 5]}deg">
+    <span class="nuevo">NUEVO</span><img src="${p.foto}" alt="" loading="lazy" width="250" height="250">
+    <span class="b"><h3>${esc(p.nombre)}</h3><span>${p.precio != null ? (p.desde ? 'desde ' : '') + euros(p.precio) : 'Precio en tienda'}</span></span></button>`).join('');
+}
+
+// ---------- Catálogo ----------
+let filtro = 'todo', mostrar = 24;
+function pintarChips() {
+  const chips = [['todo', 'Todo'], ['nuevo', 'Novedades', ' dest'], ['precio', 'Con precio', ' dest'],
+    ...CATS.filter(c => PRODUCTOS.some(p => p.cat === c[0])).map(c => [c[0], c[1]])];
+  $('#chips').innerHTML = chips.map(([k, n, x = '']) => `<button class="chip${x}${k === filtro ? ' on' : ''}" data-c="${k}" aria-pressed="${k === filtro}">${n}</button>`).join('');
+}
+function listaFiltrada() {
+  const q = norm($('#q').value.trim());
+  const peso = p => (NUEVOS.has(p.id) ? 0 : p.precio != null ? 1 : p.foto ? 2 : 3);
+  return PRODUCTOS.filter(p => (filtro === 'todo' || p.cat === filtro || (filtro === 'precio' && p.precio != null) || (filtro === 'nuevo' && NUEVOS.has(p.id))) && coincide(p, q))
+    .sort((a, b) => peso(a) - peso(b) || a.id - b.id);
+}
+function pintarGrid(animar) {
+  const lista = listaFiltrada(), q = $('#q').value.trim();
+  const titulo = filtro === 'todo' ? '' : filtro === 'precio' ? ' con precio' : filtro === 'nuevo' ? ' nuevos' : ` en ${nombreCat(filtro).toLowerCase()}`;
+  $('#resumen').textContent = lista.length ? `${lista.length} producto${lista.length === 1 ? '' : 's'}${titulo}${q ? ` para «${q}»` : ''}` : '';
   if (!lista.length) {
-    $('#grid').innerHTML = `<div class="empty" style="grid-column:1/-1"><h3>No lo vemos en la web…</h3><p class="muted">…pero puede que lo tengamos en tienda.</p><a class="btn btn-brand" href="${wa('Hola, ¿tenéis ' + $('#q').value.trim() + '?')}" target="_blank" rel="noopener">Preguntar por «${esc($('#q').value.trim())}»</a></div>`;
-    return;
+    $('#grid').innerHTML = `<div class="empty"><h3>No lo vemos en la web…</h3><p class="muted">…pero puede que lo tengamos en la tienda.</p><a class="btn btn-wa" href="${wa('Hola, ¿tenéis ' + q + '?')}" target="_blank" rel="noopener">Preguntar por «${esc(q)}»</a></div>`;
+    $('#verMas').hidden = true; return;
   }
-  $('#grid').innerHTML = lista.map(p => `
+  $('#grid').innerHTML = lista.slice(0, mostrar).map(p => `
     <article class="card">
-      <div class="thumb${p.foto ? ' foto' : ''}">${p.foto ? `<img src="${p.foto}" alt="${esc(p.nombre)}" loading="lazy">` : icono(p.cat)}</div>
+      <button class="thumb" data-ficha="${p.id}" aria-label="Ver ${esc(p.nombre)} en grande">${p.foto ? `<img src="${p.foto}" alt="${esc(p.nombre)}" loading="lazy" width="300" height="300">` : `<span class="ic">${icono(p.cat)}</span>`}
+        ${NUEVOS.has(p.id) ? '<span class="badge-nuevo">NUEVO</span>' : ''}${precioHTML(p)}</button>
       <div class="body">
         <span class="cat">${nombreCat(p.cat)}</span>
         <h3>${esc(p.nombre)}</h3>
         <p>${esc(p.desc)}</p>
         <div class="row">
-          ${p.precio != null ? `<span class="price">${p.desde ? '<small>desde</small>' : ''}${p.precio.toFixed(2).replace('.', ',')} €</span>` : `<span class="ask">Precio en tienda</span>`}
-          <button class="btn btn-brand add${carrito[p.id] ? ' done' : ''}" data-id="${p.id}">${carrito[p.id] ? 'Añadido ✓' : 'Reservar'}</button>
+          ${p.precio == null ? '<span class="ask">Precio en tienda</span>' : '<span></span>'}
+          <button class="btn btn-navy add${carrito[p.id] ? ' done' : ''}" data-id="${p.id}">${carrito[p.id] ? 'Añadido ✓' : 'Reservar'}</button>
         </div>
       </div>
     </article>`).join('');
+  $('#verMas').hidden = lista.length <= mostrar;
+  $('#verMas').textContent = `Ver más productos (${lista.length - Math.min(mostrar, lista.length)})`;
+  if (animar && window.gsap) gsap.from('#grid .card', { y: 26, opacity: 0, duration: .45, stagger: .035, ease: 'power2.out', clearProps: 'all' });
+  if (window.ScrollTrigger) ScrollTrigger.refresh();
+}
+function irACatalogo(c) {
+  filtro = c; mostrar = 24; $('#q').value = ''; pintarChips(); pintarGrid(true);
+  const y = $('#catalogo').getBoundingClientRect().top + scrollY - 70;
+  window.lenis ? lenis.scrollTo(y, { duration: 1.1 }) : scrollTo({ top: y, behavior: 'smooth' });
 }
 
-// ---- Reserva ----
+// ---------- Ficha de producto ----------
+function abrirFicha(id) {
+  const p = PRODUCTOS.find(x => x.id == id); if (!p) return;
+  $('#ficha').innerHTML = `<button class="x" id="cerrarFicha" aria-label="Cerrar">×</button>
+    <div class="foto">${p.foto ? `<img src="${p.foto}" alt="${esc(p.nombre)}">` : `<span class="ic" style="position:absolute;inset:0;display:grid;place-items:center;color:var(--navy)">${icono(p.cat)}</span>`}</div>
+    <div class="txt"><span class="small" style="text-transform:uppercase;letter-spacing:.06em;font-weight:700">${nombreCat(p.cat)}</span>
+      <h3 id="fichaT">${esc(p.nombre)}</h3><p class="muted" style="margin:0">${esc(p.desc)}</p>
+      <div class="pr">${p.precio != null ? (p.desde ? '<span class="small">desde </span>' : '') + euros(p.precio) : '<span class="small" style="font:600 1rem Inter">Precio en tienda</span>'}</div>
+      <div class="acc">
+        <button class="btn btn-navy add${carrito[p.id] ? ' done' : ''}" data-id="${p.id}">${carrito[p.id] ? 'Añadido a tu reserva ✓' : 'Reservar sin pagar'}</button>
+        <a class="btn btn-wa" target="_blank" rel="noopener" href="${wa('Hola, os escribo desde la web. ¿Tenéis «' + p.nombre + '»? ')}" data-ev="fersaman-pregunta-producto">Preguntar por este producto</a>
+        <button class="compartir" id="compartir" data-ev="fersaman-compartir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>Compartir este producto</button>
+      </div></div>${parecidosHTML(p)}`;
+  $('#ficha').scrollTop = 0;
+  $('#ficha').classList.add('show'); $('#overlay').classList.add('show'); $('#cerrarFicha').focus();
+  $('#compartir').onclick = () => compartir(p);
+  try { history.replaceState(null, '', '#p-' + p.id); } catch (e) {}
+  window.lenis && lenis.stop();
+}
+// «También en este cajón»: 4 de la misma sección (con foto), empezando por los que siguen a este
+function parecidosHTML(p) {
+  const mismos = PRODUCTOS.filter(x => x.cat === p.cat && x.id !== p.id && x.foto);
+  if (!mismos.length) return '';
+  const i = mismos.findIndex(x => x.id > p.id);
+  const par = [...mismos.slice(i < 0 ? 0 : i), ...mismos.slice(0, i < 0 ? 0 : i)].slice(0, 4);
+  return `<div class="parecidos"><span class="small" style="font-weight:700">También en este cajón</span><div class="par-grid">${par.map(x =>
+    `<button class="par" data-ficha="${x.id}"><img src="${x.foto}" alt="" loading="lazy"><span>${esc(x.nombre)}</span></button>`).join('')}</div></div>`;
+}
+async function compartir(p) {
+  const url = location.origin + location.pathname + '#p-' + p.id;
+  try {
+    if (navigator.share) { await navigator.share({ title: p.nombre + ' · Fersaman', url }); return; }
+    await navigator.clipboard.writeText(url); toast('Enlace copiado: pégalo donde quieras');
+  } catch (e) {}
+}
+function cerrarFicha() {
+  if (!$('#ficha').classList.contains('show')) return;
+  $('#ficha').classList.remove('show'); if (!$('#drawer').classList.contains('show')) $('#overlay').classList.remove('show'); window.lenis && lenis.start();
+  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+}
+
+// ---------- Reserva ----------
 let carrito = {};
 try { carrito = JSON.parse(localStorage.getItem('fersaman_reserva4') || '{}'); } catch (e) { carrito = {}; }
+Object.keys(carrito).forEach(id => { if (!PRODUCTOS.some(p => p.id == id)) delete carrito[id]; });
 const guardar = () => { try { localStorage.setItem('fersaman_reserva4', JSON.stringify(carrito)); } catch (e) {} };
 const nItems = () => Object.values(carrito).reduce((a, b) => a + b, 0);
-function pintarContador() {
+function pintarContador(bote) {
   const n = nItems();
   $('#cartCount').hidden = !n; $('#cartCount').textContent = n;
+  $('#barraN').hidden = !n; $('#barraN').textContent = n;
   $('#fab').hidden = !n; $('#fabN').textContent = n;
+  if (bote && window.gsap) gsap.fromTo(['#cartCount', '#fab', '#barraRes'], { scale: 1.3 }, { scale: 1, duration: .5, ease: 'back.out(3)' });
 }
-function abrir() { $('#drawer').classList.add('show'); $('#overlay').classList.add('show'); pintarReserva(); }
-function cerrar() { $('#drawer').classList.remove('show'); $('#overlay').classList.remove('show'); }
+// La foto del producto «vuela» hasta el botón de la reserva
+function volar(origen) {
+  if (!window.gsap || !origen) return false;
+  const destino = innerWidth < 860 ? $('#barraRes') : $('#openCart');
+  const a = origen.getBoundingClientRect(), b = destino.getBoundingClientRect();
+  if (!a.width || !b.width) return false;
+  const s = Math.min(a.width, a.height, 150), cx = a.left + a.width / 2, cy = a.top + a.height / 2;
+  const img = document.createElement('img'); img.src = origen.currentSrc || origen.src; img.className = 'vuela'; img.alt = '';
+  Object.assign(img.style, { left: cx - s / 2 + 'px', top: cy - s / 2 + 'px', width: s + 'px', height: s + 'px' });
+  document.body.appendChild(img);
+  gsap.timeline({ onComplete: () => { img.remove(); pintarContador(true); } })
+    .to(img, { scale: 1.12, duration: .15, ease: 'power1.out' })
+    .to(img, { x: b.left + b.width / 2 - cx, duration: .7, ease: 'power1.inOut' }, '>')
+    .to(img, { y: b.top + b.height / 2 - cy, scale: .12, rotate: 20, duration: .7, ease: 'power2.in' }, '<')
+    .to(img, { opacity: 0, duration: .1 }, '-=.1');
+  return true;
+}
+function anadir(id, btn) {
+  const nuevo = !carrito[id];
+  const origen = btn && btn.closest('.card, .ficha') ? btn.closest('.card, .ficha').querySelector('.thumb img, .foto img') : null;
+  let vuela = false;
+  if (nuevo) { carrito[id] = 1; guardar(); toast('Añadido a tu reserva'); vuela = volar(origen); }
+  pintarContador(!vuela); pintarGrid();
+  document.querySelectorAll(`.add[data-id="${id}"]`).forEach(b => { b.classList.add('done'); b.textContent = $('#ficha').contains(b) ? 'Añadido a tu reserva ✓' : 'Añadido ✓'; });
+}
+function abrir() { cerrarFicha(); $('#drawer').classList.add('show'); $('#drawer').setAttribute('aria-hidden', 'false'); $('#overlay').classList.add('show'); pintarReserva(); window.lenis && lenis.stop(); $('#close').focus(); }
+function cerrar() { $('#drawer').classList.remove('show'); $('#drawer').setAttribute('aria-hidden', 'true'); $('#overlay').classList.remove('show'); window.lenis && lenis.start(); }
 
 function diasRecogida() {
-  // Próximos 7 días con tienda abierta
   const out = []; const hoy = new Date();
   for (let i = 0; out.length < 7 && i < 14; i++) {
     const f = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + i);
@@ -638,12 +941,12 @@ const fechaISO = f => `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2,
 function pintarReserva() {
   const ids = Object.keys(carrito);
   if (!ids.length) {
-    $('#drawerContent').innerHTML = `<div class="ok-box"><p class="muted">Todavía no has añadido nada.</p><button class="btn btn-brand" onclick="cerrar()">Ver productos</button></div>`;
-    $('#drawerFoot').innerHTML = ''; return;
+    $('#drawerContent').innerHTML = `<div class="ok-box"><p class="muted">Todavía no has añadido nada.</p><button class="btn btn-navy" id="seguir">Ver productos</button></div>`;
+    $('#drawerFoot').innerHTML = ''; $('#seguir').onclick = cerrar; return;
   }
   const dias = diasRecogida();
   $('#drawerContent').innerHTML = ids.map(id => { const p = PRODUCTOS.find(x => x.id == id); return `
-    <div class="line"><span class="nm">${esc(p.nombre)}</span>
+    <div class="line">${p.foto ? `<img src="${p.foto}" alt="">` : ''}<span class="nm">${esc(p.nombre)}${p.precio != null ? `<br><span class="small">${p.desde ? 'desde ' : ''}${euros(p.precio)}</span>` : ''}</span>
       <div class="qty"><button data-q="-1" data-id="${id}" aria-label="Quitar uno">−</button><span>${carrito[id]}</span><button data-q="1" data-id="${id}" aria-label="Añadir uno">+</button></div></div>`; }).join('') + `
     <form id="form" novalidate>
       <label for="nombre">Tu nombre</label><input id="nombre" type="text" autocomplete="name" required>
@@ -653,12 +956,11 @@ function pintarReserva() {
         <div><label for="franja">Franja</label><select id="franja"></select></div>
       </div>
       <label for="nota">Algo más (opcional)</label><textarea id="nota" placeholder="Medida, color, cantidad…"></textarea>
-      <div class="err" id="err"></div>
+      <div class="err" id="err" role="alert"></div>
     </form>`;
-  $('#drawerFoot').innerHTML = `<button class="btn btn-brand" style="width:100%" id="enviar" data-ev="fersaman-enviar-reserva">Enviar reserva</button><p class="small" style="margin:8px 0 0">No pagas nada ahora. Comprobamos que lo tenemos y te confirmamos por WhatsApp. Tus datos solo se usan para tu reserva (<a href="legal.html#privacidad">privacidad</a>).</p>`;
+  $('#drawerFoot').innerHTML = `<button class="btn btn-navy" style="width:100%" id="enviar" data-ev="fersaman-enviar-reserva">Enviar reserva</button><p class="small" style="margin:8px 0 0">No pagas nada ahora. Comprobamos que lo tenemos y te confirmamos por WhatsApp. Tus datos solo se usan para tu reserva (<a href="legal.html#privacidad">privacidad</a>).</p>`;
   const franjas = () => {
     const f = new Date($('#dia').value + 'T12:00'); let tr = HORARIO[f.getDay()];
-    // Hoy solo las franjas que no han terminado (con 30 min de margen, como en diasRecogida)
     if ($('#dia').value === fechaISO(new Date())) tr = tr.filter(([, b]) => ahoraMadrid().m < b - 30);
     $('#franja').innerHTML = tr.map(([a, b]) => `<option value="${a}-${b}">${a < 900 ? 'Mañana' : 'Tarde'} (${hhmm(a)}–${hhmm(b)})</option>`).join('');
   };
@@ -694,16 +996,25 @@ async function enviar() {
       : 'Estamos comprobando que lo tenemos. Te confirmamos por WhatsApp al ' + esc(tel) + ', normalmente en horario de tienda.'}</p>
     ${enlaceEstado ? `<p><a href="${esc(enlaceEstado)}" target="_blank" rel="noopener">Ver el estado de mi reserva</a></p>` : ''}
     <p class="small">Cuando te confirmemos, te lo guardamos 48 horas y pagas al recogerlo.</p></div>`;
-  $('#drawerFoot').innerHTML = `<button class="btn btn-light" style="width:100%" onclick="cerrar()">Seguir mirando</button>`;
+  $('#drawerFoot').innerHTML = `<button class="btn btn-light" style="width:100%" id="seguir2">Seguir mirando</button>`;
+  $('#seguir2').onclick = cerrar;
 }
 
-// ---- Eventos ----
-$('#chips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; filtro = b.dataset.c; pintarChips(); pintarGrid(); });
-$('#q').addEventListener('input', pintarGrid);
-$('#grid').addEventListener('click', e => {
-  const b = e.target.closest('.add'); if (!b) return;
-  const id = b.dataset.id; carrito[id] = (carrito[id] || 0) + (carrito[id] ? 0 : 1);
-  guardar(); pintarContador(); pintarGrid();
+// ---------- Eventos ----------
+$('#chips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; filtro = b.dataset.c; mostrar = 24; pintarChips(); pintarGrid(true); });
+let tq; $('#q').addEventListener('input', () => { clearTimeout(tq); tq = setTimeout(() => { mostrar = 24; pintarGrid(); }, 120); });
+$('#verMas').addEventListener('click', () => { mostrar += 24; pintarGrid(); });
+document.addEventListener('click', e => {
+  const add = e.target.closest('.add'); if (add) { anadir(add.dataset.id, add); return; }
+  const f = e.target.closest('[data-ficha]'); if (f) { abrirFicha(f.dataset.ficha); return; }
+  const n = e.target.closest('.nov'); if (n) { abrirFicha(n.dataset.id); return; }
+  const c = e.target.closest('.cajon'); if (c) {
+    // El cajón se abre del todo y luego te lleva a lo que hay dentro
+    c.classList.add('abierto');
+    setTimeout(() => { irACatalogo(c.dataset.c); setTimeout(() => c.classList.remove('abierto'), 900); }, 420);
+    return;
+  }
+  if (e.target.closest('#cerrarFicha')) cerrarFicha();
 });
 $('#drawerContent').addEventListener('click', e => {
   const b = e.target.closest('[data-q]'); if (!b) return;
@@ -711,14 +1022,99 @@ $('#drawerContent').addEventListener('click', e => {
   if (carrito[id] <= 0) delete carrito[id];
   guardar(); pintarContador(); pintarGrid(); pintarReserva();
 });
-$('#openCart').addEventListener('click', abrir); $('#fab').addEventListener('click', abrir);
-$('#close').addEventListener('click', cerrar); $('#overlay').addEventListener('click', cerrar);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); });
+$('#openCart').addEventListener('click', abrir); $('#fab').addEventListener('click', abrir); $('#barraRes').addEventListener('click', abrir);
+$('#close').addEventListener('click', cerrar); $('#overlay').addEventListener('click', () => { cerrarFicha(); cerrar(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { cerrarFicha(); cerrar(); } });
 document.querySelectorAll('.wa-svc').forEach(a => { a.href = wa(a.dataset.t); a.target = '_blank'; a.rel = 'noopener'; });
-['#waTop', '#waAsk', '#waInfo'].forEach(s => { $(s).href = wa('Hola, os escribo desde la web de Fersaman: '); $(s).target = '_blank'; $(s).rel = 'noopener'; });
+['#waTop', '#waAsk', '#waInfo', '#waBarra'].forEach(s => { $(s).href = wa('Hola, os escribo desde la web de Fersaman: '); $(s).target = '_blank'; $(s).rel = 'noopener'; });
+$('#verMapa').addEventListener('click', () => { $('#mapa').innerHTML = '<iframe title="Mapa de Fersaman" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Ferreter%C3%ADa%20Fersaman%2C%20C.%20Aquilino%20S%C3%A1nchez%202%2C%20Tudela%20de%20Duero&output=embed"></iframe>'; });
 
 pintarHorario(); setInterval(pintarHorario, 60000);
-pintarChips(); pintarGrid(); pintarContador();
+pintarCajones(); pintarNovedades(); pintarChips(); pintarGrid(); pintarContador();
+
+// Enlace directo a un producto (#p-12): se abre su ficha. Sirve para mandar un producto por WhatsApp.
+const enlaceP = location.hash.match(/^#p-(\d+)$/);
+if (enlaceP) setTimeout(() => abrirFicha(enlaceP[1]), 700);
+
+// Quien llega escaneando el cartel (?qr): saludo y se cuenta el escaneo en el contador
+if (/[?&]qr\b/.test(location.search)) {
+  $('#bienvenida').hidden = false;
+  addEventListener('load', () => { const t = document.createElement('span'); t.hidden = true; t.dataset.ev = 'fersaman-escaneo-cartel'; document.body.appendChild(t); t.click(); t.remove(); });
+}
+$('#cerrarBienvenida').addEventListener('click', () => { $('#bienvenida').hidden = true; });
+
+// El buscador «escribe» ejemplos solo mientras nadie lo usa
+(() => {
+  const ej = ['bombilla', 'candado', 'silicona', 'WD-40', 'pilas', 'estufa', 'copia de llave', 'olla'];
+  let k = 0;
+  const escribir = () => {
+    const inp = $('#q');
+    if (document.activeElement === inp || inp.value) return setTimeout(escribir, 3000);
+    const w = ej[k++ % ej.length]; let i = 0;
+    const t = setInterval(() => { inp.placeholder = 'Busca: ' + w.slice(0, ++i); if (i >= w.length) { clearInterval(t); setTimeout(escribir, 1900); } }, 85);
+  };
+  setTimeout(escribir, 2500);
+})();
+
+// ---------- Animaciones (siempre activas: Sergio tiene «reducir movimiento» en su PC y las quiere ver) ----------
+if (window.gsap && window.ScrollTrigger) {
+  gsap.registerPlugin(ScrollTrigger);
+  if (window.Lenis) {
+    window.lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
+    document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+      const id = a.getAttribute('href'); if (id.length < 2) return; const t = document.querySelector(id); if (!t) return;
+      e.preventDefault(); lenis.scrollTo(t, { offset: -70, duration: 1.1 });
+    }));
+  }
+
+  // Portada: el titular sube línea a línea y los cajones se colocan uno a uno
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  tl.from('.hero h1 .linea > span', { yPercent: 110, duration: .9, stagger: .12 })
+    .from('.hero .eyebrow, .hero .lead, .hero-actions, .hero-meta', { y: 18, opacity: 0, duration: .6, stagger: .08 }, '-=.5')
+    .from('.cajonera', { y: 40, opacity: 0, rotate: -2, duration: .8 }, '-=.8')
+    .from('.cajon', { z: 60, y: -14, opacity: 0, duration: .5, stagger: { each: .05, from: 'random' } }, '-=.5')
+    .from('#nProductos', { textContent: 0, duration: 1.2, snap: { textContent: 1 }, ease: 'power1.out' }, '-=.6');
+
+  // Un cajón «asoma» de vez en cuando para que se entienda que se abren
+  const cajones = gsap.utils.toArray('.cajon');
+  let ultimo = -1;
+  const asomar = () => {
+    let i; do { i = Math.floor(Math.random() * cajones.length); } while (i === ultimo && cajones.length > 1);
+    ultimo = i; const c = cajones[i]; c.classList.add('asoma'); setTimeout(() => c.classList.remove('asoma'), 1300);
+  };
+  tl.call(() => { asomar(); setInterval(asomar, 2600); });
+
+  // La cajonera se inclina un poco al bajar
+  gsap.to('.cajonera', { rotate: 2.5, y: 40, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+  // Novedades: en escritorio la tira se desplaza de lado mientras bajas
+  ScrollTrigger.matchMedia({
+    '(min-width: 860px)': () => {
+      const tira = $('#tira');
+      const dist = () => Math.max(0, tira.scrollWidth - innerWidth);
+      gsap.to(tira, { x: () => -dist(), ease: 'none',
+        scrollTrigger: { trigger: '#novedades', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: .6, invalidateOnRefresh: true, anticipatePin: 1 } });
+    }
+  });
+  gsap.from('.nov', { y: 60, opacity: 0, duration: .7, stagger: .06, ease: 'back.out(1.4)', scrollTrigger: { trigger: '#novedades', start: 'top 75%' } });
+
+  // El ticket se imprime línea a línea y al final cae el sello
+  const tt = gsap.timeline({ scrollTrigger: { trigger: '.como', start: 'top 70%', end: 'center 45%', scrub: .8 } });
+  tt.from('#ticket', { clipPath: 'inset(0 0 100% 0)', duration: 1, ease: 'none' })
+    .from('.ticket .tl', { opacity: 0, x: -10, stagger: .15, duration: .3 }, '-=.8')
+    .from('#sello', { scale: 2.6, opacity: 0, rotate: 10, duration: .35, ease: 'back.out(2)' });
+  gsap.from('.pasos li', { x: -30, opacity: 0, stagger: .15, duration: .6, ease: 'power2.out', scrollTrigger: { trigger: '.pasos', start: 'top 80%' } });
+
+  // Resto de secciones
+  gsap.utils.toArray('.svc').forEach((el, i) => gsap.from(el, { y: 40, opacity: 0, duration: .6, delay: i * .07, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 88%' } }));
+  gsap.from('.svc .ic', { rotate: -25, scale: .6, duration: .7, stagger: .08, ease: 'back.out(2)', scrollTrigger: { trigger: '.svc-grid', start: 'top 85%' } });
+  gsap.from('.info .box', { y: 40, opacity: 0, duration: .7, stagger: .12, ease: 'power2.out', scrollTrigger: { trigger: '.info', start: 'top 80%' } });
+  gsap.from('.notfound', { scale: .94, opacity: 0, duration: .6, ease: 'power2.out', scrollTrigger: { trigger: '.notfound', start: 'top 90%' } });
+
+  addEventListener('load', () => ScrollTrigger.refresh());
+}
 </script>
 <script defer src="../m.js" data-site="engrana" data-api="https://script.google.com/macros/s/AKfycbxUQt_fUgS_BEP-gdpqzNt1EqRblhiBikMZr5ThNytjFnjY_kvcknVICwr1iis0NjyO/exec"></script>
 </body>
