@@ -236,9 +236,38 @@
   .toast { position: fixed; left: 50%; bottom: 84px; z-index: 60; transform: translate(-50%, 20px); opacity: 0; background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 12px; font: 600 .92rem Inter; transition: .25s; pointer-events: none; }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
+  /* ---------- mejoras v2.1 ---------- */
+  .cajon.abierto .frente { transform: translateY(80%) scale(1.06); box-shadow: 0 18px 22px -6px rgba(0,0,0,.5), inset 0 -5px 0 rgba(0,0,0,.12); }
+  .cajon .dentro img { transition: transform .5s; }
+  .cajon.abierto .dentro img { transform: scale(1.15); }
+  .vuela { position: fixed; z-index: 70; border-radius: 14px; object-fit: cover; pointer-events: none; box-shadow: 0 12px 26px rgba(0,0,0,.3); background: #fff; }
+  .ficha .parecidos { grid-column: 1 / -1; padding: 16px 24px 22px; border-top: 1px solid var(--line); background: var(--paper); }
+  .par-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
+  .par { border: 1px solid var(--line); background: #fff; border-radius: 12px; padding: 0; overflow: hidden; cursor: pointer; text-align: left; font: 600 .78rem/1.25 Inter, sans-serif; color: var(--ink); }
+  .par img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+  .par span { display: block; padding: 6px 8px 8px; }
+  .par:hover { border-color: var(--navy); }
+  .compartir { background: none; border: 0; color: var(--navy); font: 700 .9rem Inter, sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 6px 0; align-self: flex-start; }
+  .compartir svg { width: 17px; height: 17px; }
+  .bienvenida { display: flex; align-items: center; gap: 14px; background: var(--yellow); color: var(--navy-2); border-radius: 16px; padding: 12px 14px; margin-bottom: 20px; box-shadow: 0 4px 0 #BFAF0C; }
+  .bienvenida img { width: 34px; height: 50px; object-fit: contain; flex: none; }
+  .bienvenida b { display: block; font: 900 1.05rem Archivo, sans-serif; }
+  .bienvenida span { font-size: .9rem; }
+  .bienvenida .x { margin-left: auto; color: var(--navy-2); }
+  .bienvenida[hidden] { display: none; }
+  .barra { display: none; }
+
   @media (max-width: 960px) {
     .svc-grid { grid-template-columns: 1fr 1fr; }
   }
+  @media (max-width: 859px) {
+    .barra { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 35; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: rgba(246,242,232,.96); backdrop-filter: blur(10px); border-top: 1px solid var(--line); }
+    .barra .btn { padding: 11px 6px; font-size: .9rem; }
+    .fab { display: none !important; }
+    .toast { bottom: 92px; }
+    .ficha { padding-bottom: env(safe-area-inset-bottom); }
+  }
+  @media (max-width: 520px) { .par-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 859px) {
     .hero { padding-top: 26px; }
     .hero-grid, .como-grid, .info-grid { grid-template-columns: 1fr; }
@@ -283,6 +312,11 @@
 
 <main id="inicio">
 <section class="hero">
+  <div class="wrap"><div class="bienvenida" id="bienvenida" hidden>
+    <img src="../../fersaman/logo-mascota.png" alt="" width="34" height="50">
+    <div><b>¡Hola! Vienes del cartel del escaparate</b><span>Mira lo que tenemos, resérvalo sin pagar y pásate a recogerlo.</span></div>
+    <button class="x" id="cerrarBienvenida" aria-label="Cerrar">×</button>
+  </div></div>
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow">Ferretería en Tudela de Duero</span>
@@ -404,6 +438,11 @@
 </footer>
 
 <button class="btn btn-navy fab" id="fab" hidden>Ver mi reserva (<span id="fabN">0</span>)</button>
+<nav class="barra" aria-label="Accesos rápidos">
+  <a class="btn btn-light" href="tel:+34647784536" data-ev="fersaman2-llamar-barra">Llamar</a>
+  <a class="btn btn-wa" id="waBarra" href="#" data-ev="fersaman2-whatsapp-barra">WhatsApp</a>
+  <button class="btn btn-navy cart-btn" id="barraRes">Mi reserva<span class="cart-count" id="barraN" hidden>0</span></button>
+</nav>
 <div class="toast" id="toast" role="status"></div>
 
 <div class="overlay" id="overlay"></div>
@@ -805,11 +844,35 @@ function abrirFicha(id) {
       <div class="acc">
         <button class="btn btn-navy add${carrito[p.id] ? ' done' : ''}" data-id="${p.id}">${carrito[p.id] ? 'Añadido a tu reserva ✓' : 'Reservar sin pagar'}</button>
         <a class="btn btn-wa" target="_blank" rel="noopener" href="${wa('Hola, os escribo desde la web. ¿Tenéis «' + p.nombre + '»? ')}" data-ev="fersaman2-pregunta-producto">Preguntar por este producto</a>
-      </div></div>`;
+        <button class="compartir" id="compartir" data-ev="fersaman2-compartir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>Compartir este producto</button>
+      </div></div>${parecidosHTML(p)}`;
+  $('#ficha').scrollTop = 0;
   $('#ficha').classList.add('show'); $('#overlay').classList.add('show'); $('#cerrarFicha').focus();
+  $('#compartir').onclick = () => compartir(p);
+  try { history.replaceState(null, '', '#p-' + p.id); } catch (e) {}
   window.lenis && lenis.stop();
 }
-function cerrarFicha() { if (!$('#ficha').classList.contains('show')) return; $('#ficha').classList.remove('show'); if (!$('#drawer').classList.contains('show')) $('#overlay').classList.remove('show'); window.lenis && lenis.start(); }
+// «También en este cajón»: 4 de la misma sección (con foto), empezando por los que siguen a este
+function parecidosHTML(p) {
+  const mismos = PRODUCTOS.filter(x => x.cat === p.cat && x.id !== p.id && x.foto);
+  if (!mismos.length) return '';
+  const i = mismos.findIndex(x => x.id > p.id);
+  const par = [...mismos.slice(i < 0 ? 0 : i), ...mismos.slice(0, i < 0 ? 0 : i)].slice(0, 4);
+  return `<div class="parecidos"><span class="small" style="font-weight:700">También en este cajón</span><div class="par-grid">${par.map(x =>
+    `<button class="par" data-ficha="${x.id}"><img src="${x.foto}" alt="" loading="lazy"><span>${esc(x.nombre)}</span></button>`).join('')}</div></div>`;
+}
+async function compartir(p) {
+  const url = location.origin + location.pathname + '#p-' + p.id;
+  try {
+    if (navigator.share) { await navigator.share({ title: p.nombre + ' · Fersaman', url }); return; }
+    await navigator.clipboard.writeText(url); toast('Enlace copiado: pégalo donde quieras');
+  } catch (e) {}
+}
+function cerrarFicha() {
+  if (!$('#ficha').classList.contains('show')) return;
+  $('#ficha').classList.remove('show'); if (!$('#drawer').classList.contains('show')) $('#overlay').classList.remove('show'); window.lenis && lenis.start();
+  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+}
 
 // ---------- Reserva ----------
 let carrito = {};
@@ -820,12 +883,33 @@ const nItems = () => Object.values(carrito).reduce((a, b) => a + b, 0);
 function pintarContador(bote) {
   const n = nItems();
   $('#cartCount').hidden = !n; $('#cartCount').textContent = n;
+  $('#barraN').hidden = !n; $('#barraN').textContent = n;
   $('#fab').hidden = !n; $('#fabN').textContent = n;
-  if (bote && window.gsap) gsap.fromTo(['#cartCount', '#fab'], { scale: 1.35 }, { scale: 1, duration: .5, ease: 'back.out(3)' });
+  if (bote && window.gsap) gsap.fromTo(['#cartCount', '#fab', '#barraRes'], { scale: 1.3 }, { scale: 1, duration: .5, ease: 'back.out(3)' });
 }
-function anadir(id) {
-  if (!carrito[id]) { carrito[id] = 1; guardar(); toast('Añadido a tu reserva'); }
-  pintarContador(true); pintarGrid();
+// La foto del producto «vuela» hasta el botón de la reserva
+function volar(origen) {
+  if (!window.gsap || !origen) return false;
+  const destino = innerWidth < 860 ? $('#barraRes') : $('#openCart');
+  const a = origen.getBoundingClientRect(), b = destino.getBoundingClientRect();
+  if (!a.width || !b.width) return false;
+  const s = Math.min(a.width, a.height, 150), cx = a.left + a.width / 2, cy = a.top + a.height / 2;
+  const img = document.createElement('img'); img.src = origen.currentSrc || origen.src; img.className = 'vuela'; img.alt = '';
+  Object.assign(img.style, { left: cx - s / 2 + 'px', top: cy - s / 2 + 'px', width: s + 'px', height: s + 'px' });
+  document.body.appendChild(img);
+  gsap.timeline({ onComplete: () => { img.remove(); pintarContador(true); } })
+    .to(img, { scale: 1.12, duration: .15, ease: 'power1.out' })
+    .to(img, { x: b.left + b.width / 2 - cx, duration: .7, ease: 'power1.inOut' }, '>')
+    .to(img, { y: b.top + b.height / 2 - cy, scale: .12, rotate: 20, duration: .7, ease: 'power2.in' }, '<')
+    .to(img, { opacity: 0, duration: .1 }, '-=.1');
+  return true;
+}
+function anadir(id, btn) {
+  const nuevo = !carrito[id];
+  const origen = btn && btn.closest('.card, .ficha') ? btn.closest('.card, .ficha').querySelector('.thumb img, .foto img') : null;
+  let vuela = false;
+  if (nuevo) { carrito[id] = 1; guardar(); toast('Añadido a tu reserva'); vuela = volar(origen); }
+  pintarContador(!vuela); pintarGrid();
   document.querySelectorAll(`.add[data-id="${id}"]`).forEach(b => { b.classList.add('done'); b.textContent = $('#ficha').contains(b) ? 'Añadido a tu reserva ✓' : 'Añadido ✓'; });
 }
 function abrir() { cerrarFicha(); $('#drawer').classList.add('show'); $('#drawer').setAttribute('aria-hidden', 'false'); $('#overlay').classList.add('show'); pintarReserva(); window.lenis && lenis.stop(); $('#close').focus(); }
@@ -912,10 +996,15 @@ $('#chips').addEventListener('click', e => { const b = e.target.closest('.chip')
 let tq; $('#q').addEventListener('input', () => { clearTimeout(tq); tq = setTimeout(() => { mostrar = 24; pintarGrid(); }, 120); });
 $('#verMas').addEventListener('click', () => { mostrar += 24; pintarGrid(); });
 document.addEventListener('click', e => {
-  const add = e.target.closest('.add'); if (add) { anadir(add.dataset.id); return; }
+  const add = e.target.closest('.add'); if (add) { anadir(add.dataset.id, add); return; }
   const f = e.target.closest('[data-ficha]'); if (f) { abrirFicha(f.dataset.ficha); return; }
   const n = e.target.closest('.nov'); if (n) { abrirFicha(n.dataset.id); return; }
-  const c = e.target.closest('.cajon'); if (c) { irACatalogo(c.dataset.c); return; }
+  const c = e.target.closest('.cajon'); if (c) {
+    // El cajón se abre del todo y luego te lleva a lo que hay dentro
+    c.classList.add('abierto');
+    setTimeout(() => { irACatalogo(c.dataset.c); setTimeout(() => c.classList.remove('abierto'), 900); }, 420);
+    return;
+  }
   if (e.target.closest('#cerrarFicha')) cerrarFicha();
 });
 $('#drawerContent').addEventListener('click', e => {
@@ -924,15 +1013,39 @@ $('#drawerContent').addEventListener('click', e => {
   if (carrito[id] <= 0) delete carrito[id];
   guardar(); pintarContador(); pintarGrid(); pintarReserva();
 });
-$('#openCart').addEventListener('click', abrir); $('#fab').addEventListener('click', abrir);
+$('#openCart').addEventListener('click', abrir); $('#fab').addEventListener('click', abrir); $('#barraRes').addEventListener('click', abrir);
 $('#close').addEventListener('click', cerrar); $('#overlay').addEventListener('click', () => { cerrarFicha(); cerrar(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { cerrarFicha(); cerrar(); } });
 document.querySelectorAll('.wa-svc').forEach(a => { a.href = wa(a.dataset.t); a.target = '_blank'; a.rel = 'noopener'; });
-['#waTop', '#waAsk', '#waInfo'].forEach(s => { $(s).href = wa('Hola, os escribo desde la web de Fersaman: '); $(s).target = '_blank'; $(s).rel = 'noopener'; });
+['#waTop', '#waAsk', '#waInfo', '#waBarra'].forEach(s => { $(s).href = wa('Hola, os escribo desde la web de Fersaman: '); $(s).target = '_blank'; $(s).rel = 'noopener'; });
 $('#verMapa').addEventListener('click', () => { $('#mapa').innerHTML = '<iframe title="Mapa de Fersaman" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Ferreter%C3%ADa%20Fersaman%2C%20C.%20Aquilino%20S%C3%A1nchez%202%2C%20Tudela%20de%20Duero&output=embed"></iframe>'; });
 
 pintarHorario(); setInterval(pintarHorario, 60000);
 pintarCajones(); pintarNovedades(); pintarChips(); pintarGrid(); pintarContador();
+
+// Enlace directo a un producto (#p-12): se abre su ficha. Sirve para mandar un producto por WhatsApp.
+const enlaceP = location.hash.match(/^#p-(\d+)$/);
+if (enlaceP) setTimeout(() => abrirFicha(enlaceP[1]), 700);
+
+// Quien llega escaneando el cartel (?qr): saludo y se cuenta el escaneo en el contador
+if (/[?&]qr\b/.test(location.search)) {
+  $('#bienvenida').hidden = false;
+  addEventListener('load', () => { const t = document.createElement('span'); t.hidden = true; t.dataset.ev = 'fersaman2-escaneo-cartel'; document.body.appendChild(t); t.click(); t.remove(); });
+}
+$('#cerrarBienvenida').addEventListener('click', () => { $('#bienvenida').hidden = true; });
+
+// El buscador «escribe» ejemplos solo mientras nadie lo usa
+(() => {
+  const ej = ['bombilla', 'candado', 'silicona', 'WD-40', 'pilas', 'estufa', 'copia de llave', 'olla'];
+  let k = 0;
+  const escribir = () => {
+    const inp = $('#q');
+    if (document.activeElement === inp || inp.value) return setTimeout(escribir, 3000);
+    const w = ej[k++ % ej.length]; let i = 0;
+    const t = setInterval(() => { inp.placeholder = 'Busca: ' + w.slice(0, ++i); if (i >= w.length) { clearInterval(t); setTimeout(escribir, 1900); } }, 85);
+  };
+  setTimeout(escribir, 2500);
+})();
 
 // ---------- Animaciones (siempre activas: Sergio tiene «reducir movimiento» en su PC y las quiere ver) ----------
 if (window.gsap && window.ScrollTrigger) {
