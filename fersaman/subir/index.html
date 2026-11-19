@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Fersaman · Tus productos</title>
+<meta name="theme-color" content="#1B1A86">
+<link rel="icon" href="../logo-mascota.png">
+<link rel="apple-touch-icon" href="../logo-mascota.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B1A86; --navy-2: #12115E; --ink: #15163A; --muted: #5E6075;
+    --yellow: #F4E31A; --yellow-soft: #FFF7B8; --orange: #EE8F2E;
+    --paper: #F6F2E8; --card: #FFFFFF; --line: #E4DFD2; --ok: #1E8E4E; --ko: #B3261E;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); }
+  body { font: 500 19px/1.4 Inter, system-ui, sans-serif; min-height: 100vh; padding-bottom: env(safe-area-inset-bottom); }
+  h1, h2, .btn, .tile b { font-family: Archivo, Inter, sans-serif; }
+  header { background: var(--navy); color: #fff; padding: 14px 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 5; }
+  header img { width: 44px; height: 44px; border-radius: 50%; background: #fff; object-fit: contain; }
+  header h1 { font-size: 22px; margin: 0; line-height: 1.1; }
+  header small { display: block; font: 500 14px Inter, sans-serif; opacity: .8; }
+  main { max-width: 560px; margin: 0 auto; padding: 18px 16px 40px; }
+  .pantalla { display: none; }
+  .pantalla.on { display: block; animation: entra .25s ease-out; }
+  @keyframes entra { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  h2 { font-size: 27px; line-height: 1.15; margin: 6px 0 8px; color: var(--navy); }
+  p.ayuda { color: var(--muted); margin: 0 0 18px; font-size: 18px; }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 66px; padding: 14px 18px; border: 0; border-radius: 18px;
+         font-size: 22px; font-weight: 800; cursor: pointer; text-decoration: none; margin: 0 0 14px; transition: transform .1s; }
+  .btn:active { transform: scale(.97); }
+  .btn svg { width: 30px; height: 30px; flex: none; }
+  .btn.prim { background: var(--yellow); color: var(--navy); box-shadow: 0 4px 0 #c9b80d; }
+  .btn.azul { background: var(--navy); color: #fff; box-shadow: 0 4px 0 var(--navy-2); }
+  .btn.blanco { background: #fff; color: var(--navy); border: 2px solid var(--line); }
+  .btn.rojo { background: #fff; color: var(--ko); border: 2px solid #f0c9c6; }
+  .btn.peq { min-height: 52px; font-size: 18px; }
+  .btn.gigante { min-height: 120px; font-size: 25px; flex-direction: column; gap: 6px; }
+  .btn.gigante svg { width: 44px; height: 44px; }
+  .btn[disabled] { opacity: .4; pointer-events: none; }
+  .atras { background: none; border: 0; color: var(--navy); font: 700 18px Inter, sans-serif; padding: 8px 0; margin: 0 0 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .pasos { display: flex; gap: 6px; margin: 4px 0 14px; }
+  .pasos i { flex: 1; height: 8px; border-radius: 4px; background: var(--line); }
+  .pasos i.hecho { background: var(--navy); }
+  .pasos i.ahora { background: var(--yellow); }
+  input[type=text], input[type=password], input[inputmode=decimal], textarea, select {
+    width: 100%; font: 600 22px Inter, sans-serif; color: var(--ink); padding: 16px; border: 3px solid var(--line); border-radius: 16px; background: #fff; margin: 0 0 16px; }
+  textarea { min-height: 120px; font-size: 20px; resize: vertical; }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: var(--navy); }
+  .precio-caja { position: relative; }
+  .precio-caja input { font-size: 40px; padding-right: 60px; text-align: right; font-family: Archivo, sans-serif; }
+  .precio-caja span { position: absolute; right: 20px; top: 18px; font: 800 36px Archivo, sans-serif; color: var(--muted); }
+  .check { display: flex; gap: 14px; align-items: center; background: #fff; border: 3px solid var(--line); border-radius: 16px; padding: 14px 16px; margin: 0 0 16px; font-size: 19px; cursor: pointer; }
+  .check input { width: 30px; height: 30px; flex: none; accent-color: var(--navy); }
+  .foto-vista { width: 100%; aspect-ratio: 4/3; border-radius: 18px; background: #fff center/contain no-repeat; border: 3px dashed var(--line); margin: 0 0 16px; display: none; }
+  .foto-vista.on { display: block; border-style: solid; }
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 16px; }
+  .tile { background: #fff; border: 3px solid var(--line); border-radius: 16px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; cursor: pointer; color: var(--ink); font: inherit; }
+  .tile svg { width: 36px; height: 36px; color: var(--navy); }
+  .tile b { font-size: 17px; line-height: 1.15; }
+  .tile.on { border-color: var(--navy); background: var(--yellow-soft); box-shadow: inset 0 0 0 2px var(--navy); }
+  /* Vista previa como en la web */
+  .previa { background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 10px 30px rgba(21,22,58,.12); margin: 0 0 20px; border: 1px solid var(--line); }
+  .previa .img { aspect-ratio: 4/3; background: #f4f4f4 center/cover no-repeat; position: relative; }
+  .previa .info { padding: 14px 16px 18px; }
+  .previa .cat { font-size: 14px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; }
+  .previa h3 { font: 800 23px Archivo, sans-serif; margin: 4px 0 6px; }
+  .previa p { margin: 0 0 10px; color: var(--muted); font-size: 17px; }
+  .etq { display: inline-block; background: var(--yellow); color: var(--navy); font: 900 24px Archivo, sans-serif; padding: 4px 12px; border-radius: 8px; transform: rotate(-2deg); }
+  .etq small { font-size: 14px; margin-right: 4px; }
+  .entienda { color: var(--muted); font-weight: 700; font-size: 17px; }
+  .lista { display: grid; gap: 10px; }
+  .item { display: flex; align-items: center; gap: 14px; background: #fff; border: 2px solid var(--line); border-radius: 16px; padding: 10px; cursor: pointer; text-align: left; font: inherit; color: inherit; width: 100%; }
+  .item img, .item .sinfoto { width: 76px; height: 76px; border-radius: 12px; object-fit: cover; flex: none; background: #eee; }
+  .item b { display: block; font-size: 18px; line-height: 1.2; }
+  .item span { font-size: 16px; color: var(--muted); }
+  .item.oculto { opacity: .55; }
+  .item .badge { display: inline-block; background: var(--yellow); color: var(--navy); font-weight: 800; padding: 1px 8px; border-radius: 6px; font-size: 15px; }
+  .item.oculto .badge { background: #eee; color: var(--muted); }
+  .aviso { background: var(--yellow-soft); border-left: 6px solid var(--yellow); padding: 12px 14px; border-radius: 10px; margin: 0 0 16px; font-size: 17px; }
+  .error { background: #fde8e6; border-left: 6px solid var(--ko); color: #7a1a14; padding: 12px 14px; border-radius: 10px; margin: 0 0 16px; font-size: 17px; display: none; }
+  .error.on { display: block; }
+  .exito { text-align: center; padding-top: 20px; }
+  .exito .ok { width: 110px; height: 110px; margin: 0 auto 14px; border-radius: 50%; background: var(--ok); color: #fff; display: grid; place-items: center; animation: pop .4s cubic-bezier(.2,1.6,.4,1); }
+  .exito .ok svg { width: 64px; height: 64px; }
+  @keyframes pop { from { transform: scale(.3); opacity: 0; } to { transform: none; opacity: 1; } }
+  .cargando { position: fixed; inset: 0; background: rgba(18,17,94,.88); color: #fff; z-index: 20; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 22px; text-align: center; padding: 30px; font: 700 23px Archivo, sans-serif; }
+  .cargando.on { display: flex; }
+  .cargando small { font: 500 18px Inter, sans-serif; opacity: .85; }
+  .rueda { width: 70px; height: 70px; border: 8px solid rgba(255,255,255,.25); border-top-color: var(--yellow); border-radius: 50%; animation: gira 1s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .confirmar { display: none; background: #fff; border: 3px solid var(--ko); border-radius: 16px; padding: 16px; margin: 0 0 14px; }
+  .confirmar.on { display: block; }
+  .confirmar p { margin: 0 0 12px; font-weight: 700; }
+  .pie { text-align: center; color: var(--muted); font-size: 15px; margin-top: 24px; }
+  .pie a { color: var(--navy); }
+  .oculta { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <img src="../logo-mascota.png" alt="">
+  <div><h1>Tus productos</h1><small>Ferretería Fersaman</small></div>
+</header>
+
+<main>
+  <!-- Contraseña (solo si se abre sin el enlace bueno) -->
+  <section class="pantalla" id="pLogin">
+    <h2>Hola 👋</h2>
+    <p class="ayuda">Escribe la contraseña que te dieron. Solo hace falta una vez.</p>
+    <div class="error" id="errLogin">Esa contraseña no vale. Prueba otra vez.</div>
+    <input type="password" id="clave" autocomplete="current-password" placeholder="Contraseña">
+    <button class="btn prim" id="entrar">Entrar</button>
+  </section>
+
+  <!-- Inicio -->
+  <section class="pantalla" id="pInicio">
+    <h2>Hola, Yoli 👋</h2>
+    <p class="ayuda">¿Qué quieres hacer?</p>
+    <button class="btn prim gigante" data-ir="nuevo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8h4l2-3h6l2 3h4v12H3z"/><circle cx="12" cy="13" r="3.5"/></svg>
+      Poner un producto nuevo
+    </button>
+    <button class="btn azul gigante" data-ir="lista">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/></svg>
+      Cambiar un precio o quitar algo
+    </button>
+    <a class="btn blanco peq" href="../" target="_blank">Ver la web</a>
+    <p class="pie">Lo que pongas aquí sale en la web en 2 o 3 minutos.<br>¿Dudas? Escribe a Sergio.</p>
+  </section>
+
+  <!-- NUEVO · paso 1: foto -->
+  <section class="pantalla" id="pFoto">
+    <button class="atras" data-ir="inicio">‹ Volver</button>
+    <div class="pasos"><i class="ahora"></i><i></i><i></i><i></i><i></i></div>
+    <h2>1. Haz una foto del producto</h2>
+    <p class="ayuda">Mejor sobre un fondo liso y con buena luz.</p>
+    <div class="foto-vista" id="vistaFoto"></div>
+    <label class="btn prim" id="btnCamara">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8h4l2-3h6l2 3h4v12H3z"/><circle cx="12" cy="13" r="3.5"/></svg>
+      <span id="txtCamara">Hacer foto</span>
+      <input type="file" accept="image/*" capture="environment" class="oculta" id="inCamara">
+    </label>
+    <label class="btn blanco peq">
+      Elegir una foto que ya tengo
+      <input type="file" accept="image/*" class="oculta" id="inGaleria">
+    </label>
+    <button class="btn azul" id="sig1" disabled>Seguir ›</button>
+  </section>
+
+  <!-- paso 2: nombre -->
+  <section class="pantalla" id="pNombre">
+    <button class="atras" data-ir="foto">‹ Atrás</button>
+    <div class="pasos"><i class="hecho"></i><i class="ahora"></i><i></i><i></i><i></i></div>
+    <h2>2. ¿Cómo se llama?</h2>
+    <p class="ayuda">Como lo diría un cliente. Puedes tocar el micrófono 🎤 del teclado y decirlo en voz alta.</p>
+    <input type="text" id="nombre" maxlength="90" placeholder="Ej.: Estufa de leña Hergom" autocapitalize="sentences">
+    <button class="btn azul" id="sig2" disabled>Seguir ›</button>
+  </section>
+
+  <!-- paso 3: sección -->
+  <section class="pantalla" id="pCat">
+    <button class="atras" data-ir="nombre">‹ Atrás</button>
+    <div class="pasos"><i class="hecho"></i><i class="hecho"></i><i class="ahora"></i><i></i><i></i></div>
+    <h2>3. ¿En qué sección va?</h2>
+    <p class="ayuda">Toca una.</p>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <!-- paso 4: precio -->
+  <section class="pantalla" id="pPrecio">
+    <button class="atras" data-ir="cat">‹ Atrás</button>
+    <div class="pasos"><i class="hecho"></i><i class="hecho"></i><i class="hecho"></i><i class="ahora"></i><i></i></div>
+    <h2>4. ¿Qué precio tiene?</h2>
+    <p class="ayuda">Si no quieres poner precio, toca el botón blanco.</p>
+    <div class="precio-caja"><input inputmode="decimal" id="precio" placeholder="0,00" autocomplete="off"><span>€</span></div>
+    <label class="check"><input type="checkbox" id="desde"> Hay varios tamaños: poner «desde»</label>
+    <button class="btn azul" id="sig4" disabled>Seguir ›</button>
+    <button class="btn blanco peq" id="sinPrecio">Sin precio («Precio en tienda»)</button>
+  </section>
+
+  <!-- paso 5: detalle + revisar -->
+  <section class="pantalla" id="pRevisar">
+    <button class="atras" data-ir="precio">‹ Atrás</button>
+    <div class="pasos"><i class="hecho"></i><i class="hecho"></i><i class="hecho"></i><i class="hecho"></i><i class="ahora"></i></div>
+    <h2>5. ¿Quieres contar algo más?</h2>
+    <p class="ayuda">No hace falta. Por ejemplo: medidas, colores o para qué sirve.</p>
+    <textarea id="desc" maxlength="300" placeholder="(Opcional)"></textarea>
+    <h2 style="font-size:22px">Así se verá en la web:</h2>
+    <div class="previa" id="previa"></div>
+    <div class="error" id="errNuevo"></div>
+    <button class="btn prim" id="publicar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>
+      Publicar en la web
+    </button>
+  </section>
+
+  <!-- Hecho -->
+  <section class="pantalla exito" id="pHecho">
+    <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></div>
+    <h2 id="hechoTit">¡Ya está publicado!</h2>
+    <p class="ayuda">Sale en la web en 2 o 3 minutos.</p>
+    <button class="btn prim" data-ir="nuevo">Poner otro producto</button>
+    <button class="btn blanco peq" data-ir="inicio">Volver al principio</button>
+  </section>
+
+  <!-- Lista para cambiar -->
+  <section class="pantalla" id="pLista">
+    <button class="atras" data-ir="inicio">‹ Volver</button>
+    <h2>¿Cuál quieres cambiar?</h2>
+    <input type="text" id="buscar" placeholder="🔍 Buscar por nombre…">
+    <div class="error" id="errLista"></div>
+    <div class="lista" id="lista"></div>
+  </section>
+
+  <!-- Editar uno -->
+  <section class="pantalla" id="pEditar">
+    <button class="atras" data-ir="lista">‹ Volver a la lista</button>
+    <div class="foto-vista on" id="eFoto"></div>
+    <label class="btn blanco peq">Cambiar la foto<input type="file" accept="image/*" class="oculta" id="eInFoto"></label>
+    <div class="aviso oculta" id="eOcultoAviso">Este producto <b>no se ve</b> en la web ahora mismo.</div>
+    <label class="ayuda">Nombre</label>
+    <input type="text" id="eNombre" maxlength="90">
+    <label class="ayuda">Precio</label>
+    <div class="precio-caja"><input inputmode="decimal" id="ePrecio" placeholder="Sin precio" autocomplete="off"><span>€</span></div>
+    <label class="check"><input type="checkbox" id="eDesde"> Hay varios tamaños: poner «desde»</label>
+    <p class="ayuda" style="margin-top:-8px">Para quitar el precio, borra el número.</p>
+    <label class="ayuda">Detalle</label>
+    <textarea id="eDesc" maxlength="300"></textarea>
+    <div class="error" id="errEditar"></div>
+    <button class="btn prim" id="eGuardar">Guardar cambios</button>
+    <button class="btn azul oculta" id="ePoner">Volver a ponerlo en la web</button>
+    <button class="btn rojo peq" id="eQuitar">Quitar de la web</button>
+    <div class="confirmar" id="eConfirmar">
+      <p>¿Seguro que lo quitas? Dejará de verse en la web (se puede volver a poner).</p>
+      <button class="btn rojo peq" id="eQuitarSi" style="background:var(--ko);color:#fff">Sí, quitarlo</button>
+      <button class="btn blanco peq" id="eQuitarNo">No</button>
+    </div>
+  </section>
+</main>
+
+<div class="cargando" id="cargando"><div class="rueda"></div><div id="cargandoTxt">Subiendo…</div><small>No cierres esta pantalla</small></div>
+
+<script>
+// Servidor: Apps Script «Panel productos Fersaman» (código en AgenciaIA-PyMES/fersaman-panel/panel.gs)
+const API = 'https://script.google.com/macros/s/AKfycbzgfBIcUjSfSc7jHi0Qm-YnOzov2kUBERbmY7Icw70OTE80ezBIcqdAM-fpOJ34wUyLHg/exec';
+const LLAVE = 'fersaman_panel_clave';
+const ICONOS = {
+  electricidad: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+  iluminacion: '<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V16h8v-1.3A7 7 0 0 0 12 2z"/>',
+  herramienta: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5 2.5-2.5z"/>',
+  electrica: '<path d="M4 9h11l3 3-3 3H4zM8 15v5h4v-5M18 12h3"/>',
+  fontaneria: '<path d="M12 2s6 7 6 12a6 6 0 0 1-12 0c0-5 6-12 6-12z"/>',
+  tornilleria: '<path d="M8 3h8l-1 4H9zM10 7v13l2 2 2-2V7M10 11h4M10 15h4"/>',
+  pintura: '<path d="M4 4h12v6H4zM16 7h3v6h-7v3M11 16h2v6h-2z"/>',
+  hogar: '<path d="M3 11 12 3l9 8M5 9v12h14V9"/>',
+  jardin: '<path d="M12 22V12M12 12C12 7 8 4 3 4c0 5 4 8 9 8zM12 12c0-5 4-8 9-8 0 5-4 8-9 8z"/>',
+  pilas: '<path d="M7 6h10v15H7zM10 3h4v3M10 13h4M12 11v4"/>',
+  vestuario: '<path d="M8 3 4 6v5h3v10h10V11h3V6l-4-3c0 2-1.8 3-4 3S8 5 8 3z"/>',
+  electro: '<path d="M6 3h12v18H6zM6 8h12M9 5.5h1M12 14a2.5 2.5 0 1 0 0-.01"/>',
+  estufas: '<path d="M5 8h14v13H5zM8 3h3v5H8zM8 12h8v5H8z"/>',
+  limpieza: '<path d="M8 9h7v12H8zM10 9V5h4M14 5l3-2M14 5h3"/>',
+  coche: '<path d="M3 16v-4l2-5h14l2 5v4zM3 16v3h3v-3M18 16v3h3v-3M7 13h.01M17 13h.01"/>'
+};
+const CATS = [['estufas','Estufas y deshollinado'], ['electricidad','Electricidad'], ['iluminacion','Iluminación'], ['herramienta','Herramienta manual'],
+  ['electrica','Máquinas y accesorios'], ['fontaneria','Fontanería'], ['tornilleria','Tornillería y cerrajería'], ['pintura','Pintura y pegamentos'],
+  ['limpieza','Limpieza y droguería'], ['coche','Coche, moto y lubricantes'], ['vestuario','Ropa de trabajo y protección'], ['electro','Pequeño electrodoméstico'],
+  ['hogar','Hogar y menaje'], ['jardin','Jardín'], ['pilas','Pilas y electrónica']];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const icono = c => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONOS[c] || ''}</svg>`;
+const nombreCat = c => (CATS.find(x => x[0] === c) || [, ''])[1];
+const euros = n => Number(n).toFixed(2).replace('.', ',') + ' €';
+const leerPrecio = v => { const s = String(v || '').replace(/\s|€/g, '').replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.'); if (!s) return null; const n = Math.round(Number(s) * 100) / 100; return n > 0 && n < 100000 ? n : NaN; };
+const rutaFoto = f => f == null ? null : '../' + (typeof f === 'string' ? `fotos/${f}.jpg` : `fotos/p${String(f).padStart(2, '0')}.jpg`);
+function guardarLS(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
+function leerLS(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+
+let clave = null, productos = null, editando = null, fotosLocales = {};
+const nuevo = { foto: null, nombre: '', cat: null, precio: null, desde: false, desc: '' };
+
+// ——— Navegación ———
+const PANT = { login: 'pLogin', inicio: 'pInicio', nuevo: 'pFoto', foto: 'pFoto', nombre: 'pNombre', cat: 'pCat', precio: 'pPrecio', revisar: 'pRevisar', hecho: 'pHecho', lista: 'pLista', editar: 'pEditar' };
+function ir(p) {
+  if (p === 'nuevo') reiniciarNuevo();
+  if (p === 'lista') cargarLista();
+  document.querySelectorAll('.pantalla').forEach(s => s.classList.remove('on'));
+  $('#' + PANT[p]).classList.add('on');
+  window.scrollTo(0, 0);
+  if (p === 'nombre') setTimeout(() => $('#nombre').focus(), 250);
+  if (p === 'revisar') pintarPrevia();
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-ir]'); if (b) ir(b.dataset.ir); });
+
+function cargando(si, txt) { $('#cargandoTxt').textContent = txt || 'Subiendo…'; $('#cargando').classList.toggle('on', si); }
+function error(id, txt) { const el = $(id); el.innerHTML = txt || ''; el.classList.toggle('on', !!txt); }
+
+async function llamar(datos) {
+  const r = await fetch(API, { method: 'POST', body: JSON.stringify(Object.assign({ clave }, datos)) });
+  const j = await r.json();
+  if (!j.ok && j.error === 'clave') { guardarLS(LLAVE, null); clave = null; ir('login'); throw new Error('clave'); }
+  if (!j.ok) throw new Error(j.error || 'Algo ha fallado');
+  return j;
+}
+const textoError = e => e.message === 'Failed to fetch' || e.name === 'TypeError'
+  ? 'No hay conexión a internet. Comprueba la cobertura o el wifi y vuelve a tocar el botón.'
+  : 'No se ha podido guardar: ' + esc(e.message) + '<br>Vuelve a probar. Si sigue igual, avisa a Sergio.';
+
+// ——— Entrar ———
+async function entrar(c) {
+  clave = c;
+  cargando(true, 'Entrando…');
+  try { await llamar({ accion: 'entrar' }); guardarLS(LLAVE, c); ir('inicio'); }
+  catch (e) { if (e.message !== 'clave') { error('#errLogin', textoError(e)); ir('login'); } else error('#errLogin', 'Esa contraseña no vale. Prueba otra vez.'); }
+  finally { cargando(false); }
+}
+$('#entrar').onclick = () => { const c = $('#clave').value.trim(); if (c) entrar(c); };
+$('#clave').addEventListener('keydown', e => { if (e.key === 'Enter') $('#entrar').click(); });
+
+// ——— Foto: se reduce en el móvil a JPG de 1200 px (rápido de subir y suficiente para la web) ———
+async function prepararFoto(file) {
+  let img;
+  try { img = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+  catch (e) { img = await new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = URL.createObjectURL(file); }); }
+  const w = img.width, h = img.height, k = Math.min(1, 1200 / Math.max(w, h));
+  const cv = document.createElement('canvas'); cv.width = Math.round(w * k); cv.height = Math.round(h * k);
+  const cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(img, 0, 0, cv.width, cv.height);
+  return cv.toDataURL('image/jpeg', 0.85);
+}
+async function alElegirFoto(input, hecho) {
+  const f = input.files && input.files[0]; input.value = '';
+  if (!f) return;
+  cargando(true, 'Preparando la foto…');
+  try { hecho(await prepararFoto(f)); }
+  catch (e) { alertaSuave('No he podido abrir esa foto. Prueba con otra.'); }
+  finally { cargando(false); }
+}
+function alertaSuave(t) { error('#errNuevo', t); }
+
+// ——— Nuevo producto ———
+function reiniciarNuevo() {
+  Object.assign(nuevo, { foto: null, nombre: '', cat: null, precio: null, desde: false, desc: '' });
+  $('#vistaFoto').classList.remove('on'); $('#vistaFoto').style.backgroundImage = '';
+  $('#txtCamara').textContent = 'Hacer foto'; $('#sig1').disabled = true;
+  $('#nombre').value = ''; $('#sig2').disabled = true;
+  $('#precio').value = ''; $('#desde').checked = false; $('#sig4').disabled = true;
+  $('#desc').value = ''; error('#errNuevo');
+  document.querySelectorAll('.tile').forEach(t => t.classList.remove('on'));
+}
+function ponerFotoNueva(d) {
+  nuevo.foto = d; $('#vistaFoto').style.backgroundImage = `url(${d})`; $('#vistaFoto').classList.add('on');
+  $('#txtCamara').textContent = 'Repetir la foto'; $('#sig1').disabled = false;
+}
+$('#inCamara').onchange = e => alElegirFoto(e.target, ponerFotoNueva);
+$('#inGaleria').onchange = e => alElegirFoto(e.target, ponerFotoNueva);
+$('#sig1').onclick = () => ir('nombre');
+$('#nombre').oninput = e => { nuevo.nombre = e.target.value.trim(); $('#sig2').disabled = nuevo.nombre.length < 2; };
+$('#nombre').addEventListener('keydown', e => { if (e.key === 'Enter' && !$('#sig2').disabled) $('#sig2').click(); });
+$('#sig2').onclick = () => { $('#nombre').blur(); ir('cat'); };
+$('#tiles').innerHTML = CATS.map(c => `<button class="tile" data-c="${c[0]}">${icono(c[0])}<b>${c[1]}</b></button>`).join('');
+$('#tiles').onclick = e => {
+  const t = e.target.closest('.tile'); if (!t) return;
+  document.querySelectorAll('.tile').forEach(x => x.classList.toggle('on', x === t));
+  nuevo.cat = t.dataset.c; setTimeout(() => ir('precio'), 250);
+};
+$('#precio').oninput = e => { const n = leerPrecio(e.target.value); $('#sig4').disabled = !(n > 0); };
+$('#sig4').onclick = () => { nuevo.precio = leerPrecio($('#precio').value); nuevo.desde = $('#desde').checked; $('#precio').blur(); ir('revisar'); };
+$('#sinPrecio').onclick = () => { nuevo.precio = null; nuevo.desde = false; $('#precio').value = ''; $('#precio').blur(); ir('revisar'); };
+$('#desc').oninput = e => { nuevo.desc = e.target.value.trim(); pintarPrevia(); };
+
+function tarjeta(foto, cat, nombre, desc, precio, desde) {
+  return `<div class="img" style="background-image:url(${foto})"></div><div class="info">
+    <div class="cat">${esc(nombreCat(cat))}</div><h3>${esc(nombre)}</h3>${desc ? `<p>${esc(desc)}</p>` : ''}
+    ${precio != null ? `<span class="etq">${desde ? '<small>desde</small>' : ''}${euros(precio)}</span>` : '<span class="entienda">Precio en tienda</span>'}</div>`;
+}
+function pintarPrevia() { $('#previa').innerHTML = tarjeta(nuevo.foto, nuevo.cat, nuevo.nombre, nuevo.desc, nuevo.precio, nuevo.desde); }
+
+$('#publicar').onclick = async () => {
+  error('#errNuevo');
+  cargando(true, 'Publicando en la web…');
+  try {
+    const j = await llamar({ accion: 'nuevo', producto: { cat: nuevo.cat, nombre: nuevo.nombre, desc: nuevo.desc, precio: nuevo.precio, desde: nuevo.desde },
+      foto: nuevo.foto.split(',')[1] });
+    fotosLocales[j.foto] = nuevo.foto; productos = j.lista;
+    $('#hechoTit').textContent = '¡«' + nuevo.nombre + '» ya está publicado!';
+    ir('hecho');
+  } catch (e) { if (e.message !== 'clave') error('#errNuevo', textoError(e)); }
+  finally { cargando(false); }
+};
+
+// ——— Cambiar / quitar ———
+async function cargarLista(forzar) {
+  error('#errLista');
+  if (productos && !forzar) return pintarLista();
+  $('#lista').innerHTML = '<p class="ayuda">Cargando tus productos…</p>';
+  try { productos = (await llamar({ accion: 'lista' })).productos; pintarLista(); }
+  catch (e) { if (e.message !== 'clave') { $('#lista').innerHTML = ''; error('#errLista', textoError(e).replace('guardar', 'cargar la lista')); } }
+}
+const srcFoto = f => fotosLocales[f] || rutaFoto(f);
+function pintarLista() {
+  const q = norm($('#buscar').value.trim());
+  const filas = productos.map((p, i) => ({ id: i + 1, p })).reverse()
+    .filter(x => !q || norm(x.p[1] + ' ' + x.p[2] + ' ' + nombreCat(x.p[0])).includes(q));
+  $('#lista').innerHTML = filas.slice(0, 80).map(({ id, p }) => `<button class="item${p[6] ? ' oculto' : ''}" data-id="${id}">
+    ${p[4] != null ? `<img src="${srcFoto(p[4])}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">` : '<span class="sinfoto"></span>'}
+    <div><b>${esc(p[1])}</b><span>${p[6] ? '<span class="badge">No se ve</span>' : p[3] != null ? `<span class="badge">${p[5] ? 'desde ' : ''}${euros(p[3])}</span>` : 'Precio en tienda'}</span></div></button>`).join('')
+    || '<p class="ayuda">No encuentro nada con ese nombre.</p>';
+  if (filas.length > 80) $('#lista').insertAdjacentHTML('beforeend', '<p class="ayuda">Hay más: escribe arriba para buscar.</p>');
+}
+$('#buscar').oninput = () => productos && pintarLista();
+$('#lista').onclick = e => { const b = e.target.closest('.item'); if (b) abrirEditar(Number(b.dataset.id)); };
+
+function abrirEditar(id) {
+  const p = productos[id - 1];
+  editando = { id, p, fotoNueva: null };
+  $('#eFoto').style.backgroundImage = p[4] != null ? `url(${srcFoto(p[4])})` : '';
+  $('#eNombre').value = p[1]; $('#eDesc').value = p[2] || '';
+  $('#ePrecio').value = p[3] != null ? String(p[3].toFixed(2)).replace('.', ',') : '';
+  $('#eDesde').checked = !!p[5];
+  $('#eOcultoAviso').classList.toggle('oculta', !p[6]);
+  $('#ePoner').classList.toggle('oculta', !p[6]);
+  $('#eQuitar').classList.toggle('oculta', !!p[6]);
+  $('#eConfirmar').classList.remove('on'); error('#errEditar');
+  ir('editar');
+}
+$('#eInFoto').onchange = e => alElegirFoto(e.target, d => { editando.fotoNueva = d; $('#eFoto').style.backgroundImage = `url(${d})`; });
+
+async function guardarEditar(oculto, txt) {
+  error('#errEditar');
+  const nombre = $('#eNombre').value.trim(), precio = leerPrecio($('#ePrecio').value);
+  if (nombre.length < 2) return error('#errEditar', 'Falta el nombre.');
+  if (Number.isNaN(precio)) return error('#errEditar', 'El precio no está bien escrito. Pon solo el número, por ejemplo 12,50');
+  cargando(true, txt);
+  try {
+    const j = await llamar({ accion: 'cambiar', id: editando.id, foto: editando.fotoNueva ? editando.fotoNueva.split(',')[1] : null,
+      producto: { nombreAntes: editando.p[1], cat: editando.p[0], nombre, desc: $('#eDesc').value.trim(), precio, desde: $('#eDesde').checked, oculto } });
+    if (j.foto) fotosLocales[j.foto] = editando.fotoNueva;
+    productos = j.lista;
+    $('#hechoTit').textContent = oculto ? 'Quitado de la web' : '¡Cambios guardados!';
+    ir('hecho');
+  } catch (e) { if (e.message !== 'clave') error('#errEditar', textoError(e)); }
+  finally { cargando(false); }
+}
+$('#eGuardar').onclick = () => guardarEditar(!!editando.p[6], 'Guardando…');
+$('#ePoner').onclick = () => guardarEditar(false, 'Volviendo a ponerlo…');
+$('#eQuitar').onclick = () => { $('#eConfirmar').classList.add('on'); $('#eConfirmar').scrollIntoView({ behavior: 'smooth', block: 'center' }); };
+$('#eQuitarNo').onclick = () => $('#eConfirmar').classList.remove('on');
+$('#eQuitarSi').onclick = () => guardarEditar(true, 'Quitándolo…');
+
+// ——— Arranque: el enlace de Yoli lleva la contraseña (#k=…); se recuerda en el móvil ———
+const enlace = new URLSearchParams(location.hash.slice(1)).get('k');
+const guardada = enlace || leerLS(LLAVE);
+if (guardada) entrar(guardada); else ir('login');
+</script>
+</body>
+</html>
