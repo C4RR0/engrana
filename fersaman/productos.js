@@ -225,5 +225,5 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Silicona Ceys Stop Moho","Para baños y cocinas. 50 ml.",null,"r85"],
 ["pintura","Adhesivo Ceys para poliestireno","Especial para corcho blanco: no lo ataca.",null,"r86"],
 ["iluminacion","Foco LED solar EDM","Foco de trabajo plegable con placa solar para recargarlo al sol e indicador de carga. Para el taller, el campo o un corte de luz.",25.23,"y06"],
-["pilas","PRUEBA Engrana (no disponible)","",2.5,"w01"]
+["pilas","PRUEBA Engrana (no disponible)","",2.5,"w01",false,true]
 ];
