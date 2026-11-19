@@ -3,5 +3,6 @@ Allow: /
 Disallow: /demo/
 Disallow: /panel/
 Disallow: /metricas/
+Disallow: /fersaman/subir/
 
 Sitemap: https://engranaia.com/sitemap.xml
