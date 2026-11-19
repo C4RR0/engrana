@@ -229,5 +229,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["fontaneria","Desatascador muelle tambor manivela 4,5 mts","",null,"w02"],
 ["fontaneria","Desatascador pistola aire","",27.54,"w03"],
 ["fontaneria","Muelle desatascador 3, 5, y 10 metros","",5.73,"w04",true],
-["electrica","Tiralíneas/azulete/nivel","",null,"w05"]
+["electrica","Tiralíneas/azulete/nivel","",null,"w05"],
+["jardin","Piedra afilar ovalada","",1.89,"w06"]
 ];
