@@ -227,5 +227,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["iluminacion","Foco LED solar EDM","Foco de trabajo plegable con placa solar para recargarlo al sol e indicador de carga. Para el taller, el campo o un corte de luz.",25.23,"y06"],
 ["fontaneria","Desatascador fuelle goma","",7.5,"w01"],
 ["fontaneria","Desatascador muelle tambor manivela 4,5 mts","",null,"w02"],
-["fontaneria","Desatascador pistola aire","",27.54,"w03"]
+["fontaneria","Desatascador pistola aire","",27.54,"w03"],
+["fontaneria","Muelle desatascador 3, 5, y 10 metros","",5.73,"w04",true]
 ];
