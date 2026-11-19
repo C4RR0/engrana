@@ -455,9 +455,11 @@ $('#eQuitarNo').onclick = () => $('#eConfirmar').classList.remove('on');
 $('#eQuitarSi').onclick = () => guardarEditar(true, 'Quitándolo…');
 
 // ——— Arranque: el enlace de Yoli lleva la contraseña (#k=…); se recuerda en el móvil ———
-const enlace = new URLSearchParams(location.hash.slice(1)).get('k');
-const guardada = enlace || leerLS(LLAVE);
+const claveEnlace = () => new URLSearchParams(location.hash.slice(1)).get('k');
+const guardada = claveEnlace() || leerLS(LLAVE);
 if (guardada) entrar(guardada); else ir('login');
+// Si la página ya estaba abierta y se pulsa otra vez el enlace con la contraseña, solo cambia el #: recogerla igual
+window.addEventListener('hashchange', () => { const k = claveEnlace(); if (k && k !== clave) entrar(k); });
 </script>
 </body>
 </html>
