@@ -230,5 +230,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["fontaneria","Desatascador pistola aire","",27.54,"w03"],
 ["fontaneria","Muelle desatascador 3, 5, y 10 metros","",5.73,"w04",true],
 ["electrica","Tiralíneas/azulete/nivel","",null,"w05"],
-["jardin","Piedra afilar ovalada","",1.89,"w06"]
+["jardin","Piedra afilar ovalada","",1.89,"w06"],
+["jardin","Piedra afilar , /profesional","",null,"w07"]
 ];
