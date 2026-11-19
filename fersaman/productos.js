@@ -226,5 +226,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Adhesivo Ceys para poliestireno","Especial para corcho blanco: no lo ataca.",null,"r86"],
 ["iluminacion","Foco LED solar EDM","Foco de trabajo plegable con placa solar para recargarlo al sol e indicador de carga. Para el taller, el campo o un corte de luz.",25.23,"y06"],
 ["fontaneria","Desatascador fuelle goma","",7.5,"w01"],
-["fontaneria","Desatascador muelle tambor manivela 4,5 mts","",null,"w02"]
+["fontaneria","Desatascador muelle tambor manivela 4,5 mts","",null,"w02"],
+["fontaneria","Desatascador pistola aire","",27.54,"w03"]
 ];
