@@ -132,6 +132,21 @@
   .seccion-fila input { margin: 0; flex: 1; min-width: 0; font-size: 19px; padding: 12px; }
   .seccion-fila .btn { width: auto; margin: 0; min-height: 52px; padding: 8px 14px; font-size: 17px; }
   .seccion-n { display: block; color: var(--muted); font-size: 14px; margin: 4px 0 0 4px; }
+  .caj { display: grid; grid-template-columns: 84px 1fr auto; gap: 12px; align-items: center; background: #fff; border: 2px solid var(--line); border-radius: 16px; padding: 10px; }
+  .caj.fuera { opacity: .55; background: #f3f1ec; }
+  .caj-foto { width: 84px; height: 84px; border-radius: 12px; background: #3A2412 center/cover no-repeat; border: 0; padding: 0; cursor: pointer; position: relative; }
+  .caj-foto span { position: absolute; left: 4px; right: 4px; bottom: 4px; background: rgba(27,26,134,.85); color: #fff; font: 700 12px Inter, sans-serif; border-radius: 6px; padding: 2px 0; }
+  .caj-info b { display: block; font: 800 19px Archivo, Inter, sans-serif; color: var(--navy); line-height: 1.15; }
+  .caj-info > span { display: block; color: var(--muted); font-size: 15px; margin: 2px 0 6px; }
+  .caj-ver { display: flex; gap: 8px; align-items: center; font-size: 16px; cursor: pointer; }
+  .caj-ver input { width: 24px; height: 24px; margin: 0; accent-color: var(--navy); }
+  .caj-flechas { display: flex; flex-direction: column; gap: 6px; }
+  .caj-flechas button { width: 48px; height: 42px; border-radius: 12px; border: 2px solid var(--line); background: #fff; color: var(--navy); font: 800 20px Inter, sans-serif; cursor: pointer; }
+  .caj-flechas button[disabled] { opacity: .3; pointer-events: none; }
+  .caj-elige { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; padding-top: 4px; }
+  .caj-elige p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 15px; }
+  .caj-elige button { aspect-ratio: 1; border-radius: 10px; border: 3px solid transparent; background: #eee center/cover no-repeat; cursor: pointer; padding: 0; }
+  .caj-elige button.on { border-color: var(--navy); box-shadow: 0 0 0 2px var(--yellow); }
   .tile.mas { border-style: dashed; color: var(--navy); }
 </style>
 </head>
@@ -165,6 +180,7 @@
     </button>
     <button class="btn blanco peq" data-ir="varios">Subir varias fotos a la vez</button>
     <button class="btn blanco peq" data-ir="secciones">Secciones: añadir o cambiar nombre</button>
+    <button class="btn blanco peq" data-ir="cajones">Cajones de la portada: orden y fotos</button>
     <a class="btn blanco peq" href="../" target="_blank">Ver la web</a>
     <p class="pie">Lo que pongas aquí sale en la web en 2 o 3 minutos.<br>¿Dudas? Escribe a Sergio.</p>
   </section>
@@ -317,6 +333,17 @@
     <input type="text" id="secNueva" maxlength="40" placeholder="Ej.: Cadenas" autocapitalize="sentences">
     <button class="btn azul" id="secCrear">Añadir</button>
   </section>
+
+  <!-- Cajones de la portada -->
+  <section class="pantalla" id="pCajones">
+    <button class="atras" data-ir="inicio">‹ Volver</button>
+    <h2>Cajones de la portada</h2>
+    <p class="ayuda">Ordénalos con las flechas, quita los que no quieras enseñar y toca la foto para cambiarla. Al terminar, «Guardar».</p>
+    <div class="error" id="errCajones"></div>
+    <div class="lista" id="cajones"></div>
+    <p class="ayuda oculta" id="cajOk" style="color:var(--ok);font-weight:700;margin-top:14px">✅ Guardado. Sale en la web en 2 o 3 minutos.</p>
+    <button class="btn prim" id="cajGuardar" style="margin-top:16px">Guardar</button>
+  </section>
 </main>
 
 <!-- Editor de foto -->
@@ -381,12 +408,13 @@ let clave = null, productos = null, editando = null, fotosLocales = {};
 const nuevo = { foto: null, nombre: '', cat: null, precio: null, desde: false, desc: '' };
 
 // ——— Navegación ———
-const PANT = { login: 'pLogin', inicio: 'pInicio', nuevo: 'pFoto', foto: 'pFoto', nombre: 'pNombre', cat: 'pCat', precio: 'pPrecio', revisar: 'pRevisar', hecho: 'pHecho', lista: 'pLista', editar: 'pEditar', varios: 'pVarios', secciones: 'pSecciones' };
+const PANT = { login: 'pLogin', inicio: 'pInicio', nuevo: 'pFoto', foto: 'pFoto', nombre: 'pNombre', cat: 'pCat', precio: 'pPrecio', revisar: 'pRevisar', hecho: 'pHecho', lista: 'pLista', editar: 'pEditar', varios: 'pVarios', secciones: 'pSecciones', cajones: 'pCajones' };
 function ir(p) {
   if (p === 'nuevo') reiniciarNuevo();
   if (p === 'lista') cargarLista();
   if (p === 'varios') reiniciarVarios();
   if (p === 'secciones') pintarSecciones();
+  if (p === 'cajones') empezarCajones();
   document.querySelectorAll('.pantalla').forEach(s => s.classList.remove('on'));
   $('#' + PANT[p]).classList.add('on');
   window.scrollTo(0, 0);
@@ -564,6 +592,70 @@ $('#secciones').onclick = async e => {
   error('#errSecciones'); cargando(true, 'Guardando…');
   try { const j = await llamar({ accion: 'familia', k, nombre }); ponerFamilias(j.familias); pintarSecciones(); }
   catch (e2) { if (e2.message !== 'clave') error('#errSecciones', textoError(e2)); }
+  finally { cargando(false); }
+};
+// ——— Cajones de la portada (orden, cuáles salen y su foto; se guarda en familias.js) ———
+let cajones = [], cajAbierto = -1;
+const extra = c => (c && c[3] && typeof c[3] === 'object') ? c[3] : {};
+function fotoCajon(c) {
+  const vivos = productos.map((p, i) => ({ p, id: i + 1 })).filter(x => x.p[0] === c.k && !x.p[6] && x.p[4] != null);
+  const elegida = vivos.find(x => x.id === c.foto);
+  return (elegida || vivos[0] || {}).p ? rutaFoto((elegida || vivos[0]).p[4]) : null;
+}
+function empezarCajones() {
+  error('#errCajones'); $('#cajOk').classList.add('oculta'); cajAbierto = -1;
+  if (!productos) {
+    $('#cajones').innerHTML = '<p class="ayuda">Cargando…</p>';
+    llamar({ accion: 'lista' }).then(j => { productos = j.productos; ponerFamilias(j.familias); if ($('#pCajones').classList.contains('on')) empezarCajones(); })
+      .catch(e => { if (e.message !== 'clave') error('#errCajones', textoError(e)); });
+    return;
+  }
+  const n = k => productos.filter(p => p[0] === k && !p[6]).length;
+  const conOrden = CATS.some(c => extra(c).p != null);
+  cajones = CATS.map((c, i) => ({ k: c[0], nombre: c[2] || c[1], n: n(c[0]), sin: !!extra(c).sin, foto: extra(c).foto || null, p: extra(c).p, i }));
+  cajones.sort((a, b) => (b.n > 0) - (a.n > 0) || (conOrden ? (a.p ?? 999) - (b.p ?? 999) || a.i - b.i : b.n - a.n));
+  pintarCajonesPanel();
+}
+function pintarCajonesPanel() {
+  const ultimo = cajones.filter(c => c.n).length - 1;
+  $('#cajones').innerHTML = cajones.map((c, i) => {
+    const f = c.n ? fotoCajon(c) : null;
+    let elige = '';
+    if (i === cajAbierto) {
+      const fotos = productos.map((p, j) => ({ p, id: j + 1 })).filter(x => x.p[0] === c.k && !x.p[6] && x.p[4] != null);
+      elige = `<div class="caj-elige"><p>Toca la foto que quieras para este cajón:</p>${fotos.map(x =>
+        `<button data-pon="${i}:${x.id}" class="${rutaFoto(x.p[4]) === f ? 'on' : ''}" style="background-image:url(${rutaFoto(x.p[4])})" aria-label="${esc(x.p[1])}"></button>`).join('')}</div>`;
+    }
+    return `<div class="caj${c.sin || !c.n ? ' fuera' : ''}">
+      <button class="caj-foto" ${c.n ? `data-fotos="${i}"` : 'disabled'} style="${f ? `background-image:url(${f})` : ''}">${c.n ? '<span>Cambiar foto</span>' : ''}</button>
+      <div class="caj-info"><b>${esc(c.nombre)}</b><span>${c.n ? (c.n === 1 ? '1 producto' : c.n + ' productos') : 'Sin productos: no sale'}</span>
+        ${c.n ? `<label class="caj-ver"><input type="checkbox" data-ver="${i}" ${c.sin ? '' : 'checked'}> Sale en la portada</label>` : ''}</div>
+      <div class="caj-flechas">${c.n ? `<button data-sube="${i}" ${i === 0 ? 'disabled' : ''} aria-label="Subir">▲</button><button data-baja="${i}" ${i >= ultimo ? 'disabled' : ''} aria-label="Bajar">▼</button>` : ''}</div>
+      ${elige}</div>`;
+  }).join('');
+}
+function cajCambiado() { $('#cajOk').classList.add('oculta'); }
+$('#cajones').onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.sube != null || b.dataset.baja != null) {
+    const i = Number(b.dataset.sube ?? b.dataset.baja), j = b.dataset.sube != null ? i - 1 : i + 1;
+    [cajones[i], cajones[j]] = [cajones[j], cajones[i]];
+    if (cajAbierto === i) cajAbierto = j; else if (cajAbierto === j) cajAbierto = i;
+    cajCambiado(); pintarCajonesPanel();
+    const fila = $('#cajones').children[j]; if (fila) fila.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  } else if (b.dataset.fotos != null) {
+    const i = Number(b.dataset.fotos); cajAbierto = cajAbierto === i ? -1 : i; pintarCajonesPanel();
+  } else if (b.dataset.pon) {
+    const [i, id] = b.dataset.pon.split(':').map(Number); cajones[i].foto = id; cajAbierto = -1; cajCambiado(); pintarCajonesPanel();
+  }
+};
+$('#cajones').onchange = e => { const v = e.target.dataset.ver; if (v != null) { cajones[Number(v)].sin = !e.target.checked; cajCambiado(); pintarCajonesPanel(); } };
+$('#cajGuardar').onclick = async () => {
+  error('#errCajones'); cargando(true, 'Guardando los cajones…');
+  try {
+    const j = await llamar({ accion: 'cajones', cajones: cajones.map(c => ({ k: c.k, sin: c.sin, foto: c.foto })) });
+    ponerFamilias(j.familias); $('#cajOk').classList.remove('oculta'); $('#cajOk').scrollIntoView({ block: 'center', behavior: 'smooth' });
+  } catch (e2) { if (e2.message !== 'clave') error('#errCajones', textoError(e2)); }
   finally { cargando(false); }
 };
 $('#secCrear').onclick = async () => { if (await crearFamilia($('#secNueva').value, '#errSecciones')) { $('#secNueva').value = ''; pintarSecciones(); } };

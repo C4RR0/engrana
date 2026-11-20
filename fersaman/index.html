@@ -581,8 +581,14 @@ function ajustarPrecio() {
 }
 addEventListener('resize', () => ajustarPrecio());
 function pintarCajones() {
-  const cats = CATS.map(c => ({ k: c[0], corto: c[2], n: PRODUCTOS.filter(p => p.cat === c[0]).length, foto: (PRODUCTOS.find(p => p.cat === c[0] && p.foto) || {}).foto }))
-    .filter(c => c.n).sort((a, b) => b.n - a.n);
+  // Yoli puede elegir en su panel el orden, qué cajones salen y su foto (4.º dato de familias.js: {p, sin, foto})
+  const ext = c => (c[3] && typeof c[3] === 'object') ? c[3] : {};
+  const conOrden = CATS.some(c => ext(c).p != null);
+  const cats = CATS.map((c, i) => {
+    const suyos = PRODUCTOS.filter(p => p.cat === c[0]), e = ext(c);
+    const elegida = e.foto && suyos.find(p => p.id === e.foto && p.foto);
+    return { k: c[0], corto: c[2], n: suyos.length, foto: (elegida || suyos.find(p => p.foto) || {}).foto, sin: !!e.sin, p: e.p, i };
+  }).filter(c => c.n && !c.sin).sort((a, b) => conOrden ? (a.p ?? 999) - (b.p ?? 999) || a.i - b.i : b.n - a.n);
   const nConPrecio = PRODUCTOS.filter(p => p.precio != null).length;
   const cajon = (k, titulo, sub, foto, extra = '') => `<button class="cajon${extra}" data-c="${k}" aria-label="${esc(titulo)}: ${esc(sub)}">
       <span class="dentro">${foto ? `<img src="${foto}" alt="" loading="lazy">` : ''}</span>
