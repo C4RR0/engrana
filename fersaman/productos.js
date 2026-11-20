@@ -256,5 +256,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Silicona liquida","",null,"w29"],
 ["pintura","Barniz hidrofugante","",null,"w30"],
 ["pintura","Antimanchas","",null,"w31"],
-["pintura","Cubre manchas en spray","",null,"w32"]
+["pintura","Cubre manchas en spray","",null,"w32"],
+["pintura","Repara gotelé spray","",null,"w33"]
 ];
