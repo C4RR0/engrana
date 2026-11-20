@@ -244,5 +244,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["jardin","Fungicida cobre","",null,"w17"],
 ["jardin","Azufre polvo","",null,"w18"],
 ["jardin","Enrraizante","",null,"w19"],
-["jardin","Herbicida total 200ml","",null,"w20"]
+["jardin","Herbicida total 200ml","",null,"w20"],
+["pintura","Tratamiento carcoma/polillas","",null,"w21"]
 ];
