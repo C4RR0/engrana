@@ -233,5 +233,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["jardin","Piedra afilar ovalada","",1.89,"w06"],
 ["jardin","Piedra afilar , /profesional","",null,"w07"],
 ["jardin","Triple accion","",null,"w08"],
-["jardin","Insecticida mosquitos","",null,"w09"]
+["jardin","Insecticida mosquitos","",null,"w09"],
+["jardin","Aceite uso botánico/ resistencia contra insectos","",null,"w10"]
 ];
