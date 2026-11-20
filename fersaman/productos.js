@@ -262,5 +262,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["jardin","Aceite 4 tiempos","",null,"w35"],
 ["jardin","Aceite 2 tiempos","",null,"w36"],
 ["pintura","Spray efecto cobreado 400 ml.","",null,"w37"],
-["pintura","Pintura efecto cromo plata 400 ml.","",null,"w38"]
+["pintura","Pintura efecto cromo plata 400 ml.","",null,"w38"],
+["pintura","Pintura efecto cromo oro 400 ml","",null,"w39"]
 ];
