@@ -240,5 +240,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["jardin","Herbicida de cesped","",null,"w13"],
 ["jardin","Pasta para cicatrizar","",null,"w14"],
 ["jardin","Que lato de hierro","",null,"w15"],
-["jardin","Fungicida cobre","",null,"w16"]
+["jardin","Fungicida cobre","",null,"w16"],
+["jardin","Fungicida cobre","",null,"w17"]
 ];
