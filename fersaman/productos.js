@@ -235,5 +235,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["jardin","Triple accion","",null,"w08"],
 ["jardin","Insecticida mosquitos","",null,"w09"],
 ["jardin","Aceite uso botánico/ resistencia contra insectos","",null,"w10"],
-["jardin","Potenciador defensas de plantas","",null,"w11"]
+["jardin","Potenciador defensas de plantas","",null,"w11"],
+["jardin","Herbicida total 250 ml.","",20.98,"w12"]
 ];
