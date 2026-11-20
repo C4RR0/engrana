@@ -267,5 +267,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Esmalte spray colores 400 ml.","",5.95,"w40"],
 ["tornilleria","Cerradura lince palanca","",null,"w41"],
 ["tornilleria","Cerradura lince viro","",null,"w42"],
-["tornilleria","Cerradura pomo/llave","",null,"w43"]
+["tornilleria","Cerradura pomo/llave","",null,"w43"],
+["tornilleria","Cerradura lince superficie 80","",null,"w44"]
 ];
