@@ -259,5 +259,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Cubre manchas en spray","",null,"w32"],
 ["pintura","Repara gotelé spray","",null,"w33"],
 ["pintura","Esmalte radiador spray","",null,"w34"],
-["jardin","Aceite 4 tiempos","",null,"w35"]
+["jardin","Aceite 4 tiempos","",null,"w35"],
+["jardin","Aceite 2 tiempos","",null,"w36"]
 ];
