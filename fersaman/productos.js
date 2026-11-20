@@ -248,5 +248,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Tratamiento carcoma/polillas","",null,"w21"],
 ["pintura","Tratamiento carcoma/polillas liquido","",null,"w22"],
 ["pintura","Esmalte para azulejos 750 ml","",null,"w23"],
-["pintura","Aceite de linaza 1 ltr","",null,"w24"]
+["pintura","Aceite de linaza 1 ltr","",null,"w24"],
+["pintura","Disolvente al cloro caucho","",null,"w25"]
 ];
