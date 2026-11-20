@@ -246,5 +246,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["jardin","Enrraizante","",null,"w19"],
 ["jardin","Herbicida total 200ml","",null,"w20"],
 ["pintura","Tratamiento carcoma/polillas","",null,"w21"],
-["pintura","Tratamiento carcoma/polillas liquido","",null,"w22"]
+["pintura","Tratamiento carcoma/polillas liquido","",null,"w22"],
+["pintura","Esmalte para azulejos 750 ml","",null,"w23"]
 ];
