@@ -250,5 +250,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Esmalte para azulejos 750 ml","",null,"w23"],
 ["pintura","Aceite de linaza 1 ltr","",null,"w24"],
 ["pintura","Disolvente al cloro caucho","",null,"w25"],
-["pintura","Aguarrás 500 ml","",null,"w26"]
+["pintura","Aguarrás 500 ml","",null,"w26"],
+["pintura","Disolvente 500 ml/ 1 ltr. / 5 ltrs.","",null,"w27"]
 ];
