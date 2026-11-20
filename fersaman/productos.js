@@ -268,5 +268,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["tornilleria","Cerradura lince palanca","",null,"w41"],
 ["tornilleria","Cerradura lince viro","",null,"w42"],
 ["tornilleria","Cerradura pomo/llave","",null,"w43"],
-["tornilleria","Cerradura lince superficie 80","",null,"w44"]
+["tornilleria","Cerradura lince superficie 80","",null,"w44"],
+["tornilleria","Cerradura lince superficie para manilla 60/ 70","",null,"w45"]
 ];
