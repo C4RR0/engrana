@@ -203,7 +203,7 @@ window.FERSAMAN_PRODUCTOS = [
 ["tornilleria","Anclajes metálicos de expansión","Tornillos, espárragos y cáncamos de anclaje en varias medidas.",null,"r47"],
 ["herramienta","Destornilladores Cofan","Planos y de estrella; también aislados para electricista.",null,"r50"],
 ["herramienta","Alicate de corte Tolsen 250 mm","De palanca, para cortes fuertes.",null,"r51"],
-["herramienta","Mazas y martillos Cofan","Con mango ergonómico.",null,"r52"],
+["construccion","Mazas y martillos Cofan","Con mango ergonómico.",null,"r52"],
 ["pilas","Pilas recargables","Varta, EDM y Maurer con carga USB-C. También pilas especiales.",null,"r55"],
 ["pilas","Pilas alcalinas Varta","En los tamaños más habituales.",null,"r56"],
 ["herramienta","Estuches de puntas y vasos","De 38 y de 121 piezas, con carraca.",null,"r57"],
