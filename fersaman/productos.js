@@ -255,5 +255,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Aceite de teca 1 ltr.","",null,"w28"],
 ["pintura","Silicona liquida","",null,"w29"],
 ["pintura","Barniz hidrofugante","",null,"w30"],
-["pintura","Antimanchas","",null,"w31"]
+["pintura","Antimanchas","",null,"w31"],
+["pintura","Cubre manchas en spray","",null,"w32"]
 ];
