@@ -16,5 +16,5 @@ window.FERSAMAN_FAMILIAS = [
 ["pilas","Pilas y electrónica","Pilas"],
 ["cadenas","Cadenas y cuerdas","Cadenas"],
 ["bricolaje","Bricolaje","Bricolaje"],
-["construccin","Construcci�n","Construcci�n"]
+["construccin","Construcción","Construcción"]
 ];
