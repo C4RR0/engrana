@@ -91,6 +91,7 @@
   .cajonera { position: relative; background: linear-gradient(180deg, #A9713C, #8C5A2B); padding: 14px; border-radius: 14px; box-shadow: 0 24px 50px -18px rgba(60,35,10,.55), inset 0 0 0 3px rgba(255,255,255,.08); perspective: 900px; }
   .cajonera::before { content: "FERSAMAN · DESDE TUDELA"; position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--yellow); color: var(--navy-2); font: 900 .72rem Archivo; letter-spacing: .14em; padding: 5px 12px; border-radius: 6px; white-space: nowrap; }
   .cajones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  @media (min-width: 860px) { .cajones.muchos { grid-template-columns: repeat(4, 1fr); } }
   .cajon { position: relative; border: 0; padding: 0; cursor: pointer; background: transparent; aspect-ratio: 1.45; transform-style: preserve-3d; font: inherit; color: inherit; text-align: left; }
   .cajon .frente { position: absolute; inset: 0; z-index: 2; border-radius: 7px; background: linear-gradient(180deg, #EBD9BC, #D8BF97); box-shadow: inset 0 -5px 0 rgba(0,0,0,.12), inset 0 2px 0 rgba(255,255,255,.5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; padding: 8px; transition: transform .35s cubic-bezier(.3,1.4,.5,1), box-shadow .3s; }
   .cajon .etiqueta { background: #fff; border: 1.5px solid #B9A27C; border-radius: 3px; padding: 3px 8px; font: 800 clamp(.62rem, 1.35vw, .8rem)/1.15 Archivo, sans-serif; color: var(--ink); text-align: center; max-width: 100%; }
@@ -571,15 +572,27 @@ function pintarHorario() {
 }
 
 // ---------- Cajonera ----------
+function ajustarPrecio() {
+  const caja = $('#cajones'), el = caja && caja.querySelector('.cajon.especial'); if (!el) return;
+  const cols = getComputedStyle(caja).gridTemplateColumns.split(' ').length || 3;
+  const n = caja.children.length - 1, sp = cols - (n % cols);
+  el.style.gridColumn = sp > 1 ? `span ${sp}` : '';
+  el.style.aspectRatio = sp > 1 ? `${(1.45 * sp).toFixed(2)} / 1` : '';
+}
+addEventListener('resize', () => ajustarPrecio());
 function pintarCajones() {
   const cats = CATS.map(c => ({ k: c[0], corto: c[2], n: PRODUCTOS.filter(p => p.cat === c[0]).length, foto: (PRODUCTOS.find(p => p.cat === c[0] && p.foto) || {}).foto }))
-    .filter(c => c.n).sort((a, b) => b.n - a.n).slice(0, 11);
+    .filter(c => c.n).sort((a, b) => b.n - a.n);
   const nConPrecio = PRODUCTOS.filter(p => p.precio != null).length;
   const cajon = (k, titulo, sub, foto, extra = '') => `<button class="cajon${extra}" data-c="${k}" aria-label="${esc(titulo)}: ${esc(sub)}">
       <span class="dentro">${foto ? `<img src="${foto}" alt="" loading="lazy">` : ''}</span>
       <span class="frente"><span class="etiqueta">${esc(titulo)}<small>${esc(sub)}</small></span><span class="tirador"></span></span></button>`;
   $('#cajones').innerHTML = cats.map(c => cajon(c.k, c.corto, `${c.n} productos`, c.foto)).join('') +
     cajon('precio', 'Con precio', `${nConPrecio} productos`, (PRODUCTOS.find(p => p.precio != null && p.foto) || {}).foto, ' especial');
+  // Todas las secciones con productos tienen cajón; con muchas, 4 por fila en el ordenador.
+  // «Con precio» se estira para rellenar la última fila.
+  $('#cajones').classList.toggle('muchos', cats.length > 11);
+  ajustarPrecio();
   $('#nProductos').textContent = PRODUCTOS.length;
 }
 
