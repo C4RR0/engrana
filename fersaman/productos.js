@@ -257,5 +257,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Barniz hidrofugante","",null,"w30"],
 ["pintura","Antimanchas","",null,"w31"],
 ["pintura","Cubre manchas en spray","",null,"w32"],
-["pintura","Repara gotelé spray","",null,"w33"]
+["pintura","Repara gotelé spray","",null,"w33"],
+["pintura","Esmalte radiador spray","",null,"w34"]
 ];
