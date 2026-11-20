@@ -260,5 +260,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Repara gotelé spray","",null,"w33"],
 ["pintura","Esmalte radiador spray","",null,"w34"],
 ["jardin","Aceite 4 tiempos","",null,"w35"],
-["jardin","Aceite 2 tiempos","",null,"w36"]
+["jardin","Aceite 2 tiempos","",null,"w36"],
+["pintura","Spray efecto cobreado 400 ml.","",null,"w37"]
 ];
