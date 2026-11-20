@@ -232,5 +232,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["electrica","Tiralíneas/azulete/nivel","",null,"w05"],
 ["jardin","Piedra afilar ovalada","",1.89,"w06"],
 ["jardin","Piedra afilar , /profesional","",null,"w07"],
-["jardin","Triple accion","",null,"w08"]
+["jardin","Triple accion","",null,"w08"],
+["jardin","Insecticida mosquitos","",null,"w09"]
 ];
