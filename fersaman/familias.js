@@ -1,0 +1,19 @@
+window.FERSAMAN_FAMILIAS = [
+["estufas","Estufas y deshollinado","Estufas"],
+["electricidad","Electricidad","Electricidad"],
+["iluminacion","Iluminación","Luz"],
+["herramienta","Herramienta manual","Herramienta"],
+["electrica","Máquinas y accesorios","Máquinas"],
+["fontaneria","Fontanería","Fontanería"],
+["tornilleria","Tornillería y cerrajería","Cerrajería"],
+["pintura","Pintura y adhesivos","Pintura y pegamentos"],
+["limpieza","Limpieza y droguería","Limpieza"],
+["coche","Coche, moto y lubricantes","Coche y moto"],
+["vestuario","Ropa de trabajo y protección","Ropa y calzado"],
+["electro","Pequeño electrodoméstico","Electro"],
+["hogar","Hogar y menaje","Hogar"],
+["jardin","Jardín","Jardín"],
+["pilas","Pilas y electrónica","Pilas"],
+["cadenas","Cadenas y cuerdas","Cadenas"],
+["bricolaje","Bricolaje","Bricolaje"]
+];

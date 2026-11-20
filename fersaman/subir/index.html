@@ -100,6 +100,39 @@
   .pie { text-align: center; color: var(--muted); font-size: 15px; margin-top: 24px; }
   .pie a { color: var(--navy); }
   .oculta { display: none !important; }
+  /* Editor de foto: recortar y girar */
+  .editor { position: fixed; inset: 0; z-index: 15; background: #14143a; color: #fff; display: none; flex-direction: column; padding: 14px 16px calc(14px + env(safe-area-inset-bottom)); }
+  .editor.on { display: flex; }
+  .editor h2 { color: #fff; font-size: 22px; margin: 0 0 4px; }
+  .editor p { margin: 0 0 10px; opacity: .85; font-size: 16px; }
+  .ed-zona { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .ed-marco { position: relative; touch-action: none; user-select: none; -webkit-user-select: none; line-height: 0; }
+  .ed-marco img { display: block; max-width: calc(100vw - 72px); max-height: calc(100vh - 300px); pointer-events: none; }
+  .ed-sombra { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .ed-caja { position: absolute; border: 3px solid var(--yellow); cursor: move; touch-action: none; }
+  .ed-hueco { position: absolute; box-shadow: 0 0 0 9999px rgba(10,10,40,.6); }
+  .ed-caja::before, .ed-caja::after { content: ""; position: absolute; border: 0 dashed rgba(255,255,255,.5); pointer-events: none; }
+  .ed-caja::before { left: 33.3%; right: 33.3%; top: 0; bottom: 0; border-width: 0 1px; }
+  .ed-caja::after { top: 33.3%; bottom: 33.3%; left: 0; right: 0; border-width: 1px 0; }
+  .ed-caja i { position: absolute; width: 34px; height: 34px; background: var(--yellow); border: 3px solid var(--navy); border-radius: 50%; touch-action: none; z-index: 1; }
+  .ed-caja i[data-h=nw] { left: -18px; top: -18px; } .ed-caja i[data-h=ne] { right: -18px; top: -18px; }
+  .ed-caja i[data-h=sw] { left: -18px; bottom: -18px; } .ed-caja i[data-h=se] { right: -18px; bottom: -18px; }
+  .ed-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ed-fila .btn { margin-bottom: 10px; }
+  .editor .atras { color: #fff; align-self: center; }
+  .retocar { display: inline-flex; align-items: center; gap: 6px; margin: -6px 0 14px; background: none; border: 0; color: var(--navy); font: 700 18px Inter, sans-serif; text-decoration: underline; cursor: pointer; padding: 6px 0; }
+  /* Varios a la vez */
+  .vitem { display: grid; grid-template-columns: 92px 1fr; gap: 12px; background: #fff; border: 2px solid var(--line); border-radius: 16px; padding: 10px; position: relative; }
+  .vitem .mini { width: 92px; height: 92px; border-radius: 12px; background: #eee center/cover no-repeat; border: 0; padding: 0; cursor: pointer; position: relative; }
+  .vitem .mini span { position: absolute; left: 4px; right: 4px; bottom: 4px; background: rgba(27,26,134,.85); color: #fff; font: 700 12px Inter, sans-serif; border-radius: 6px; padding: 2px 0; }
+  .vitem input { font-size: 18px; padding: 10px 12px; margin: 0 0 8px; border-width: 2px; border-radius: 12px; }
+  .vitem input.falta { border-color: var(--ko); }
+  .vitem .x { position: absolute; top: -10px; right: -10px; width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--line); background: #fff; color: var(--ko); font: 800 20px Inter, sans-serif; cursor: pointer; }
+  .seccion-fila { display: flex; gap: 8px; align-items: center; }
+  .seccion-fila input { margin: 0; flex: 1; min-width: 0; font-size: 19px; padding: 12px; }
+  .seccion-fila .btn { width: auto; margin: 0; min-height: 52px; padding: 8px 14px; font-size: 17px; }
+  .seccion-n { display: block; color: var(--muted); font-size: 14px; margin: 4px 0 0 4px; }
+  .tile.mas { border-style: dashed; color: var(--navy); }
 </style>
 </head>
 <body>
@@ -130,6 +163,8 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/></svg>
       Cambiar un precio o quitar algo
     </button>
+    <button class="btn blanco peq" data-ir="varios">Subir varias fotos a la vez</button>
+    <button class="btn blanco peq" data-ir="secciones">Secciones: añadir o cambiar nombre</button>
     <a class="btn blanco peq" href="../" target="_blank">Ver la web</a>
     <p class="pie">Lo que pongas aquí sale en la web en 2 o 3 minutos.<br>¿Dudas? Escribe a Sergio.</p>
   </section>
@@ -141,6 +176,7 @@
     <h2>1. Haz una foto del producto</h2>
     <p class="ayuda">Mejor sobre un fondo liso y con buena luz.</p>
     <div class="foto-vista" id="vistaFoto"></div>
+    <button class="retocar oculta" id="retocar1">✂️ Recortar o girar la foto</button>
     <label class="btn prim" id="btnCamara">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8h4l2-3h6l2 3h4v12H3z"/><circle cx="12" cy="13" r="3.5"/></svg>
       <span id="txtCamara">Hacer foto</span>
@@ -170,6 +206,11 @@
     <h2>3. ¿En qué sección va?</h2>
     <p class="ayuda">Toca una.</p>
     <div class="tiles" id="tiles"></div>
+    <div id="nuevaCatCaja" class="oculta">
+      <input type="text" id="nuevaCat" maxlength="40" placeholder="Nombre de la sección nueva" autocapitalize="sentences">
+      <div class="error" id="errCat"></div>
+      <button class="btn azul" id="crearCat">Crear la sección y seguir ›</button>
+    </div>
   </section>
 
   <!-- paso 4: precio -->
@@ -222,6 +263,7 @@
   <section class="pantalla" id="pEditar">
     <button class="atras" data-ir="lista">‹ Volver a la lista</button>
     <div class="foto-vista on" id="eFoto"></div>
+    <button class="retocar" id="eRetocar">✂️ Recortar o girar la foto</button>
     <label class="btn blanco peq">Cambiar la foto<input type="file" accept="image/*" class="oculta" id="eInFoto"></label>
     <div class="aviso oculta" id="eOcultoAviso">Este producto <b>no se ve</b> en la web ahora mismo.</div>
     <label class="ayuda">Nombre</label>
@@ -230,6 +272,8 @@
     <div class="precio-caja"><input inputmode="decimal" id="ePrecio" placeholder="Sin precio" autocomplete="off"><span>€</span></div>
     <label class="check"><input type="checkbox" id="eDesde"> Hay varios tamaños: poner «desde»</label>
     <p class="ayuda" style="margin-top:-8px">Para quitar el precio, borra el número.</p>
+    <label class="ayuda">Sección</label>
+    <select id="eCat"></select>
     <label class="ayuda">Detalle</label>
     <textarea id="eDesc" maxlength="300"></textarea>
     <div class="error" id="errEditar"></div>
@@ -242,10 +286,55 @@
       <button class="btn blanco peq" id="eQuitarNo">No</button>
     </div>
   </section>
+
+  <!-- Varios a la vez -->
+  <section class="pantalla" id="pVarios">
+    <button class="atras" data-ir="inicio">‹ Volver</button>
+    <h2>Varios productos a la vez</h2>
+    <p class="ayuda">Elige varias fotos de la galería y escribe el nombre de cada una. El precio puedes dejarlo en blanco («Precio en tienda») y ponerlo otro día.</p>
+    <label class="btn prim">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 5h16v14H4zM4 15l5-5 4 4 3-3 4 4"/></svg>
+      <span id="txtVarios">Elegir fotos</span>
+      <input type="file" accept="image/*" multiple class="oculta" id="inVarios">
+    </label>
+    <div class="lista" id="varios"></div>
+    <div id="variosResto" class="oculta" style="margin-top:18px">
+      <label class="ayuda">¿En qué sección van? (todas en la misma)</label>
+      <select id="variosCat"></select>
+      <div class="error" id="errVarios"></div>
+      <button class="btn prim" id="variosPublicar">Publicar</button>
+    </div>
+  </section>
+
+  <!-- Secciones -->
+  <section class="pantalla" id="pSecciones">
+    <button class="atras" data-ir="inicio">‹ Volver</button>
+    <h2>Secciones de la web</h2>
+    <p class="ayuda">Cambia el nombre y toca «Guardar». Las secciones sin productos no salen en la web.</p>
+    <div class="error" id="errSecciones"></div>
+    <div class="lista" id="secciones"></div>
+    <h2 style="font-size:22px;margin-top:22px">Añadir una sección</h2>
+    <input type="text" id="secNueva" maxlength="40" placeholder="Ej.: Cadenas" autocapitalize="sentences">
+    <button class="btn azul" id="secCrear">Añadir</button>
+  </section>
 </main>
+
+<!-- Editor de foto -->
+<div class="editor" id="editor">
+  <h2>Recorta o gira la foto</h2>
+  <p>Arrastra las bolas amarillas para recortar. Arrastra el cuadro para moverlo.</p>
+  <div class="ed-zona"><div class="ed-marco" id="edMarco"><img id="edImg" alt=""><div class="ed-sombra"><div class="ed-hueco" id="edHueco"></div></div><div class="ed-caja" id="edCaja"><i data-h="nw"></i><i data-h="ne"></i><i data-h="sw"></i><i data-h="se"></i></div></div></div>
+  <div class="ed-fila">
+    <button class="btn blanco peq" id="edGirar">↻ Girar</button>
+    <button class="btn blanco peq" id="edTodo">Foto entera</button>
+  </div>
+  <button class="btn prim" id="edListo">Listo</button>
+  <button class="atras" id="edCancelar">Cancelar</button>
+</div>
 
 <div class="cargando" id="cargando"><div class="rueda"></div><div id="cargandoTxt">Subiendo…</div><small>No cierres esta pantalla</small></div>
 
+<script>document.write('<script src="../familias.js?v=' + Math.floor(Date.now() / 120000) + '"><\/script>');</script>
 <script>
 // Servidor: Apps Script «Panel productos Fersaman» (código en AgenciaIA-PyMES/fersaman-panel/panel.gs)
 const API = 'https://script.google.com/macros/s/AKfycbzgfBIcUjSfSc7jHi0Qm-YnOzov2kUBERbmY7Icw70OTE80ezBIcqdAM-fpOJ34wUyLHg/exec';
@@ -265,17 +354,22 @@ const ICONOS = {
   electro: '<path d="M6 3h12v18H6zM6 8h12M9 5.5h1M12 14a2.5 2.5 0 1 0 0-.01"/>',
   estufas: '<path d="M5 8h14v13H5zM8 3h3v5H8zM8 12h8v5H8z"/>',
   limpieza: '<path d="M8 9h7v12H8zM10 9V5h4M14 5l3-2M14 5h3"/>',
-  coche: '<path d="M3 16v-4l2-5h14l2 5v4zM3 16v3h3v-3M18 16v3h3v-3M7 13h.01M17 13h.01"/>'
+  coche: '<path d="M3 16v-4l2-5h14l2 5v4zM3 16v3h3v-3M18 16v3h3v-3M7 13h.01M17 13h.01"/>',
+  cadenas: '<path d="M9.5 14.5 7 17a3 3 0 0 1-4-4l2.5-2.5a3 3 0 0 1 4 0M14.5 9.5 17 7a3 3 0 0 1 4 4l-2.5 2.5a3 3 0 0 1-4 0M9 15l6-6"/>',
+  bricolaje: '<path d="M3 21l9-9M14 4l6 6-3 3-6-6zM12 6l6 6"/>',
+  _otra: '<path d="M4 8l8-4 8 4v9l-8 4-8-4zM4 8l8 4 8-4M12 12v9"/>',
+  _mas: '<path d="M12 5v14M5 12h14"/>'
 };
-const CATS = [['estufas','Estufas y deshollinado'], ['electricidad','Electricidad'], ['iluminacion','Iluminación'], ['herramienta','Herramienta manual'],
+let CATS = [['estufas','Estufas y deshollinado'], ['electricidad','Electricidad'], ['iluminacion','Iluminación'], ['herramienta','Herramienta manual'],
   ['electrica','Máquinas y accesorios'], ['fontaneria','Fontanería'], ['tornilleria','Tornillería y cerrajería'], ['pintura','Pintura y pegamentos'],
   ['limpieza','Limpieza y droguería'], ['coche','Coche, moto y lubricantes'], ['vestuario','Ropa de trabajo y protección'], ['electro','Pequeño electrodoméstico'],
   ['hogar','Hogar y menaje'], ['jardin','Jardín'], ['pilas','Pilas y electrónica']];
+if (Array.isArray(window.FERSAMAN_FAMILIAS) && window.FERSAMAN_FAMILIAS.length) CATS = window.FERSAMAN_FAMILIAS;
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-const icono = c => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONOS[c] || ''}</svg>`;
+const icono = c => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONOS[c] || ICONOS._otra}</svg>`;
 const nombreCat = c => (CATS.find(x => x[0] === c) || [, ''])[1];
 const euros = n => Number(n).toFixed(2).replace('.', ',') + ' €';
 const leerPrecio = v => { const s = String(v || '').replace(/\s|€/g, '').replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.'); if (!s) return null; const n = Math.round(Number(s) * 100) / 100; return n > 0 && n < 100000 ? n : NaN; };
@@ -287,10 +381,12 @@ let clave = null, productos = null, editando = null, fotosLocales = {};
 const nuevo = { foto: null, nombre: '', cat: null, precio: null, desde: false, desc: '' };
 
 // ——— Navegación ———
-const PANT = { login: 'pLogin', inicio: 'pInicio', nuevo: 'pFoto', foto: 'pFoto', nombre: 'pNombre', cat: 'pCat', precio: 'pPrecio', revisar: 'pRevisar', hecho: 'pHecho', lista: 'pLista', editar: 'pEditar' };
+const PANT = { login: 'pLogin', inicio: 'pInicio', nuevo: 'pFoto', foto: 'pFoto', nombre: 'pNombre', cat: 'pCat', precio: 'pPrecio', revisar: 'pRevisar', hecho: 'pHecho', lista: 'pLista', editar: 'pEditar', varios: 'pVarios', secciones: 'pSecciones' };
 function ir(p) {
   if (p === 'nuevo') reiniciarNuevo();
   if (p === 'lista') cargarLista();
+  if (p === 'varios') reiniciarVarios();
+  if (p === 'secciones') pintarSecciones();
   document.querySelectorAll('.pantalla').forEach(s => s.classList.remove('on'));
   $('#' + PANT[p]).classList.add('on');
   window.scrollTo(0, 0);
@@ -317,7 +413,7 @@ const textoError = e => e.message === 'Failed to fetch' || e.name === 'TypeError
 async function entrar(c) {
   clave = c;
   cargando(true, 'Entrando…');
-  try { await llamar({ accion: 'entrar' }); guardarLS(LLAVE, c); ir('inicio'); }
+  try { const j = await llamar({ accion: 'entrar' }); ponerFamilias(j.familias); guardarLS(LLAVE, c); ir('inicio'); }
   catch (e) { if (e.message !== 'clave') { error('#errLogin', textoError(e)); ir('login'); } else error('#errLogin', 'Esa contraseña no vale. Prueba otra vez.'); }
   finally { cargando(false); }
 }
@@ -338,17 +434,77 @@ async function alElegirFoto(input, hecho) {
   const f = input.files && input.files[0]; input.value = '';
   if (!f) return;
   cargando(true, 'Preparando la foto…');
-  try { hecho(await prepararFoto(f)); }
+  let d = null;
+  try { d = await prepararFoto(f); }
   catch (e) { alertaSuave('No he podido abrir esa foto. Prueba con otra.'); }
   finally { cargando(false); }
+  if (d) editarFoto(d, hecho);
 }
+
+// ——— Editor: recortar y girar (todo se hace en el móvil) ———
+const ed = { foto: null, c: null, fin: null, arr: null };
+const MIN = 0.12;
+const cargarImg = d => new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = d; });
+function editarFoto(d, fin) {
+  ed.foto = d; ed.fin = fin; ed.c = { x: 0, y: 0, w: 1, h: 1 };
+  $('#edImg').src = d; pintarCaja(); $('#editor').classList.add('on');
+}
+function pintarCaja() {
+  const c = ed.c;
+  ['#edCaja', '#edHueco'].forEach(id => { const k = $(id).style; k.left = c.x * 100 + '%'; k.top = c.y * 100 + '%'; k.width = c.w * 100 + '%'; k.height = c.h * 100 + '%'; });
+}
+const lim = (v, a, b) => Math.max(a, Math.min(b, v));
+$('#edMarco').addEventListener('pointerdown', e => {
+  const h = e.target.dataset.h || (e.target.id === 'edCaja' ? 'mover' : null);
+  if (!h) return;
+  e.preventDefault();
+  ed.arr = { h, x0: e.clientX, y0: e.clientY, c0: Object.assign({}, ed.c), r: $('#edImg').getBoundingClientRect() };
+  try { e.target.setPointerCapture(e.pointerId); } catch (_) {}
+});
+window.addEventListener('pointermove', e => {
+  const a = ed.arr; if (!a) return;
+  const dx = (e.clientX - a.x0) / a.r.width, dy = (e.clientY - a.y0) / a.r.height;
+  let { x, y, w, h } = a.c0;
+  if (a.h === 'mover') { x = lim(x + dx, 0, 1 - w); y = lim(y + dy, 0, 1 - h); }
+  else {
+    if (a.h.includes('w')) { const nx = lim(x + dx, 0, x + w - MIN); w += x - nx; x = nx; }
+    if (a.h.includes('e')) w = lim(w + dx, MIN, 1 - x);
+    if (a.h.includes('n')) { const ny = lim(y + dy, 0, y + h - MIN); h += y - ny; y = ny; }
+    if (a.h.includes('s')) h = lim(h + dy, MIN, 1 - y);
+  }
+  ed.c = { x, y, w, h }; pintarCaja();
+});
+['pointerup', 'pointercancel'].forEach(t => window.addEventListener(t, () => { ed.arr = null; }));
+$('#edGirar').onclick = async () => {
+  const i = await cargarImg(ed.foto), cv = document.createElement('canvas');
+  cv.width = i.height; cv.height = i.width;
+  const cx = cv.getContext('2d'); cx.translate(cv.width, 0); cx.rotate(Math.PI / 2); cx.drawImage(i, 0, 0);
+  ed.foto = cv.toDataURL('image/jpeg', 0.9);
+  const c = ed.c; ed.c = { x: 1 - c.y - c.h, y: c.x, w: c.h, h: c.w };  // el recorte gira con la foto
+  $('#edImg').src = ed.foto; pintarCaja();
+};
+$('#edTodo').onclick = () => { ed.c = { x: 0, y: 0, w: 1, h: 1 }; pintarCaja(); };
+$('#edCancelar').onclick = () => $('#editor').classList.remove('on');
+$('#edListo').onclick = async () => {
+  const i = await cargarImg(ed.foto), c = ed.c;
+  let d = ed.foto;
+  if (c.w < 0.995 || c.h < 0.995) {
+    const sx = Math.round(c.x * i.width), sy = Math.round(c.y * i.height), sw = Math.round(c.w * i.width), sh = Math.round(c.h * i.height);
+    const cv = document.createElement('canvas'); cv.width = sw; cv.height = sh;
+    const cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, sw, sh); cx.drawImage(i, sx, sy, sw, sh, 0, 0, sw, sh);
+    d = cv.toDataURL('image/jpeg', 0.85);
+  }
+  $('#editor').classList.remove('on');
+  ed.fin(d);
+};
 function alertaSuave(t) { error('#errNuevo', t); }
 
 // ——— Nuevo producto ———
 function reiniciarNuevo() {
   Object.assign(nuevo, { foto: null, nombre: '', cat: null, precio: null, desde: false, desc: '' });
   $('#vistaFoto').classList.remove('on'); $('#vistaFoto').style.backgroundImage = '';
-  $('#txtCamara').textContent = 'Hacer foto'; $('#sig1').disabled = true;
+  $('#txtCamara').textContent = 'Hacer foto'; $('#sig1').disabled = true; $('#retocar1').classList.add('oculta');
+  $('#nuevaCatCaja').classList.add('oculta'); error('#errCat');
   $('#nombre').value = ''; $('#sig2').disabled = true;
   $('#precio').value = ''; $('#desde').checked = false; $('#sig4').disabled = true;
   $('#desc').value = ''; error('#errNuevo');
@@ -356,20 +512,61 @@ function reiniciarNuevo() {
 }
 function ponerFotoNueva(d) {
   nuevo.foto = d; $('#vistaFoto').style.backgroundImage = `url(${d})`; $('#vistaFoto').classList.add('on');
-  $('#txtCamara').textContent = 'Repetir la foto'; $('#sig1').disabled = false;
+  $('#txtCamara').textContent = 'Repetir la foto'; $('#sig1').disabled = false; $('#retocar1').classList.remove('oculta');
 }
+$('#retocar1').onclick = () => nuevo.foto && editarFoto(nuevo.foto, ponerFotoNueva);
 $('#inCamara').onchange = e => alElegirFoto(e.target, ponerFotoNueva);
 $('#inGaleria').onchange = e => alElegirFoto(e.target, ponerFotoNueva);
 $('#sig1').onclick = () => ir('nombre');
 $('#nombre').oninput = e => { nuevo.nombre = e.target.value.trim(); $('#sig2').disabled = nuevo.nombre.length < 2; };
 $('#nombre').addEventListener('keydown', e => { if (e.key === 'Enter' && !$('#sig2').disabled) $('#sig2').click(); });
 $('#sig2').onclick = () => { $('#nombre').blur(); ir('cat'); };
-$('#tiles').innerHTML = CATS.map(c => `<button class="tile" data-c="${c[0]}">${icono(c[0])}<b>${c[1]}</b></button>`).join('');
+// ——— Secciones (familias.js; el servidor da la lista al día) ———
+function ponerFamilias(f) {
+  if (Array.isArray(f) && f.length) CATS = f;
+  $('#tiles').innerHTML = CATS.map(c => `<button class="tile" data-c="${esc(c[0])}">${icono(c[0])}<b>${esc(c[1])}</b></button>`).join('') +
+    `<button class="tile mas" data-c="_mas">${icono('_mas')}<b>Otra sección…</b></button>`;
+  const opciones = CATS.map(c => `<option value="${esc(c[0])}">${esc(c[1])}</option>`).join('');
+  const e = $('#eCat').value, v = $('#variosCat').value;
+  $('#eCat').innerHTML = opciones; if (e) $('#eCat').value = e;
+  $('#variosCat').innerHTML = '<option value="">Elige una sección…</option>' + opciones; $('#variosCat').value = v;
+}
+ponerFamilias();
+async function crearFamilia(nombre, errId) {
+  error(errId);
+  if (nombre.trim().length < 2) { error(errId, 'Escribe el nombre de la sección.'); return null; }
+  cargando(true, 'Creando la sección…');
+  try { const j = await llamar({ accion: 'familia', nombre: nombre.trim() }); ponerFamilias(j.familias); return j.k; }
+  catch (e) { if (e.message !== 'clave') error(errId, textoError(e)); return null; }
+  finally { cargando(false); }
+}
 $('#tiles').onclick = e => {
   const t = e.target.closest('.tile'); if (!t) return;
   document.querySelectorAll('.tile').forEach(x => x.classList.toggle('on', x === t));
+  if (t.dataset.c === '_mas') { $('#nuevaCatCaja').classList.remove('oculta'); setTimeout(() => $('#nuevaCat').focus(), 100); return; }
+  $('#nuevaCatCaja').classList.add('oculta');
   nuevo.cat = t.dataset.c; setTimeout(() => ir('precio'), 250);
 };
+$('#crearCat').onclick = async () => { const k = await crearFamilia($('#nuevaCat').value, '#errCat'); if (k) { nuevo.cat = k; $('#nuevaCat').value = ''; $('#nuevaCatCaja').classList.add('oculta'); ir('precio'); } };
+$('#nuevaCat').addEventListener('keydown', e => { if (e.key === 'Enter') $('#crearCat').click(); });
+
+function pintarSecciones() {
+  error('#errSecciones');
+  const n = k => productos ? productos.filter(p => p[0] === k && !p[6]).length : null;
+  $('#secciones').innerHTML = CATS.map(c => `<div><div class="seccion-fila"><input type="text" maxlength="40" value="${esc(c[1])}" data-k="${esc(c[0])}" data-antes="${esc(c[1])}">
+    <button class="btn azul" data-guardar="${esc(c[0])}" disabled>Guardar</button></div>${n(c[0]) != null ? `<span class="seccion-n">${n(c[0]) === 1 ? '1 producto' : n(c[0]) + ' productos'}</span>` : ''}</div>`).join('');
+  if (!productos) llamar({ accion: 'lista' }).then(j => { productos = j.productos; ponerFamilias(j.familias); if ($('#pSecciones').classList.contains('on')) pintarSecciones(); }).catch(() => {});
+}
+$('#secciones').oninput = e => { const i = e.target; if (i.dataset.k) i.parentNode.querySelector('[data-guardar]').disabled = i.value.trim().length < 2 || i.value.trim() === i.dataset.antes; };
+$('#secciones').onclick = async e => {
+  const b = e.target.closest('[data-guardar]'); if (!b) return;
+  const k = b.dataset.guardar, nombre = b.parentNode.querySelector('input').value.trim();
+  error('#errSecciones'); cargando(true, 'Guardando…');
+  try { const j = await llamar({ accion: 'familia', k, nombre }); ponerFamilias(j.familias); pintarSecciones(); }
+  catch (e2) { if (e2.message !== 'clave') error('#errSecciones', textoError(e2)); }
+  finally { cargando(false); }
+};
+$('#secCrear').onclick = async () => { if (await crearFamilia($('#secNueva').value, '#errSecciones')) { $('#secNueva').value = ''; pintarSecciones(); } };
 $('#precio').oninput = e => { const n = leerPrecio(e.target.value); $('#sig4').disabled = !(n > 0); };
 $('#sig4').onclick = () => { nuevo.precio = leerPrecio($('#precio').value); nuevo.desde = $('#desde').checked; $('#precio').blur(); ir('revisar'); };
 $('#sinPrecio').onclick = () => { nuevo.precio = null; nuevo.desde = false; $('#precio').value = ''; $('#precio').blur(); ir('revisar'); };
@@ -395,12 +592,71 @@ $('#publicar').onclick = async () => {
   finally { cargando(false); }
 };
 
+// ——— Varios a la vez ———
+let varios = [];
+function reiniciarVarios() { varios = []; pintarVarios(); error('#errVarios'); }
+function pintarVarios() {
+  $('#varios').innerHTML = varios.map((v, i) => `<div class="vitem" data-i="${i}">
+    <button class="mini" data-retocar="${i}" style="background-image:url(${v.foto})"><span>✂️ Retocar</span></button>
+    <div><input type="text" maxlength="90" placeholder="Nombre" value="${esc(v.nombre)}" data-campo="nombre" autocapitalize="sentences">
+    <input inputmode="decimal" placeholder="Precio (opcional) €" value="${esc(v.precio)}" data-campo="precio" autocomplete="off"></div>
+    <button class="x" data-quitar="${i}" aria-label="Quitar esta foto">×</button></div>`).join('');
+  $('#variosResto').classList.toggle('oculta', !varios.length);
+  $('#txtVarios').textContent = varios.length ? 'Añadir más fotos' : 'Elegir fotos';
+  $('#variosPublicar').textContent = varios.length === 1 ? 'Publicar 1 producto' : `Publicar los ${varios.length} productos`;
+}
+$('#inVarios').onchange = async e => {
+  const fs = [...(e.target.files || [])]; e.target.value = '';
+  if (!fs.length) return;
+  let malas = 0;
+  for (let i = 0; i < fs.length; i++) {
+    cargando(true, `Preparando las fotos… ${i + 1} de ${fs.length}`);
+    try { varios.push({ foto: await prepararFoto(fs[i]), nombre: '', precio: '' }); } catch (_) { malas++; }
+  }
+  cargando(false); pintarVarios();
+  error('#errVarios', malas ? `No he podido abrir ${malas} de las fotos.` : '');
+};
+$('#varios').oninput = e => { const it = e.target.closest('.vitem'); if (!it || !e.target.dataset.campo) return; varios[it.dataset.i][e.target.dataset.campo] = e.target.value; e.target.classList.remove('falta'); };
+$('#varios').onclick = e => {
+  const q = e.target.closest('[data-quitar]'), r = e.target.closest('[data-retocar]');
+  if (q) { varios.splice(Number(q.dataset.quitar), 1); pintarVarios(); }
+  if (r) { const i = Number(r.dataset.retocar); editarFoto(varios[i].foto, d => { varios[i].foto = d; pintarVarios(); }); }
+};
+$('#variosPublicar').onclick = async () => {
+  error('#errVarios');
+  const cat = $('#variosCat').value;
+  let mal = false;
+  document.querySelectorAll('#varios .vitem').forEach((it, i) => {
+    const v = varios[i], n = it.querySelector('[data-campo=nombre]'), pr = it.querySelector('[data-campo=precio]');
+    if (v.nombre.trim().length < 2) { n.classList.add('falta'); mal = true; }
+    if (Number.isNaN(leerPrecio(v.precio))) { pr.classList.add('falta'); mal = true; }
+  });
+  if (mal) return error('#errVarios', 'Revisa lo que está en rojo: falta el nombre o el precio no está bien escrito (solo el número, por ejemplo 12,50).');
+  if (!cat) return error('#errVarios', 'Elige la sección.');
+  const total = varios.length;
+  let hechos = 0;
+  try {
+    while (varios.length) {
+      const v = varios[0];
+      cargando(true, `Publicando ${hechos + 1} de ${total}…`);
+      const j = await llamar({ accion: 'nuevo', producto: { cat, nombre: v.nombre.trim(), desc: '', precio: leerPrecio(v.precio), desde: false }, foto: v.foto.split(',')[1] });
+      fotosLocales[j.foto] = v.foto; productos = j.lista;
+      varios.shift(); hechos++;
+    }
+    $('#hechoTit').textContent = hechos === 1 ? '¡Producto publicado!' : `¡${hechos} productos publicados!`;
+    ir('hecho');
+  } catch (e) {
+    pintarVarios();
+    if (e.message !== 'clave') error('#errVarios', (hechos ? `Se han publicado ${hechos}. Los que quedan aquí NO. ` : '') + textoError(e));
+  } finally { cargando(false); }
+};
+
 // ——— Cambiar / quitar ———
 async function cargarLista(forzar) {
   error('#errLista');
   if (productos && !forzar) return pintarLista();
   $('#lista').innerHTML = '<p class="ayuda">Cargando tus productos…</p>';
-  try { productos = (await llamar({ accion: 'lista' })).productos; pintarLista(); }
+  try { const j = await llamar({ accion: 'lista' }); productos = j.productos; ponerFamilias(j.familias); pintarLista(); }
   catch (e) { if (e.message !== 'clave') { $('#lista').innerHTML = ''; error('#errLista', textoError(e).replace('guardar', 'cargar la lista')); } }
 }
 const srcFoto = f => fotosLocales[f] || rutaFoto(f);
@@ -424,13 +680,27 @@ function abrirEditar(id) {
   $('#eNombre').value = p[1]; $('#eDesc').value = p[2] || '';
   $('#ePrecio').value = p[3] != null ? String(p[3].toFixed(2)).replace('.', ',') : '';
   $('#eDesde').checked = !!p[5];
+  if (!CATS.some(c => c[0] === p[0])) $('#eCat').insertAdjacentHTML('beforeend', `<option value="${esc(p[0])}">${esc(p[0])}</option>`);
+  $('#eCat').value = p[0];
+  $('#eRetocar').classList.toggle('oculta', p[4] == null);
   $('#eOcultoAviso').classList.toggle('oculta', !p[6]);
   $('#ePoner').classList.toggle('oculta', !p[6]);
   $('#eQuitar').classList.toggle('oculta', !!p[6]);
   $('#eConfirmar').classList.remove('on'); error('#errEditar');
   ir('editar');
 }
-$('#eInFoto').onchange = e => alElegirFoto(e.target, d => { editando.fotoNueva = d; $('#eFoto').style.backgroundImage = `url(${d})`; });
+const ponerFotoEditar = d => { editando.fotoNueva = d; $('#eFoto').style.backgroundImage = `url(${d})`; $('#eRetocar').classList.remove('oculta'); };
+$('#eInFoto').onchange = e => alElegirFoto(e.target, ponerFotoEditar);
+$('#eRetocar').onclick = async () => {
+  if (editando.fotoNueva) return editarFoto(editando.fotoNueva, ponerFotoEditar);
+  // foto ya publicada: se baja de la web y se pasa por el editor
+  cargando(true, 'Abriendo la foto…');
+  let d = null;
+  try { const b = await (await fetch(srcFoto(editando.p[4]))).blob(); d = await prepararFoto(b); }
+  catch (e) { error('#errEditar', 'No he podido abrir la foto. Usa «Cambiar la foto».'); }
+  finally { cargando(false); }
+  if (d) editarFoto(d, ponerFotoEditar);
+};
 
 async function guardarEditar(oculto, txt) {
   error('#errEditar');
@@ -440,7 +710,7 @@ async function guardarEditar(oculto, txt) {
   cargando(true, txt);
   try {
     const j = await llamar({ accion: 'cambiar', id: editando.id, foto: editando.fotoNueva ? editando.fotoNueva.split(',')[1] : null,
-      producto: { nombreAntes: editando.p[1], cat: editando.p[0], nombre, desc: $('#eDesc').value.trim(), precio, desde: $('#eDesde').checked, oculto } });
+      producto: { nombreAntes: editando.p[1], cat: $('#eCat').value || editando.p[0], nombre, desc: $('#eDesc').value.trim(), precio, desde: $('#eDesde').checked, oculto } });
     if (j.foto) fotosLocales[j.foto] = editando.fotoNueva;
     productos = j.lista;
     $('#hechoTit').textContent = oculto ? 'Quitado de la web' : '¡Cambios guardados!';
