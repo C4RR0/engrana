@@ -264,5 +264,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Spray efecto cobreado 400 ml.","",null,"w37"],
 ["pintura","Pintura efecto cromo plata 400 ml.","",null,"w38"],
 ["pintura","Pintura efecto cromo oro 400 ml","",null,"w39"],
-["pintura","Esmalte spray colores 400 ml.","",5.95,"w40"]
+["pintura","Esmalte spray colores 400 ml.","",5.95,"w40"],
+["tornilleria","Cerradura lince palanca","",null,"w41"]
 ];
