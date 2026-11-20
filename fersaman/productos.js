@@ -242,5 +242,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["jardin","Que lato de hierro","",null,"w15"],
 ["jardin","Fungicida cobre","",null,"w16"],
 ["jardin","Fungicida cobre","",null,"w17"],
-["jardin","Azufre polvo","",null,"w18"]
+["jardin","Azufre polvo","",null,"w18"],
+["jardin","Enrraizante","",null,"w19"]
 ];
