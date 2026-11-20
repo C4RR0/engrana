@@ -252,5 +252,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Disolvente al cloro caucho","",null,"w25"],
 ["pintura","Aguarrás 500 ml","",null,"w26"],
 ["pintura","Disolvente 500 ml/ 1 ltr. / 5 ltrs.","",null,"w27"],
-["pintura","Aceite de teca 1 ltr.","",null,"w28"]
+["pintura","Aceite de teca 1 ltr.","",null,"w28"],
+["pintura","Silicona liquida","",null,"w29"]
 ];
