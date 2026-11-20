@@ -245,5 +245,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["jardin","Azufre polvo","",null,"w18"],
 ["jardin","Enrraizante","",null,"w19"],
 ["jardin","Herbicida total 200ml","",null,"w20"],
-["pintura","Tratamiento carcoma/polillas","",null,"w21"]
+["pintura","Tratamiento carcoma/polillas","",null,"w21"],
+["pintura","Tratamiento carcoma/polillas liquido","",null,"w22"]
 ];
