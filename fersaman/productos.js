@@ -239,5 +239,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["jardin","Herbicida total 250 ml.","",20.98,"w12"],
 ["jardin","Herbicida de cesped","",null,"w13"],
 ["jardin","Pasta para cicatrizar","",null,"w14"],
-["jardin","Que lato de hierro","",null,"w15"]
+["jardin","Que lato de hierro","",null,"w15"],
+["jardin","Fungicida cobre","",null,"w16"]
 ];
