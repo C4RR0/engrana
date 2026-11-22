@@ -34,10 +34,10 @@
     --paper: #F6F2E8; --card: #FFFFFF; --line: #E4DFD2; --ok: #1E8E4E; --ko: #B3261E;
   }
   * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
+  html { -webkit-text-size-adjust: 100%; }
   html.lenis, html.lenis body { height: auto; }
   .lenis.lenis-smooth { scroll-behavior: auto !important; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 16px/1.5 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 16px/1.5 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
   h1, h2, h3 { font-family: Archivo, sans-serif; letter-spacing: -.015em; line-height: 1.05; margin: 0 0 .4em; }
   h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); font-weight: 900; }
   h3 { font-size: 1.02rem; font-weight: 800; }
@@ -316,9 +316,25 @@
     .top .pill { font-size: .74rem; padding: 5px 9px; gap: 6px; }
     .logo { font-size: 1.15rem; }
   }
+
+  /* ---------- entrada: llave, candado y persiana (entrada.js) ---------- */
+  #entrada { display: none; position: fixed; inset: 0; z-index: 200; overflow: hidden; background: #14134F; touch-action: none; }
+  html.con-entrada #entrada { display: block; }
+  html.con-entrada, html.con-entrada body { overflow: hidden; }
 </style>
+<script>
+// La entrada sale una vez por sesión (?intro la fuerza). No sale si se llega a un producto o sección con enlace directo.
+(function () { try {
+  var forzar = /[?&]intro\b/.test(location.search);
+  if (forzar || (!sessionStorage.getItem('fersaman_entrada') && !location.hash)) {
+    document.documentElement.classList.add('con-entrada');
+    window.__entrada = setTimeout(function () { document.documentElement.classList.remove('con-entrada'); }, 4000);
+  }
+} catch (e) {} })();
+</script>
 </head>
 <body>
+<div id="entrada"></div>
 
 <header class="top">
   <div class="wrap">
@@ -480,6 +496,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="entrada.js?v=6"></script>
 <script>(function(){ var v = Math.floor(Date.now() / 120000); document.write('<script src="productos.js?v=' + v + '"><\/script><script src="familias.js?v=' + v + '"><\/script>'); })();</script>
 <script>
 // Web publicada de la tienda. OJO: las reservas de prueba llegan a la tienda.
@@ -545,7 +562,7 @@ function coincide(p, q) {
   return q.split(/\s+/).every(w => {
     const base = w.length > 4 ? w.replace(/(es|s)$/, '') : w;
     if (texto.includes(base)) return true;
-    const extra = SINONIMOS[base] || SINONIMOS[w];
+    const extra = SINONIMOS[base] || SINONIMOS[w] || SINONIMOS[w.replace(/s$/, '')];
     return extra ? extra.split(' ').some(s => texto.includes(s)) : false;
   });
 }
@@ -615,7 +632,7 @@ let filtro = 'todo', mostrar = 24;
 function pintarChips() {
   const chips = [['todo', 'Todo'], ['nuevo', 'Novedades', ' dest'], ['precio', 'Con precio', ' dest'],
     ...CATS.filter(c => PRODUCTOS.some(p => p.cat === c[0])).map(c => [c[0], c[1]])];
-  $('#chips').innerHTML = chips.map(([k, n, x = '']) => `<button class="chip${x}${k === filtro ? ' on' : ''}" data-c="${k}" aria-pressed="${k === filtro}">${n}</button>`).join('');
+  $('#chips').innerHTML = chips.map(([k, n, x = '']) => `<button class="chip${x}${k === filtro ? ' on' : ''}" data-c="${k}" aria-pressed="${k === filtro}">${esc(n)}</button>`).join('');
 }
 function listaFiltrada() {
   const q = norm($('#q').value.trim());
@@ -636,7 +653,7 @@ function pintarGrid(animar) {
       <button class="thumb" data-ficha="${p.id}" aria-label="Ver ${esc(p.nombre)} en grande">${p.foto ? `<img src="${p.foto}" alt="${esc(p.nombre)}" loading="lazy" width="300" height="300">` : `<span class="ic">${icono(p.cat)}</span>`}
         ${NUEVOS.has(p.id) ? '<span class="badge-nuevo">NUEVO</span>' : ''}${precioHTML(p)}</button>
       <div class="body">
-        <span class="cat">${nombreCat(p.cat)}</span>
+        <span class="cat">${esc(nombreCat(p.cat))}</span>
         <h3>${esc(p.nombre)}</h3>
         <p>${esc(p.desc)}</p>
         <div class="row">
@@ -661,7 +678,7 @@ function abrirFicha(id) {
   const p = PRODUCTOS.find(x => x.id == id); if (!p) return;
   $('#ficha').innerHTML = `<button class="x" id="cerrarFicha" aria-label="Cerrar">×</button>
     <div class="foto">${p.foto ? `<img src="${p.foto}" alt="${esc(p.nombre)}">` : `<span class="ic" style="position:absolute;inset:0;display:grid;place-items:center;color:var(--navy)">${icono(p.cat)}</span>`}</div>
-    <div class="txt"><span class="small" style="text-transform:uppercase;letter-spacing:.06em;font-weight:700">${nombreCat(p.cat)}</span>
+    <div class="txt"><span class="small" style="text-transform:uppercase;letter-spacing:.06em;font-weight:700">${esc(nombreCat(p.cat))}</span>
       <h3 id="fichaT">${esc(p.nombre)}</h3><p class="muted" style="margin:0">${esc(p.desc)}</p>
       <div class="pr">${p.precio != null ? (p.desde ? '<span class="small">desde </span>' : '') + euros(p.precio) : '<span class="small" style="font:600 1rem Inter">Precio en tienda</span>'}</div>
       <div class="acc">
@@ -803,11 +820,11 @@ async function enviar() {
       enlaceEstado = j.estado || '';
     } catch (e) { porWhatsApp = true; }
   }
-  if (porWhatsApp) window.open(wa(texto), '_blank', 'noopener');
   carrito = {}; guardar(); pintarContador(); pintarGrid();
   $('#drawerContent').innerHTML = `<div class="ok-box"><div class="big">✓</div><h3>¡Reserva ${porWhatsApp ? 'preparada' : 'enviada'}!</h3>
-    <p class="muted">${porWhatsApp ? 'Se ha abierto WhatsApp con tu reserva escrita: solo tienes que enviarla. Te contestamos para confirmarte que lo tenemos.'
+    <p class="muted">${porWhatsApp ? 'Falta un último paso: pulsa el botón y envía el mensaje que ya te dejamos escrito. Te contestamos para confirmarte que lo tenemos.'
       : 'Estamos comprobando que lo tenemos. Te confirmamos por WhatsApp al ' + esc(tel) + ', normalmente en horario de tienda.'}</p>
+    ${porWhatsApp ? `<p><a class="btn btn-wa" href="${esc(wa(texto))}" target="_blank" rel="noopener" data-ev="fersaman-reserva-whatsapp">Enviar mi reserva por WhatsApp</a></p>` : ''}
     ${enlaceEstado ? `<p><a href="${esc(enlaceEstado)}" target="_blank" rel="noopener">Ver el estado de mi reserva</a></p>` : ''}
     <p class="small">Cuando te confirmemos, te lo guardamos 48 horas y pagas al recogerlo.</p></div>`;
   $('#drawerFoot').innerHTML = `<button class="btn btn-light" style="width:100%" id="seguir2">Seguir mirando</button>`;
@@ -884,7 +901,8 @@ if (window.gsap && window.ScrollTrigger) {
   }
 
   // Portada: el titular sube línea a línea y los cajones se colocan uno a uno
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  const conEntrada = document.documentElement.classList.contains('con-entrada') && !!window.FersamanEntrada;
+  const tl = gsap.timeline({ paused: conEntrada, defaults: { ease: 'power3.out' } });
   tl.from('.hero h1 .linea > span', { yPercent: 110, duration: .9, stagger: .12 })
     .from('.hero .eyebrow, .hero .lead, .hero-actions, .hero-meta', { y: 18, opacity: 0, duration: .6, stagger: .08 }, '-=.5')
     .from('.cajonera', { y: 40, opacity: 0, rotate: -2, duration: .8 }, '-=.8')
@@ -928,7 +946,20 @@ if (window.gsap && window.ScrollTrigger) {
   gsap.from('.notfound', { scale: .94, opacity: 0, duration: .6, ease: 'power2.out', scrollTrigger: { trigger: '.notfound', start: 'top 90%' } });
 
   addEventListener('load', () => ScrollTrigger.refresh());
+
+  // Entrada: la portada se anima cuando sube la persiana
+  if (conEntrada) {
+    clearTimeout(window.__entrada);
+    const { d, m } = ahoraMadrid();
+    window.lenis && lenis.stop();
+    FersamanEntrada.iniciar({
+      abierto: HORARIO[d].some(([a, b]) => m >= a && m < b),
+      portada: () => tl.play(),
+      fin: () => { window.lenis && lenis.start(); ScrollTrigger.refresh(); }
+    });
+  }
 }
+if (!window.gsap || !window.ScrollTrigger || !window.FersamanEntrada) document.documentElement.classList.remove('con-entrada');
 </script>
 <script defer src="../m.js" data-site="engrana" data-api="https://script.google.com/macros/s/AKfycbxUQt_fUgS_BEP-gdpqzNt1EqRblhiBikMZr5ThNytjFnjY_kvcknVICwr1iis0NjyO/exec"></script>
 </body>
