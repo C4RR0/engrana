@@ -193,6 +193,7 @@
     <p class="ayuda">Mejor sobre un fondo liso y con buena luz.</p>
     <div class="foto-vista" id="vistaFoto"></div>
     <button class="retocar oculta" id="retocar1">✂️ Recortar o girar la foto</button>
+    <div class="error" id="errFoto"></div>
     <label class="btn prim" id="btnCamara">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8h4l2-3h6l2 3h4v12H3z"/><circle cx="12" cy="13" r="3.5"/></svg>
       <span id="txtCamara">Hacer foto</span>
@@ -384,6 +385,7 @@ const ICONOS = {
   coche: '<path d="M3 16v-4l2-5h14l2 5v4zM3 16v3h3v-3M18 16v3h3v-3M7 13h.01M17 13h.01"/>',
   cadenas: '<path d="M9.5 14.5 7 17a3 3 0 0 1-4-4l2.5-2.5a3 3 0 0 1 4 0M14.5 9.5 17 7a3 3 0 0 1 4 4l-2.5 2.5a3 3 0 0 1-4 0M9 15l6-6"/>',
   bricolaje: '<path d="M3 21l9-9M14 4l6 6-3 3-6-6zM12 6l6 6"/>',
+  construccion: '<path d="M3 21l7-7M9 9l6 6 6-6-6-6zM12 12l3 3"/>',
   _otra: '<path d="M4 8l8-4 8 4v9l-8 4-8-4zM4 8l8 4 8-4M12 12v9"/>',
   _mas: '<path d="M12 5v14M5 12h14"/>'
 };
@@ -448,19 +450,20 @@ async function entrar(c) {
 $('#entrar').onclick = () => { const c = $('#clave').value.trim(); if (c) entrar(c); };
 $('#clave').addEventListener('keydown', e => { if (e.key === 'Enter') $('#entrar').click(); });
 
-// ——— Foto: se reduce en el móvil a JPG de 1200 px (rápido de subir y suficiente para la web) ———
+// ——— Foto: se reduce en el móvil a JPG de 1000 px (rápido de subir y de cargar, y suficiente para la web) ———
 async function prepararFoto(file) {
   let img;
   try { img = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
   catch (e) { img = await new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = URL.createObjectURL(file); }); }
-  const w = img.width, h = img.height, k = Math.min(1, 1200 / Math.max(w, h));
+  const w = img.width, h = img.height, k = Math.min(1, 1000 / Math.max(w, h));
   const cv = document.createElement('canvas'); cv.width = Math.round(w * k); cv.height = Math.round(h * k);
   const cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(img, 0, 0, cv.width, cv.height);
-  return cv.toDataURL('image/jpeg', 0.85);
+  return cv.toDataURL('image/jpeg', 0.8);
 }
 async function alElegirFoto(input, hecho) {
   const f = input.files && input.files[0]; input.value = '';
   if (!f) return;
+  error('#errFoto'); error('#errEditar');
   cargando(true, 'Preparando la foto…');
   let d = null;
   try { d = await prepararFoto(f); }
@@ -520,12 +523,12 @@ $('#edListo').onclick = async () => {
     const sx = Math.round(c.x * i.width), sy = Math.round(c.y * i.height), sw = Math.round(c.w * i.width), sh = Math.round(c.h * i.height);
     const cv = document.createElement('canvas'); cv.width = sw; cv.height = sh;
     const cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, sw, sh); cx.drawImage(i, sx, sy, sw, sh, 0, 0, sw, sh);
-    d = cv.toDataURL('image/jpeg', 0.85);
+    d = cv.toDataURL('image/jpeg', 0.8);
   }
   $('#editor').classList.remove('on');
   ed.fin(d);
 };
-function alertaSuave(t) { error('#errNuevo', t); }
+function alertaSuave(t) { error($('#pEditar').classList.contains('on') ? '#errEditar' : '#errFoto', t); }
 
 // ——— Nuevo producto ———
 function reiniciarNuevo() {
@@ -535,7 +538,7 @@ function reiniciarNuevo() {
   $('#nuevaCatCaja').classList.add('oculta'); error('#errCat');
   $('#nombre').value = ''; $('#sig2').disabled = true;
   $('#precio').value = ''; $('#desde').checked = false; $('#sig4').disabled = true;
-  $('#desc').value = ''; error('#errNuevo');
+  $('#desc').value = ''; error('#errNuevo'); error('#errFoto');
   document.querySelectorAll('.tile').forEach(t => t.classList.remove('on'));
 }
 function ponerFotoNueva(d) {

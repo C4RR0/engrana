@@ -466,6 +466,7 @@
         <tr data-d="5"><td>Viernes</td><td>9:30–14:00 · 17:00–20:00</td></tr>
         <tr data-d="6"><td>Sábado</td><td>10:00–14:00</td></tr>
         <tr data-d="0"><td>Domingo</td><td>Cerrado</td></tr>
+        <tr data-d="f"><td>Festivos</td><td>Cerrado</td></tr>
       </table>
       <p class="small" style="margin-top:12px">Síguenos: <a href="https://www.instagram.com/fersamansl/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/fersaman.tudela.1/" target="_blank" rel="noopener">Facebook</a></p>
     </div>
@@ -575,17 +576,26 @@ function ahoraMadrid() {
   return { d: dias[wd], m: (+p.find(x => x.type === 'hour').value % 24) * 60 + +p.find(x => x.type === 'minute').value };
 }
 const hhmm = m => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
+// Días de cierre especiales (AAAA-MM-DD). De momento, los festivos nacionales de Navidad: añadir o quitar según diga Yoli.
+const FESTIVOS = new Set(['2026-12-08', '2026-12-25', '2027-01-01', '2027-01-06']);
+function isoMadrid(i = 0) {
+  const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Madrid', year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(new Date());
+  const v = t => +p.find(x => x.type === t).value;
+  return new Date(Date.UTC(v('year'), v('month') - 1, v('day') + i)).toISOString().slice(0, 10);
+}
+const tramosDia = (d, i = 0) => FESTIVOS.has(isoMadrid(i)) ? [] : HORARIO[(d + i) % 7];
 function pintarHorario() {
   const { d, m } = ahoraMadrid();
-  document.querySelectorAll('#hours tr').forEach(tr => tr.classList.toggle('today', +tr.dataset.d === d));
+  const hoyFestivo = FESTIVOS.has(isoMadrid());
+  document.querySelectorAll('#hours tr').forEach(tr => tr.classList.toggle('today', tr.dataset.d === (hoyFestivo ? 'f' : String(d))));
   const st = $('#status'), tx = $('#statusTxt');
-  const tramo = HORARIO[d].find(([a, b]) => m >= a && m < b);
+  const tramo = tramosDia(d).find(([a, b]) => m >= a && m < b);
   if (tramo) { st.classList.add('open'); tx.innerHTML = `Abierto<span class="txt-largo"> · hasta las ${hhmm(tramo[1])}</span><span class="txt-corto">hasta ${hhmm(tramo[1])}</span>`; return; }
   st.classList.remove('open');
-  const hoy = HORARIO[d].find(([a]) => a > m);
+  const hoy = tramosDia(d).find(([a]) => a > m);
   if (hoy) { tx.innerHTML = `Cerrado<span class="txt-largo"> · abrimos a las ${hhmm(hoy[0])}</span><span class="txt-corto">abre a las ${hhmm(hoy[0])}</span>`; return; }
   const nombres = ['el domingo','el lunes','el martes','el miércoles','el jueves','el viernes','el sábado'];
-  for (let i = 1; i <= 7; i++) { const dd = (d + i) % 7; if (HORARIO[dd].length) { tx.innerHTML = `Cerrado<span class="txt-largo"> · abrimos ${i === 1 ? 'mañana' : nombres[dd]} a las ${hhmm(HORARIO[dd][0][0])}</span><span class="txt-corto">abre ${i === 1 ? 'mañana' : ['dom','lun','mar','mié','jue','vie','sáb'][dd]} ${hhmm(HORARIO[dd][0][0])}</span>`; return; } }
+  for (let i = 1; i <= 14; i++) { const dd = (d + i) % 7, t = tramosDia(d, i); if (t.length) { tx.innerHTML = `Cerrado<span class="txt-largo"> · abrimos ${i === 1 ? 'mañana' : nombres[dd]} a las ${hhmm(t[0][0])}</span><span class="txt-corto">abre ${i === 1 ? 'mañana' : ['dom','lun','mar','mié','jue','vie','sáb'][dd]} ${hhmm(t[0][0])}</span>`; return; } }
 }
 
 // ---------- Cajonera ----------
@@ -760,7 +770,7 @@ function diasRecogida() {
   for (let i = 0; out.length < 7 && i < 14; i++) {
     const f = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + i);
     const tr = HORARIO[f.getDay()];
-    if (!tr.length) continue;
+    if (!tr.length || FESTIVOS.has(fechaISO(f))) continue;
     if (i === 0 && ahoraMadrid().m >= tr[tr.length - 1][1] - 30) continue;
     out.push(f);
   }
@@ -953,7 +963,7 @@ if (window.gsap && window.ScrollTrigger) {
     const { d, m } = ahoraMadrid();
     window.lenis && lenis.stop();
     FersamanEntrada.iniciar({
-      abierto: HORARIO[d].some(([a, b]) => m >= a && m < b),
+      abierto: tramosDia(d).some(([a, b]) => m >= a && m < b),
       portada: () => tl.play(),
       fin: () => { window.lenis && lenis.start(); ScrollTrigger.refresh(); }
     });

@@ -32,12 +32,24 @@ const prop = k => PropertiesService.getScriptProperties().getProperty(k);
 const hoja = () => SpreadsheetApp.openById(prop('HOJA')).getSheetByName('Reservas');
 const COL = { id: 1, codigo: 2, creada: 3, estado: 4, nombre: 5, tel: 6, dia: 7, franja: 8, productos: 9, nota: 10, evento: 11, respuesta: 12 };
 
+// Lo que escribe el cliente se guarda como texto (con ' delante): así la hoja nunca lo ejecuta como fórmula ni lo convierte en número o fecha.
+const comoTexto = v => { const s = String(v == null ? '' : v); return s ? "'" + s : ''; };
+const limpia = v => String(v == null ? '' : v).replace(/^'/, '');
+
+// Freno contra envíos en masa: si salta, la web ofrece al cliente mandar la reserva por WhatsApp.
+function limitar(tel) {
+  const cache = CacheService.getScriptCache(), hora = Math.floor(Date.now() / 3600000);
+  const sube = (k, max) => { const n = Number(cache.get(k) || 0) + 1; if (n > max) throw new Error('demasiadas reservas'); cache.put(k, String(n), 3700); };
+  sube('todas' + hora, 30);
+  sube('tel' + hora + String(tel).replace(/\D/g, ''), 5);
+}
+
 function leer(id) {
   const sh = hoja(), datos = sh.getDataRange().getValues();
-  for (let i = 1; i < datos.length; i++) if (datos[i][0] === id) {
+  for (let i = 1; i < datos.length; i++) if (limpia(datos[i][0]) === String(id)) {
     const f = datos[i];
-    return { fila: i + 1, id: f[0], codigo: f[1], creada: f[2], estado: f[3], nombre: f[4], tel: String(f[5]), dia: f[6],
-      franja: f[7], productos: JSON.parse(f[8]), nota: f[9], evento: f[10], respuesta: f[11] };
+    return { fila: i + 1, id: limpia(f[0]), codigo: limpia(f[1]), creada: f[2], estado: f[3], nombre: limpia(f[4]), tel: limpia(f[5]), dia: limpia(f[6]),
+      franja: limpia(f[7]), productos: JSON.parse(limpia(f[8])), nota: limpia(f[9]), evento: f[10], respuesta: f[11] };
   }
   return null;
 }
@@ -49,15 +61,19 @@ function doPost(e) {
   try {
     const r = JSON.parse(e.postData.contents);
     if (!r.nombre || !r.tel || !r.dia || !Array.isArray(r.productos) || !r.productos.length) throw new Error('faltan datos');
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(r.dia)) || !Number.isInteger(r.ini) || !Number.isInteger(r.fin) || r.ini < 0 || r.fin > 1440 || r.ini >= r.fin ||
+        String(r.tel).replace(/\D/g, '').length < 9) throw new Error('datos no válidos');
+    limitar(r.tel);
     const productos = r.productos.slice(0, 40).map(p => ({ n: Math.max(1, Math.min(99, Number(p.n) || 1)), nombre: String(p.nombre).slice(0, 120) }));
-    const id = Utilities.getUuid().slice(0, 8), codigo = Utilities.getUuid().slice(0, 6);
+    const id = 'r' + Utilities.getUuid().slice(0, 8), codigo = 'c' + Utilities.getUuid().slice(0, 6);  // con letra delante: la hoja no los convierte en número
     const [a, m, d] = String(r.dia).split('-').map(Number);
     const ini = new Date(a, m - 1, d, Math.floor(r.ini / 60), r.ini % 60), fin = new Date(a, m - 1, d, Math.floor(r.fin / 60), r.fin % 60);
     const nombre = String(r.nombre).slice(0, 60), tel = String(r.tel).slice(0, 20), nota = String(r.nota || '').slice(0, 500);
     const lista = productos.map(p => `• ${p.n} × ${p.nombre}`).join('\n');
     const cal = CALENDARIO === 'primary' ? CalendarApp.getDefaultCalendar() : CalendarApp.getCalendarById(CALENDARIO);
     const ev = cal.createEvent(`⏳ Reserva sin confirmar: ${nombre}`, ini, fin, { description: `${lista}\n\nTeléfono: ${tel}${nota ? '\nNota: ' + nota : ''}` });
-    hoja().appendRow([id, codigo, new Date(), 'PENDIENTE', nombre, tel, `${r.diaTxt}`, `${r.franjaTxt}`, JSON.stringify(productos), nota, ev.getId(), '']);
+    hoja().appendRow([id, codigo, new Date(), 'PENDIENTE', comoTexto(nombre), comoTexto(tel), comoTexto(String(r.diaTxt).slice(0, 60)), comoTexto(String(r.franjaTxt).slice(0, 60)),
+      comoTexto(JSON.stringify(productos)), comoTexto(nota), ev.getId(), '']);
     const url = ScriptApp.getService().getUrl(), k = prop('CLAVE');
     const boton = (txt, color, accion) => `<a href="${url}?r=${id}&k=${k}&a=${accion}" style="display:inline-block;margin:4px 6px 4px 0;padding:12px 16px;border-radius:10px;background:${color};color:#fff;text-decoration:none;font-weight:700">${txt}</a>`;
     MailApp.sendEmail({
@@ -163,9 +179,9 @@ function panel() {
   if (!datos.length) return '<p>No hay reservas pendientes. 🎉</p>';
   const url = ScriptApp.getService().getUrl(), k = prop('CLAVE');
   return datos.map(f => {
-    const prods = JSON.parse(f[8]).map(p => `${p.n} × ${esc(p.nombre)}`).join('<br>');
-    return `<div style="border:1px solid #ddd;border-radius:12px;padding:14px;margin:12px 0"><b>${esc(f[4])}</b> · ${esc(f[5])}<br>
-      <span style="color:#666">Recoge: ${esc(f[6])}, ${esc(f[7])}</span><p>${prods}</p>
+    const prods = JSON.parse(limpia(f[8])).map(p => `${p.n} × ${esc(p.nombre)}`).join('<br>');
+    return `<div style="border:1px solid #ddd;border-radius:12px;padding:14px;margin:12px 0"><b>${esc(limpia(f[4]))}</b> · ${esc(limpia(f[5]))}<br>
+      <span style="color:#666">Recoge: ${esc(limpia(f[6]))}, ${esc(limpia(f[7]))}</span><p>${prods}</p>
       <a href="${url}?r=${f[0]}&k=${k}&a=si" target="_top" style="${BTN}background:#1E8E4E">✅ Lo tengo</a>
       <a href="${url}?r=${f[0]}&k=${k}&a=parte" target="_top" style="${BTN}background:#C98A00">🟡 Una parte</a>
       <a href="${url}?r=${f[0]}&k=${k}&a=no" target="_top" style="${BTN}background:#B3261E">❌ No tengo</a></div>`;
