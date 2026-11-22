@@ -44,7 +44,6 @@ window.FersamanEntrada = (function () {
     <path id="eArco" d="M256,366 V304 a44,44 0 0 1 88,0 V366" fill="none" stroke="url(#eAcero)" stroke-width="17" stroke-linecap="round"/>
     <rect x="232" y="364" width="136" height="130" rx="16" fill="url(#eCuerpo)" stroke="#0C0B40" stroke-width="2.5"/>
     <rect x="232" y="392" width="136" height="30" fill="#F4E31A"/>
-    <text x="300" y="414" text-anchor="middle" font-family="Archivo, Arial Black, sans-serif" font-weight="900" font-size="19" letter-spacing="2" fill="#12115E">FERSAMAN</text>
     <circle cx="300" cy="462" r="11" fill="#14152A"/><rect x="296.5" y="464" width="7" height="20" rx="2" fill="#14152A"/>
     <g id="eLlave">
       <g clip-path="url(#eVisible)">
@@ -55,7 +54,6 @@ window.FersamanEntrada = (function () {
       <rect x="-14" y="-12" width="16" height="24" fill="url(#eLaton)" stroke="#6E500E" stroke-width="1.5"/>
       <circle cx="-56" cy="0" r="46" fill="url(#eLaton)" stroke="#6E500E" stroke-width="2"/>
       <circle cx="-82" cy="0" r="10" fill="#14134F" stroke="#6E500E" stroke-width="2"/>
-      <text x="-46" y="19" text-anchor="middle" font-family="Archivo, Arial Black, sans-serif" font-weight="900" font-size="52" fill="#12115E">F</text>
     </g>
   </g>`;
 
