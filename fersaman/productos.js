@@ -277,5 +277,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["cadenas","Cuerda ama/roj 12 mm","",null,"w50"],
 ["cadenas","Cuerda sisal 400 gen.","",null,"w51"],
 ["cadenas","Cuerda rafia 750grm. /400","",null,"w52"],
-["cadenas","Hilo algodón cocina","",null,"w53"]
+["cadenas","Hilo algodón cocina","",null,"w53"],
+["cadenas","Hilo sedal 0,9","",null,"w54"]
 ];
