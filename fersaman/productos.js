@@ -274,5 +274,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["tornilleria","Llaves….buzon, cerradura secreta, Fácil etc…","",1.75,"w47",true],
 ["cadenas","Cadena zancada 2,3,4,5,6,7,8,10","",null,"w48"],
 ["cadenas","Cuerda polipropileno 10mm bloc/az","",null,"w49"],
-["cadenas","Cuerda ama/roj 12 mm","",null,"w50"]
+["cadenas","Cuerda ama/roj 12 mm","",null,"w50"],
+["cadenas","Cuerda sisal 400 gen.","",null,"w51"]
 ];
