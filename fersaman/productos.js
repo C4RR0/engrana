@@ -284,5 +284,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["fontaneria","Estaño . 1,5 mm","",11.69,"w57"],
 ["bricolaje","Espigas madera 6/8/10","6x30. 8x30, 10x40 Unión de madera",1.56,"w58",true],
 ["bricolaje","Pernio dorado drch,/izq.","",1.85,"w59",true],
-["bricolaje","Masilla madera varios colores","",3.9,"w60"]
+["bricolaje","Masilla madera varios colores","",3.9,"w60"],
+["fontaneria","Excéntricas ajustables juego 1/2-3/4inox","",9.5,"w61"]
 ];
