@@ -281,5 +281,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["cadenas","Hilo sedal 0,9","",null,"w54"],
 ["cadenas","Hilo albañil 1,5 ml 100 mtrs.","",null,"w55"],
 ["cadenas","Cuerda polipropileno ver/blc. 10 mtr./20/25","",null,"w56"],
-["fontaneria","Estaño . 1,5 mm","",11.69,"w57"]
+["fontaneria","Estaño . 1,5 mm","",11.69,"w57"],
+["bricolaje","Espigas madera 6/8/10","6x30. 8x30, 10x40 Unión de madera",1.56,"w58",true]
 ];
