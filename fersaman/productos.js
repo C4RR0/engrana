@@ -289,5 +289,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["bricolaje","Bisagra zancada","Bisagra libro zincada , varios tamaños más.",0.85,"w62",true],
 ["bricolaje","Bisagra ramal","",2.1,"w63",true],
 ["fontaneria","Juntas cisterna , fregadera,desagües..","",null,"w64"],
-["fontaneria","Atomizador , fregadera, lavabo, bañera.","",1.95,"w65"]
+["fontaneria","Atomizador , fregadera, lavabo, bañera.","",1.95,"w65"],
+["fontaneria","Válvula escuadra doble","",10.4,"w66"]
 ];
