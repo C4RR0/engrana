@@ -213,7 +213,7 @@ window.FERSAMAN_PRODUCTOS = [
 ["hogar","Soportes para persiana","Pregunta por la medida que necesitas.",null,"r70"],
 ["hogar","Topes para persiana","En blanco, beige y marrón.",null,"r72"],
 ["limpieza","Cepillos de madera","Para fregar y para el calzado.",null,"r73"],
-["hogar","Sartenes efecto piedra","Antiadherentes: Sasan de 30 cm y LifeStyle de 21 cm.",null,"r74"],
+["hogar","Sartenes efecto piedra 18/20/22/24/26/28/30","Antiadherentes: Sasan de 30 /28/26/24/22/20/18",null,"r74"],
 ["hogar","Doble sartén para tortilla LifeStyle Luxe","24 cm, antiadherente, válida para inducción.",null,"r76"],
 ["hogar","Perchero de madera de 3 pomos","Para la entrada o el baño.",null,"r78"],
 ["limpieza","Antihumedad SecaDry","Recipiente y recambio de 450 g, con perfume de lavanda.",null,"r79"],
