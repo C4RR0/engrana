@@ -299,5 +299,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["electricidad","Adaptador USB 30w","",null,"w72"],
 ["herramienta","Llaves fijas 4-5 hasta 30-32","",null,"w73"],
 ["herramienta","Llave ajustable 6”, 8”, 10”, 12”, 15”","",null,"w74"],
-["bricolaje","Pomo cajón cromo satin","",null,"w75"]
+["bricolaje","Pomo cajón cromo satin","",null,"w75"],
+["bricolaje","Pomo cajón cromo satin ovalado","",null,"w76"]
 ];
