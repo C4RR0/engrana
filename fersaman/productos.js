@@ -293,5 +293,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["fontaneria","Válvula escuadra doble","",10.4,"w66"],
 ["fontaneria","Cinta selladora sanitarios","",4.91,"w67"],
 ["fontaneria","Cinta selladora baños/cocinas","",15.95,"w68"],
-["bricolaje","Recogedor persiana superficie","",null,"w69"]
+["bricolaje","Recogedor persiana superficie","",null,"w69"],
+["bricolaje","Recogedor persiana metálico costado","",null,"w70"]
 ];
