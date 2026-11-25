@@ -70,7 +70,7 @@ window.FERSAMAN_PRODUCTOS = [
 ["pintura","Agua Stop caucho con fibras","Ceys. Impermeabiliza terrazas y tejados, varios tamaños.",null,"n02"],
 ["pintura","Espuma de poliuretano y antifuego","Penosil y Krafft Nonfire (resistente al fuego).",null,"n03"],
 ["vestuario","Guantes de serraje reforzados","Para obra y carga.",null,"n19"],
-["vestuario","Guantes de piel flor","Ligeros y resistentes.",null,"n20"],
+["vestuario","Guantes de piel flor","Ligeros y resistentes.",3.95,"n20",true],
 ["vestuario","Guantes de nitrilo Cofan","Buen agarre, para trabajos de precisión.",null,"n21"],
 ["electro","Radio portátil AM/FM","Dovelis, con salida de auriculares.",null,"n56"],
 ["coche","Calentador de vaso para coche","12 V, se enchufa al mechero.",null,"n55"],
