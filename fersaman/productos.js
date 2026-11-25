@@ -314,5 +314,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pilas","Pila AA VARTA 4","",null,"w87"],
 ["pilas","Pila AAA PAQ.4+4 varta","",null,"w88"],
 ["pilas","Pila AA PAQ.4+4 varta","",null,"w89"],
-["pilas","Pila CR 2025/2032","",null,"w90"]
+["pilas","Pila CR 2025/2032","",null,"w90"],
+["pilas","Pila AA PAQ.24 unid. Varta","",null,"w91"]
 ];
