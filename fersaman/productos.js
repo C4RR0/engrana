@@ -305,5 +305,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["bricolaje","Pomo cajón cromo brillo","",null,"w78"],
 ["bricolaje","Pomo cajón porcelana","",null,"w79"],
 ["fontaneria","Grifo baño/ducha + grifo lavabo duo","",54.5,"w80"],
-["fontaneria","Grifo lavabo monomando","",25.5,"w81"]
+["fontaneria","Grifo lavabo monomando","",25.5,"w81"],
+["fontaneria","Grifo fregadera C/alto","",47.95,"w82"]
 ];
