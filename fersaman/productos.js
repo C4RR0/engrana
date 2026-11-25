@@ -301,5 +301,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["herramienta","Llave ajustable 6”, 8”, 10”, 12”, 15”","",null,"w74"],
 ["bricolaje","Pomo cajón cromo satin","",null,"w75"],
 ["bricolaje","Pomo cajón cromo satin ovalado","",null,"w76"],
-["bricolaje","Pomo cajón bronce","",null,"w77"]
+["bricolaje","Pomo cajón bronce","",null,"w77"],
+["bricolaje","Pomo cajón cromo brillo","",null,"w78"]
 ];
