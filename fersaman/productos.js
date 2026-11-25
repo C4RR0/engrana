@@ -296,5 +296,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["bricolaje","Recogedor persiana superficie","",null,"w69"],
 ["bricolaje","Recogedor persiana metálico costado","",null,"w70"],
 ["electricidad","Adaptador USB RAPIDO","",null,"w71"],
-["electricidad","Adaptador USB 30w","",null,"w72"]
+["electricidad","Adaptador USB 30w","",null,"w72"],
+["herramienta","Llaves fijas 4-5 hasta 30-32","",null,"w73"]
 ];
