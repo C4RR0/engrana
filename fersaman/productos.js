@@ -214,7 +214,7 @@ window.FERSAMAN_PRODUCTOS = [
 ["hogar","Topes para persiana","En blanco, beige y marrón.",null,"r72"],
 ["limpieza","Cepillos de madera","Para fregar y para el calzado.",null,"r73"],
 ["hogar","Sartenes efecto piedra 18/20/22/24/26/28/30","Antiadherentes: Sasan de 30 /28/26/24/22/20/18",null,"r74"],
-["hogar","Doble sartén para tortilla LifeStyle Luxe","24 cm, antiadherente, válida para inducción.",null,"r76"],
+["hogar","Doble sartén para tortilla LifeStyle Luxe","24 cm/22 antiadherente, válida para inducción.",null,"r76"],
 ["hogar","Perchero de madera de 3 pomos","Para la entrada o el baño.",null,"r78"],
 ["limpieza","Antihumedad SecaDry","Recipiente y recambio de 450 g, con perfume de lavanda.",null,"r79"],
 ["limpieza","Arcilla limpiadora Oryx","Limpiador multiusos en pasta, para muchas superficies de la casa.",19.9,"t50"],
