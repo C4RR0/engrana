@@ -295,5 +295,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["fontaneria","Cinta selladora baños/cocinas","",15.95,"w68"],
 ["bricolaje","Recogedor persiana superficie","",null,"w69"],
 ["bricolaje","Recogedor persiana metálico costado","",null,"w70"],
-["electricidad","Adaptador USB RAPIDO","",null,"w71"]
+["electricidad","Adaptador USB RAPIDO","",null,"w71"],
+["electricidad","Adaptador USB 30w","",null,"w72"]
 ];
