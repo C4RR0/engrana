@@ -287,5 +287,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["bricolaje","Masilla madera varios colores","",3.9,"w60"],
 ["fontaneria","Excéntricas ajustables juego 1/2-3/4inox","",9.5,"w61"],
 ["bricolaje","Bisagra zancada","Bisagra libro zincada , varios tamaños más.",0.85,"w62",true],
-["bricolaje","Bisagra ramal","",2.1,"w63",true]
+["bricolaje","Bisagra ramal","",2.1,"w63",true],
+["fontaneria","Juntas cisterna , fregadera,desagües..","",null,"w64"]
 ];
