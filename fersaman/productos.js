@@ -310,5 +310,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["hogar","Cacerola inox de 22/24/26/28","",null,"w83"],
 ["iluminacion","Fluorescente led 18/ 36","",null,"w84"],
 ["iluminacion","Fluorescente circular 22w","",null,"w85"],
-["iluminacion","Fluorescente circular 32w","",null,"w86"]
+["iluminacion","Fluorescente circular 32w","",null,"w86"],
+["pilas","Pila AA VARTA 4","",null,"w87"]
 ];
