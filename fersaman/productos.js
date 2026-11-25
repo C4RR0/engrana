@@ -292,5 +292,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["fontaneria","Atomizador , fregadera, lavabo, bañera.","",1.95,"w65"],
 ["fontaneria","Válvula escuadra doble","",10.4,"w66"],
 ["fontaneria","Cinta selladora sanitarios","",4.91,"w67"],
-["fontaneria","Cinta selladora baños/cocinas","",15.95,"w68"]
+["fontaneria","Cinta selladora baños/cocinas","",15.95,"w68"],
+["bricolaje","Recogedor persiana superficie","",null,"w69"]
 ];
