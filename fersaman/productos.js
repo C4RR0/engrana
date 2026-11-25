@@ -311,5 +311,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["iluminacion","Fluorescente led 18/ 36","",null,"w84"],
 ["iluminacion","Fluorescente circular 22w","",null,"w85"],
 ["iluminacion","Fluorescente circular 32w","",null,"w86"],
-["pilas","Pila AA VARTA 4","",null,"w87"]
+["pilas","Pila AA VARTA 4","",null,"w87"],
+["pilas","Pila AAA PAQ.4+4 varta","",null,"w88"]
 ];
