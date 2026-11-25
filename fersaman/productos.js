@@ -317,5 +317,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pilas","Pila CR 2025/2032","",null,"w90"],
 ["pilas","Pila AA PAQ.24 unid. Varta","",null,"w91"],
 ["pilas","Pila LR20 varta","",null,"w92"],
-["pilas","Pila V23GA VARTA","",null,"w93"]
+["pilas","Pila V23GA VARTA","",null,"w93"],
+["llaves","Llavero extensible colores","",3.69,"w94"]
 ];
