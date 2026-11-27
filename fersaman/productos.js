@@ -331,5 +331,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["electro","Plancha Asar 2000w","",null,"w104"],
 ["electro","Freidora de Aire 3,5 lit.= 1400w","",null,"w105"],
 ["electro","Secador Pelo 2400W","",null,"w106"],
-["electro","Gofrera","",null,"w107"]
+["electro","Gofrera","",null,"w107"],
+["electro","Aspiradora sin bolsa 700w","",null,"w108"]
 ];
