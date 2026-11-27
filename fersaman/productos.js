@@ -183,7 +183,7 @@ window.FERSAMAN_PRODUCTOS = [
 ["electro","Báscula de baño electrónica","Con Bluetooth y app para el móvil, cristal templado, hasta 180 kg.",21.9,"y03"],
 ["electro","Batidora de mano EDM 800 W","2 velocidades, con vaso de 700 ml.",null,"r16"],
 ["tornilleria","Copia de llaves","Te hacemos la copia al momento: trae tu llave.",null,"r17"],
-["tornilleria","Copia de llaves de seguridad","De puntos y de seguridad: trae tu llave y te decimos si se puede copiar.",7.5,"t02",true],
+["llaves","Copia de llaves de seguridad","De puntos y de seguridad: trae tu llave y te decimos si se puede copiar.",7.5,"t02",true],
 ["tornilleria","Copia de mandos de garaje","Trae tu mando y te decimos si se puede copiar.",null,"r54"],
 ["hogar","Termómetro interior/exterior sin cable","Con sensor exterior inalámbrico.",null,"r20"],
 ["hogar","Termómetros de pared","Para interior y exterior, también con higrómetro. Sin mercurio.",null,"r21"],
