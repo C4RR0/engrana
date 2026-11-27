@@ -327,5 +327,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["construccion","Carretilla almacén","",null,"w100"],
 ["coche","Resina reforzada con vidrio + catalizador","",null,"w101"],
 ["electricidad","Proyector solar. 25w/=100w","",null,"w102"],
-["electricidad","Proyector solar 8w=/ 50w","",null,"w103"]
+["electricidad","Proyector solar 8w=/ 50w","",null,"w103"],
+["electro","Plancha Asar 2000w","",null,"w104"]
 ];
