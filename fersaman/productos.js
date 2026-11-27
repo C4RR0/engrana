@@ -322,5 +322,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["senales","Señal prohibido paso, cuidado perros, se alquila, se vende etc….","",null,"w95"],
 ["senales","Señal vados, salida etc….","",null,"w96"],
 ["herramienta","Juego llaves carraca 1/2-, 1/4 CROMO VANADIUM","",83.21,"w97"],
-["herramienta","Juego llaves carraca 94 piezas CROMO VANADIUM","",83.21,"w98"]
+["herramienta","Juego llaves carraca 94 piezas CROMO VANADIUM","",83.21,"w98"],
+["construccion","Carretilla obra verde","",null,"w99"]
 ];
