@@ -335,5 +335,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["electro","Aspiradora sin bolsa 700w","",null,"w108"],
 ["electro","Centro planchado 1,5 ltr. 1400w","",null,"w109"],
 ["electro","Cafetera esperado 1350 W","",null,"w110"],
-["electro","Batidora jarra cristal 1,5 ltr. 1000W","",null,"w111"]
+["electro","Batidora jarra cristal 1,5 ltr. 1000W","",null,"w111"],
+["bricolaje","Bisagra de cazoleta 26 /35","",null,"w112"]
 ];
