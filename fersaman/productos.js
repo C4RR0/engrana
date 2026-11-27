@@ -319,5 +319,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pilas","Pila LR20 varta","",null,"w92"],
 ["pilas","Pila V23GA VARTA","",null,"w93"],
 ["llaves","Llavero extensible colores","",3.69,"w94"],
-["senales","Señal prohibido paso, cuidado perros, se alquila, se vende etc….","",null,"w95"]
+["senales","Señal prohibido paso, cuidado perros, se alquila, se vende etc….","",null,"w95"],
+["senales","Señal vados, salida etc….","",null,"w96"]
 ];
