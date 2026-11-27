@@ -271,7 +271,7 @@ window.FERSAMAN_PRODUCTOS = [
 ["tornilleria","Cerradura lince superficie 80","",null,"w44"],
 ["tornilleria","Cerradura lince superficie para manilla 60/ 70","",null,"w45"],
 ["tornilleria","Llave magnética garaje","",7.5,"w46"],
-["tornilleria","Llaves….buzon, cerradura secreta, Fácil etc…","",1.75,"w47",true],
+["llaves","Llaves….buzon, cerradura secreta, Fácil etc…","",1.75,"w47",true],
 ["cadenas","Cadena zancada 2,3,4,5,6,7,8,10","",null,"w48"],
 ["cadenas","Cuerda polipropileno 10mm bloc/az","",null,"w49"],
 ["cadenas","Cuerda ama/roj 12 mm","",null,"w50"],
