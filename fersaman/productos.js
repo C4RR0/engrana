@@ -320,5 +320,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["pilas","Pila V23GA VARTA","",null,"w93"],
 ["llaves","Llavero extensible colores","",3.69,"w94"],
 ["senales","Señal prohibido paso, cuidado perros, se alquila, se vende etc….","",null,"w95"],
-["senales","Señal vados, salida etc….","",null,"w96"]
+["senales","Señal vados, salida etc….","",null,"w96"],
+["herramienta","Juego llaves carraca 1/2-, 1/4 CROMO VANADIUM","",83.21,"w97"]
 ];
