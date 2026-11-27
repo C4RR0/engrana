@@ -333,5 +333,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["electro","Secador Pelo 2400W","",null,"w106"],
 ["electro","Gofrera","",null,"w107"],
 ["electro","Aspiradora sin bolsa 700w","",null,"w108"],
-["electro","Centro planchado 1,5 ltr. 1400w","",null,"w109"]
+["electro","Centro planchado 1,5 ltr. 1400w","",null,"w109"],
+["electro","Cafetera esperado 1350 W","",null,"w110"]
 ];
