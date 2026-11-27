@@ -330,5 +330,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["electricidad","Proyector solar 8w=/ 50w","",null,"w103"],
 ["electro","Plancha Asar 2000w","",null,"w104"],
 ["electro","Freidora de Aire 3,5 lit.= 1400w","",null,"w105"],
-["electro","Secador Pelo 2400W","",null,"w106"]
+["electro","Secador Pelo 2400W","",null,"w106"],
+["electro","Gofrera","",null,"w107"]
 ];
