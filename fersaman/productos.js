@@ -324,5 +324,6 @@ window.FERSAMAN_PRODUCTOS = [
 ["herramienta","Juego llaves carraca 1/2-, 1/4 CROMO VANADIUM","",83.21,"w97"],
 ["herramienta","Juego llaves carraca 94 piezas CROMO VANADIUM","",83.21,"w98"],
 ["construccion","Carretilla obra verde","",null,"w99"],
-["construccion","Carretilla almacén","",null,"w100"]
+["construccion","Carretilla almacén","",null,"w100"],
+["coche","Resina reforzada con vidrio + catalizador","",null,"w101"]
 ];
